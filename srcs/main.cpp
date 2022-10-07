@@ -1,17 +1,10 @@
-#include <iostream>
-#include <sys/socket.h>
-#include <cerrno>
-#include <netdb.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
+#include "../incs/ircserv.hpp"
 
 int main() {
     protoent    *protocol;
     protocol = getprotobyname("ip");
     sockaddr_in sockAdr;
     long int r;
-    long int w;
     int socketT = socket(PF_INET, SOCK_STREAM, protocol->p_proto);
     sockAdr.sin_addr.s_addr = inet_addr("127.0.0.1");
     sockAdr.sin_family = PF_INET;
@@ -31,21 +24,18 @@ int main() {
         std::cout << "The family client is : " << protocol->p_name << "\nthe addr client is : " << inet_ntoa(clientSockInfo.sin_addr)
                   << std::endl;
         std::string buffer;
-        buffer.resize(4096, 0);
         while (true)
         {
-            buffer.assign(4096, 0);
-            r = recv(sockIn, &buffer[0], buffer.size(), 0);
+            r = receiveMsg(sockIn, buffer);
             switch (r) {
                 case -1:
-                    std::cout << "recv failed because : " << strerror(errno) << std::endl;
                     close(socketT);
                     exit(errno);
                 case 0:
-                    std::cout << "end of communication\n";
+                    close(socketT);
                     exit(0);
                 default:
-                    std::cout << "client said : " << &buffer[0] << std::endl;
+                    std::cout << "client said : " << buffer;
             }
             if (send(sockIn, "CAP * ACK multi-prefix", sizeof("CAP * ACK multi-prefix"), 0) == -1)
                 std::cout << "send failed because : " << strerror(errno) << std::endl;

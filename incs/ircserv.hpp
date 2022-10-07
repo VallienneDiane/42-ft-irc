@@ -15,6 +15,11 @@
 # include <iostream>
 # include <sys/socket.h>
 # include <netdb.h>
+# include <arpa/inet.h>
 # include <sys/types.h>
 # include <unistd.h>
+# include <cerrno>
+
+int receiveMsg(int socket, std::string &buffer);
+
 #endif
