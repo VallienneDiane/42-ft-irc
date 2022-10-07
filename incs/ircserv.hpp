@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/06 10:30:57 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/07 11:32:05 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,5 @@
 # include <sys/socket.h>
 # include <netdb.h>
 # include <sys/types.h>
-#include <unistd.h> //close
+# include <unistd.h>
 #endif
