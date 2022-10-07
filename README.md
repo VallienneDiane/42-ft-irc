@@ -58,7 +58,9 @@ Articles :
 
 	Internet Relay Chat: Channel Management : https://datatracker.ietf.org/doc/html/rfc2811#section-4.2.6
 
-	Modern IRC Client protocol : https://modern.ircdocs.horse/
+	Modern IRC Client protocol : https://modern.ircdocs.horse/\
+
+	Programmation sockets : http://tvaira.free.fr/bts-sn/reseaux/cours/cours-programmation-sockets.pdf
 
 Videos :
 

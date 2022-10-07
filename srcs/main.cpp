@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 15:57:32 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/07 16:05:55 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/ircserv.hpp"
+#include "../incs/Ircserv.hpp"
 
 /* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
