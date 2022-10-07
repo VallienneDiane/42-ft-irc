@@ -21,5 +21,14 @@
 # include <arpa/inet.h>
 # include <netinet/in.h>
 # include <netdb.h>
+# include <map>
+# include <string>
+
+# include "User.hpp"
+# include "Channel.hpp"
+
+int receiveMsg(const int socket, std::string &buffer);
+int sendMsg(const int socket, std::string &str);
+int sendMsg(const int socket, const char * str);
 
 #endif
