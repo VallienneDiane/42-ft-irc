@@ -22,9 +22,9 @@ int main() {
     else {
         protocol = getprotobynumber(clientSockInfo.sin_family);
         std::cout << "The family client is : " << protocol->p_name << "\nthe addr client is : " << inet_ntoa(clientSockInfo.sin_addr)
-                  << std::endl;
+                  << std::endl << "the id client is : " << sockIn << std::endl;
         std::string buffer;
-        while (true)
+        for (int i = 0; i < 3; ++i)
         {
             r = receiveMsg(sockIn, buffer);
             switch (r) {
@@ -37,9 +37,21 @@ int main() {
                 default:
                     std::cout << "client said : " << buffer;
             }
-            if (send(sockIn, "CAP * ACK multi-prefix", sizeof("CAP * ACK multi-prefix"), 0) == -1)
-                std::cout << "send failed because : " << strerror(errno) << std::endl;
+        }
+        if (sendMsg(sockIn, "CAP * LS :\r\n") == -1)
+            std::cout << "send failed because : " << strerror(errno) << std::endl;
+        r = receiveMsg(sockIn, buffer);
+        switch (r) {
+            case -1:
+                close(socketT);
+                exit(errno);
+            case 0:
+                close(socketT);
+                exit(0);
+            default:
+                std::cout << "client said : " << buffer;
         }
     }
-        return 0;
+    close(socketT);
+    return 0;
 }

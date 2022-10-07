@@ -19,7 +19,11 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include <cerrno>
+# include <map>
+# include <string>
 
-int receiveMsg(int socket, std::string &buffer);
+int receiveMsg(const int socket, std::string &buffer);
+int sendMsg(const int socket, std::string &str);
+int sendMsg(const int socket, const char * str);
 
 #endif

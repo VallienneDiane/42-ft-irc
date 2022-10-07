@@ -1,13 +1,14 @@
 #include "../incs/ircserv.hpp"
 
-int assignReadValue(int &a, int b)
+int assignReadValue(int &a, const int b)
 {
     a = b;
     return b;
 }
 
-int receiveMsg(int socket, std::string &buffer)
+int receiveMsg(const int socket, std::string &buffer)
 {
+    //std::cout << "waiting for client response : \n";
     buffer.clear();
     char    c;
     int     rd;
@@ -31,4 +32,16 @@ int receiveMsg(int socket, std::string &buffer)
             std::cout << "end of communication with socket " << socket << std::endl;
     }
     return 0;
+}
+
+int sendMsg(const int socket, std::string &str)
+{
+    str += "\r\n";
+    return (send(socket, str.data(), str.size(), 0));
+}
+
+int sendMsg(const int socket, const char * str)
+{
+    std::cout << "msg send  : " << str;
+    return (send(socket, str, sizeof(str), 0));
 }
