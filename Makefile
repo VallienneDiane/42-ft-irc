@@ -3,49 +3,56 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
+#    By: njaros <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/07 11:30:00 by dvallien         ###   ########.fr        #
+#    Updated: 2022/10/07 11:35:10 by njaros           ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
-NAME 		:= ircserv
-CC 			:= c++
-CFLAGS	 	:= -Wall -Wextra -Werror -std=c++98
+NAME = ircserv
+CC = c++
+FLAGS = -Wall -Wextra -Werror -std=c++98
 
-DIR_SRCS	:= ./srcs
-DIR_OBJS	:= ./objs
-DIR_INCS	:= ./incs
+PATH_SRCS		=	srcs
+PATH_DEP		=	dep
+PATH_OBJS		=	obj
+PATH_INCLUDES	=	incs
 
-LST_SRCS	:=	main.cpp					\
-		
-LST_INCS	:=	ircserv.hpp					\
-			
-LST_OBJS := $(LST_SRCS:.cpp=.o)
+LST_SRCS		=	main.cpp
+LST_OBJS		=	${LST_SRCS:.cpp=.o}
+LST_DEP			=	${LST_SRCS:.cpp=.d}
 
-SRCS := $(addprefix $(DIR_SRCS)/, $(LST_SRCS))
-OBJS := $(addprefix $(DIR_OBJS)/, $(LST_OBJS))
-INCS := $(addprefix $(DIR_INCS)/, $(LST_INCS))
+SRC =		$(addprefix ${PATH_SRCS}/,${LST_SRCS})
+DEP =		$(addprefix ${PATH_DEP}/,${LST_DEP})
+OBJS =		$(addprefix ${PATH_OBJS}/,${LST_OBJS})
 
-all : $(NAME)
+all :				${NAME} Makefile
 
-$(NAME) : $(OBJS) $(INCS) Makefile
-		$(CC) $(OBJS) -o $(NAME)
+${NAME} :			${OBJS}
+					${CC} ${FLAGS} ${OBJS} -o $@
 
-$(DIR_OBJS):
-		mkdir -p $(DIR_OBJS)
+${PATH_DEP}/%.d :	${PATH_SRCS}/%.cpp Makefile | ${PATH_DEP}
+					${CC} ${FLAGS} -MM -MF $@ -MT "${PATH_OBJS}/$*.o $@" $<
 
-$(DIR_OBJS)/%.o: $(DIR_SRCS)/%.cpp $(INCS) Makefile | $(DIR_OBJS)
-		$(CC) $(CFLAGS) -c $< -o $@
+
+${PATH_OBJS}/%.o:	${PATH_SRCS}/%.cpp Makefile | ${PATH_OBJS}
+					${CC} ${FLAGS} -c $< -o $@ -I ${PATH_INCLUDES}
+
+${PATH_DEP}:
+					mkdir dep
+
+${PATH_OBJS}:
+					mkdir obj
 
 clean :
-		rm -rf $(OBJS)
-		rm -rf $(DIR_OBJS)
+					rm -rf obj dep
 
-fclean : clean
-		rm -rf $(NAME)
+fclean :			clean
+					rm -f ${NAME}
 
-re : fclean all
+re :				fclean all
 
-.PHONY : all clean fclean re
+-include ${DEP}
+
+.PHONY: all re clean fclean
