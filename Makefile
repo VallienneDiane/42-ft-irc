@@ -6,7 +6,7 @@
 #    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/04 17:03:47 by dvallien         ###   ########.fr        #
+#    Updated: 2022/10/07 11:30:00 by dvallien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ $(DIR_OBJS)/%.o: $(DIR_SRCS)/%.cpp $(INCS) Makefile | $(DIR_OBJS)
 clean :
 		rm -rf $(OBJS)
 		rm -rf $(DIR_OBJS)
-		rm -rf *_shrubbery
 
 fclean : clean
 		rm -rf $(NAME)
