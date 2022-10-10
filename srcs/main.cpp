@@ -6,26 +6,11 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 16:05:55 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 14:37:48 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/Ircserv.hpp"
-
-/* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
-	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
-
-// CREATE A SOCKET //
-	//socket(family socket, type socket, 0);
-	//SOCK stream : direct connection btw 2 computers et send packages
-	//SOCK dgram : send directly package to destination without accept or connect
-// BIND ADDR IP & PORT TO A SOCKET
-	//struct of SOCKADDR contains technique informations of socket
-	//family socket, the type AF_INET
-	//port to connect
-	//define server address
-	//bind : attach socket to port and address (socket, struct SOCKADDR_IN, size struct)
-*/
+#include "../incs/ircserv.hpp"
 
 int serverSetup()
 {
@@ -39,6 +24,7 @@ int serverSetup()
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
 	{
 		std::cerr << "Can't bind" << std::endl;
+		close(socketServer);
 		return (-1);
 	}
 	
@@ -64,21 +50,19 @@ int acceptConnection(int socketServer)
 		std::cerr << "Can't accept" << std::endl;
 		return (-1);
 	}
-
 	// Pas utile, affiche juste des infos sur le client connecté	
-	char host[NI_MAXHOST];
-	char service[NI_MAXSERV];
-	memset(host, 0, NI_MAXHOST);
-	memset(service, 0, NI_MAXSERV);
-	if (getnameinfo((sockaddr*)&addrClient, csize, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
-	{
-		std::cout << host << " connected on port " << service << std::endl;
-	}
-	else
-	{
-		std::cout << "Error" << std::endl;
-	}
-	
+	// char host[NI_MAXHOST];
+	// char service[NI_MAXSERV];
+	// memset(host, 0, NI_MAXHOST);
+	// memset(service, 0, NI_MAXSERV);
+	// if (getnameinfo((sockaddr*)&addrClient, csize, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+	// {
+	// 	std::cout << host << " connected on port " << service << std::endl;
+	// }
+	// else
+	// {
+	// 	std::cout << "Error" << std::endl;
+	// }
 	return (socketClient);
 }
 
@@ -87,8 +71,11 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	char	buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
 	
-	// wait for client ot send data
+	// wait for client to send data
 	int bytesReceived = recv(socketClient, buffer, 4096, 0);
+	/*******************************************************************************************************/
+	std::cout << buffer << std::endl;
+	
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
@@ -120,6 +107,8 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	(void)ac;
+	(void)av;
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
@@ -158,7 +147,13 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 						return (1);
 					FD_SET(socketClient, &currentSockets);			// add a new clientSocket to the set of sockets we are watching
 					FD_SET(socketClient, &writeSockets);
-					send(socketClient, "Welcome to the server !\n", sizeof("Welcome to the server !\n") + 1, 0);
+					// send(socketClient, ":pouet CAP * LS :\r\n", sizeof(":pouet CAP * LS :\r\n"), 0);
+					for(int i = 0; i < 3; i++)
+					{
+						// send(socketClient, ":pouet NICK dvallien\r\n", sizeof(":pouet NICK dvallien\r\n"), 0);
+						send(socketClient, ":pouet 001 dvallien :Welcome to the irc diane!\r\n", sizeof(":pouet 001 dvallien :Welcome to the irc diane!\r\n"), 0);
+						send(socketClient, ":pouet NICK diane\r\n", sizeof(":pouet NICK diane\r\n"), 0);
+					}
 				}
 				else
 				{
@@ -168,7 +163,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 			}
 		}
 	}
-	
 	close(socketServer); //// A faire dans un signalHandler
 	return (0);
 }
