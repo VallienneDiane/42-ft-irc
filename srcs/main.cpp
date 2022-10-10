@@ -6,11 +6,12 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 14:14:56 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:03:57 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
+#include "../incs/signalManager.hpp"
 
 /* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
@@ -74,32 +75,6 @@ int acceptConnection(int socketServer)
 		std::cout << host << " connected on port " << service << std::endl;
 	else
 		std::cout << "Error" << std::endl;
-
-	//////////
-	send(socketClient, ":my_irc 001 amarchal", sizeof(":my_irc 001 amarchal"), 0);
-	char	buffer[4096];
-	
-	memset(buffer, 0, sizeof(buffer));
-	std::cout << "recv : " << recv(socketClient, buffer, 4096, 0) << std::endl;
-	std::cout << buffer;
-
-	// for (int i = 0; i < 3; i++)
-	// {
-	// 	char	buffer[4096];
-		
-	// 	memset(buffer, 0, sizeof(buffer));
-	// 	std::cout << "loop " << i << std::endl;
-	// 	std::cout << "recv : " << recv(socketClient, buffer, 4096, 0) << std::endl;
-	// 	std::cout << buffer;
-	// 	std::cout << "loop " << i << std::endl;
-		
-	// 	// int byteSend = send(socketClient, ":my_irc 001 amarchal!amarchal@localhost", sizeof(":my_irc 001 amarchal!amarchal@localhost") + 1, 0);
-	// 	// std::cout << "byteSend : " << byteSend << std::endl;
-	// }
-	// std::cout << "end loop" << std::endl;
-	
-	//////////
-	// std::string msg = "Welcome to the Internet Relay Network amarchal!amarchal@" 
 	
 	return (socketClient);
 }
@@ -109,10 +84,11 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	char	buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
 	
-	// wait for client ot send data
-	std::cout << "__ ICI __" << std::endl;
 	int bytesReceived = recv(socketClient, buffer, 4096, 0);
-	std::cout << "__ LA __" << std::endl;
+
+	///////////// Send RSP_WELCOME 001 msg
+	send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
+	
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
@@ -129,15 +105,13 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	}
 	if (buffer[strlen(buffer) - 1] == '\n')
 	{
-		// std::cout << "Msg received : " << buffer << std::endl;
-		//////// Echo msg to clients
+		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
 					send(i, buffer, bytesReceived + 1, 0);
 		}
-		// send(socketClient, buffer, bytesReceived + 1, 0);
 	}
 	return ;
 }
@@ -147,6 +121,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
+	signalOn(socketServer);	
 
 	fd_set currentSockets;
 	fd_set readSockets;
@@ -161,8 +136,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 		readSockets = currentSockets;		// because select is destructive, it keeps only the sockets ready for reading/writing but we want to keep tracks of all sockets we are watching
 		writeSockets = currentSockets;
 		
-		// int socketCount = select(FD_SETSIZE, &readSockets, nullptr, nullptr, nullptr);
-		// std::cout << "socketCount = " << socketCount << std::endl;
 		if (select(FD_SETSIZE, &readSockets, &writeSockets, nullptr, nullptr) == -1)
 		{
 			std::cerr << "select() error" << std::endl;
@@ -180,25 +153,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 					int socketClient = acceptConnection(socketServer);
 					if (socketClient == -1)
 						return (1);
-
-					////////////////
-					
-					// for (int i = 0; i < FD_SETSIZE; i++)
-					// {
-					// 	if (FD_ISSET(i, &writeSockets))
-					// 	{
-					// 		if (i == socketServer)
-					// 		{
-					// 			send(i, ":COUSCOUS CAP LS * :\r\n", sizeof(":COUSCOUS CAP LS * :\r\n") + 1, 0);
-					// 			// send(socketClient, ":my_irc 001 amarchal!amarchal@localhost", sizeof(":my_irc 001 amarchal!amarchal@localhost") + 1, 0);
-					// 			std::cout << "msg sent" << std::endl;
-					// 		}
-					// 	}
-					// }
-					
-					// send(socketClient, "BLABLABALBALBLABLABLABALABLA", sizeof("BLABLABALBALBLABLABLABALABLA"), 0);
-					// send(socketClient, ":my_irc 001 amarchal", sizeof(":my_irc 001 amarchal"), 0);
-					////////////////
 					FD_SET(socketClient, &currentSockets);			// add a new clientSocket to the set of sockets we are watching
 					FD_SET(socketClient, &writeSockets);
 				}

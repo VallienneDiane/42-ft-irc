@@ -6,7 +6,7 @@
 #    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/10 10:13:19 by amarchal         ###   ########.fr        #
+#    Updated: 2022/10/10 14:22:06 by amarchal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,9 +19,10 @@ PATH_DEP		=	dep
 PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
 
-LST_SRCS		=	main.cpp		\
-					Channel.cpp		\
-					User.cpp		\
+LST_SRCS		=	main.cpp				\
+					signalManager.cpp		\
+					Channel.cpp				\
+					User.cpp				\
 					
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
