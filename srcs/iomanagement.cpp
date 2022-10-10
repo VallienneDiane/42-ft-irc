@@ -10,13 +10,13 @@ int receiveMsg(const int socket, std::string &buffer)
 {
     //std::cout << "waiting for client response : \n";
     buffer.clear();
-    char    c;
+    char    c[4096];
     int     rd;
     std::string::size_type  size = 0;
-    while (assignReadValue(rd, recv(socket, &c, 1, 0)) && rd != -1)
+    while (assignReadValue(rd, recv(socket, c, 4096, 0)) && rd != -1)
     {
         buffer += c;
-        size += 1;
+        size += rd;
         if (buffer.size() >= 2 &&
                 (buffer[size - 2] == '\r' && buffer[size - 1] == '\n'))
             return (buffer.size());
