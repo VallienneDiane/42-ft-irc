@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 16:16:57 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 17:46:14 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,44 @@
 #include "../incs/signalManager.hpp"
 #include <map>
 
-/* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
+/* 
+	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
-
-// CREATE A SOCKET //
-	//socket(family socket, type socket, 0);
-	//SOCK stream : direct connection btw 2 computers et send packages
-	//SOCK dgram : send directly package to destination without accept or connect
-// BIND ADDR IP & PORT TO A SOCKET
-	//struct of SOCKADDR contains technique informations of socket
-	//family socket, the type AF_INET
-	//port to connect
-	//define server address
-	//bind : attach socket to port and address (socket, struct SOCKADDR_IN, size struct)
 */
 
-void	getinfos(int socketClient, std::string line, std::map<int, User> repertory)
+std::string firstWord(std::string content)
 {
-	
+	char *words = new char [content.length() + 1];
+
+	std::strcpy(words, content.c_str()); // copy all infos in content (cap, nick, user)
+
+	char *line = strtok(words, " \n");
+	while (line)
+	{
+		std::cout << "Line : " << line << std::endl;
+		line = strtok (NULL, " ");
+	}
+	delete[] words;
+	return (line);
+}
+
+void	getInfosClient(int socketClient, std::string content) //, std::map<int, User> repertory
+{
+	(void)socketClient;
+	std::cout << "CONTENT : " << content << std::endl;
+	if (firstWord(content) == "NICK")
+	{
+		std::cout << "HERE !!!! " << std::endl;
+	}
 }
 
 int serverSetup()
 {
 	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
-	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6
+	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6, contains technique informations of socket
 	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrServer.sin_family = AF_INET;
-	addrServer.sin_port = htons(30000);						// host to network
+	addrServer.sin_port = htons(30000);						// host to network, port to connect
 	
 	// BIND ADDR IP & PORT TO A SOCKET
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
@@ -89,12 +100,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 {
 	char	buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
-	
 	int bytesReceived = recv(socketClient, buffer, 4096, 0);
-
-	// SEND RSP_WELCOME 001 msg
-	send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
-	
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
@@ -111,6 +117,9 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	}
 	if (buffer[strlen(buffer) - 1] == '\n')
 	{
+		// SEND RSP_WELCOME 001 msg
+		getInfosClient(socketClient, buffer);
+		send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
 		// ECHO MSG TO ALL CLIENTS
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
@@ -124,6 +133,8 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	(void)ac;
+	(void)av;
 	// CREATE A SOCKET
 	int socketServer = serverSetup();
 	if (socketServer == -1)
@@ -148,7 +159,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 			std::cerr << "select() error" << std::endl;
 			return (1);
 		}
-		
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, &readSockets))
@@ -172,7 +182,5 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 		}
 	}
 	close(socketServer); // TO DO IN signalHandler
-	(void)ac;
-	(void)av;
 	return (0);
 }
