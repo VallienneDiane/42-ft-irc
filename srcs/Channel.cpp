@@ -19,11 +19,6 @@ Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
 // Channel::Channel(void)
 // {}
 
-Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
-{
-	*this = src;
-}
-
 Channel & Channel::operator=(const Channel &src)
 {
 	this->_name = src._name;
