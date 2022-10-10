@@ -13,7 +13,7 @@
 #include "../incs/User.hpp"
 
 /****************** CANONIC FORM ******************/
-User::User(void) : _nickname("nickname"), _username("username"), _id(NULL)
+User::User(void) : _nickname("nickname"), _username("username"), _id(0)
 {}
 
 User::User(const User &src)
@@ -23,9 +23,9 @@ User::User(const User &src)
 
 User & User::operator=(const User &src)
 {
-	this->_nickname = _nickname;
-	this->_username = _username;
-	this->_id = _id;
+	this->_nickname = src._nickname;
+	this->_username = src._username;
+	this->_id = src._id;
 	return (*this);
 }
 

@@ -20,7 +20,10 @@ PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
 
 LST_SRCS		=	main.cpp \
-					iomanagement.cpp
+					iomanagement.cpp \
+					Channel.cpp \
+					User.cpp \
+					init_connect.cpp
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 

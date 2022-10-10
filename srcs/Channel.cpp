@@ -13,13 +13,9 @@
 #include "../incs/Channel.hpp"
 
 /****************** CANONIC FORM ******************/
-Channel::Channel(void)
-{}
 
 Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
-{
-	*this = src;
-}
+{}
 
 Channel & Channel::operator=(const Channel &src)
 {

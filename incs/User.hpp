@@ -14,6 +14,8 @@
 # define USER_HPP
 # include "ircserv.hpp"
 
+class Channel;
+
 class User
 {
 	private:
