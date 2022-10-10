@@ -23,6 +23,7 @@
 # include <netdb.h>
 # include <map>
 # include <string>
+# include <csignal>
 
 # include "User.hpp"
 # include "Channel.hpp"

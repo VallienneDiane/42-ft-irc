@@ -1,22 +1,24 @@
 #include "../incs/ircserv.hpp"
+#include "../incs/signalManager.hpp"
 
 int main() {
     protoent    *protocol;
     protocol = getprotobyname("ip");
     sockaddr_in sockAdr;
     long int r;
-    int socketT = socket(PF_INET, SOCK_STREAM, protocol->p_proto);
+    int serverSocket = socket(PF_INET, SOCK_STREAM, protocol->p_proto);
+    signalOn(serverSocket);
     sockAdr.sin_addr.s_addr = inet_addr("127.0.0.1");
     sockAdr.sin_family = PF_INET;
     sockAdr.sin_port = htons(6667);
-    if (bind(socketT, reinterpret_cast<sockaddr *>(&sockAdr), sizeof(sockAdr)))
+    if (bind(serverSocket, reinterpret_cast<sockaddr *>(&sockAdr), sizeof(sockAdr)))
         std::cout << "bind failed because : " <<  strerror(errno) << std::endl;
-    std::cout << "server socket is : " << socketT << std::endl;
-    if (listen(socketT, 10))
+    std::cout << "server socket is : " << serverSocket << std::endl;
+    if (listen(serverSocket, 10))
         std::cout << "listen failed because : " << strerror(errno) << std::endl;
     sockaddr_in clientSockInfo;
     socklen_t len = clientSockInfo.sin_len;
-    int sockIn = accept(socketT, reinterpret_cast<sockaddr *>(&clientSockInfo), &len);
+    int sockIn = accept(serverSocket, reinterpret_cast<sockaddr *>(&clientSockInfo), &len);
     if (sockIn < 0)
         std::cout << "accept failed because : " << strerror(errno) << std::endl;
     else {
@@ -29,10 +31,10 @@ int main() {
             r = receiveMsg(sockIn, buffer);
             switch (r) {
                 case -1:
-                    close(socketT);
+                    close(serverSocket);
                     exit(errno);
                 case 0:
-                    close(socketT);
+                    close(serverSocket);
                     exit(0);
                 default:
                     std::cout << "client said : " << buffer;
@@ -46,16 +48,16 @@ int main() {
         r = receiveMsg(sockIn, buffer);
         switch (r) {
             case -1:
-                close(socketT);
+                close(serverSocket);
                 exit(errno);
             case 0:
-                close(socketT);
+                close(serverSocket);
                 exit(0);
             default:
                 std::cout << "client said : " << buffer;
         }
         }
     }
-    close(socketT);
+    close(serverSocket);
     return 0;
 }
