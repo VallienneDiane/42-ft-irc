@@ -6,12 +6,13 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 16:08:53 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:16:57 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 #include "../incs/signalManager.hpp"
+#include <map>
 
 /* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
@@ -28,15 +29,20 @@
 	//bind : attach socket to port and address (socket, struct SOCKADDR_IN, size struct)
 */
 
+void	getinfos(int socketClient, std::string line, std::map<int, User> repertory)
+{
+	
+}
+
 int serverSetup()
 {
-	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// Socket d'ecoute
+	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
 	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6
 	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrServer.sin_family = AF_INET;
 	addrServer.sin_port = htons(30000);						// host to network
 	
-	// Demande de l'attachement local de la socket
+	// BIND ADDR IP & PORT TO A SOCKET
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
 	{
 		std::cerr << "Can't bind" << std::endl;
@@ -44,7 +50,7 @@ int serverSetup()
 		return (-1);
 	}
 	
-	// Indique que la socket attend des connexions, fixe la taille de la liste d'attente
+	// SOCKET WAITING CONNEXIONS, FIX THE WAITING LIST
 	if (listen(socketServer, SOMAXCONN) == -1)								
 	{
 		std::cerr << "Can't listen" << std::endl;
@@ -59,14 +65,14 @@ int acceptConnection(int socketServer)
 	struct sockaddr_in addrClient;
 	socklen_t csize = sizeof(addrClient);
 	
-	// Accepte les demandes de connexion. Crée une nvlle socket connectée et renvoie un fd pour cette socket // Socket de dialogue
+	// ACCEPT CONNEXION DEMAND. CREATE NEW SOCKET AND SEND BACK FD FOR THIS SOCKET : DIALOG SOCKET
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
 	if (socketClient == -1)
 	{
 		std::cerr << "Can't accept" << std::endl;
 		return (-1);
 	}
-	// Pas utile, affiche juste des infos sur le client connecté	
+	// DISPLAY INFOS ON CONNECTED CLIENT	
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 	memset(host, 0, NI_MAXHOST);
@@ -86,7 +92,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	
 	int bytesReceived = recv(socketClient, buffer, 4096, 0);
 
-	///////////// Send RSP_WELCOME 001 msg
+	// SEND RSP_WELCOME 001 msg
 	send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
 	
 	if (bytesReceived == -1)
@@ -105,7 +111,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	}
 	if (buffer[strlen(buffer) - 1] == '\n')
 	{
-		//////// Echo msg to all clients
+		// ECHO MSG TO ALL CLIENTS
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
@@ -118,6 +124,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	// CREATE A SOCKET
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
@@ -127,7 +134,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 	fd_set readSockets;
 	fd_set writeSockets;
 
-	// initialize current set
+	// INITIALIZE CURRENT SET
 	FD_ZERO(&currentSockets);				// initialize
 	FD_SET(socketServer, &currentSockets);	// add serverSocket to the set of sockets we are watching
 	
@@ -159,12 +166,12 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				else
 				{
 					std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets);							// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets);		// do what we want to do with this connection
 				}
 			}
 		}
 	}
-	close(socketServer); //// A faire dans un signalHandler
+	close(socketServer); // TO DO IN signalHandler
 	(void)ac;
 	(void)av;
 	return (0);
