@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 14:46:10 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 10:17:53 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
 /****************** CANONIC FORM ******************/
-User::User(void) : _nickname("nickname"), _username("username"), _id(NULL)
+User::User(void) : _nickname("nickname"), _username("username"), _id(0)
 {}
 
 User::User(const User &src)
@@ -23,9 +23,9 @@ User::User(const User &src)
 
 User & User::operator=(const User &src)
 {
-	this->_nickname = _nickname;
-	this->_username = _username;
-	this->_id = _id;
+	this->_nickname = src.getNickname();
+	this->_username = src.getUsername();
+	this->_id = src.getId();
 	return (*this);
 }
 
