@@ -6,11 +6,27 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 14:37:48 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:08:53 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
+#include "../incs/signalManager.hpp"
+
+/* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
+	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
+
+// CREATE A SOCKET //
+	//socket(family socket, type socket, 0);
+	//SOCK stream : direct connection btw 2 computers et send packages
+	//SOCK dgram : send directly package to destination without accept or connect
+// BIND ADDR IP & PORT TO A SOCKET
+	//struct of SOCKADDR contains technique informations of socket
+	//family socket, the type AF_INET
+	//port to connect
+	//define server address
+	//bind : attach socket to port and address (socket, struct SOCKADDR_IN, size struct)
+*/
 
 int serverSetup()
 {
@@ -51,18 +67,15 @@ int acceptConnection(int socketServer)
 		return (-1);
 	}
 	// Pas utile, affiche juste des infos sur le client connecté	
-	// char host[NI_MAXHOST];
-	// char service[NI_MAXSERV];
-	// memset(host, 0, NI_MAXHOST);
-	// memset(service, 0, NI_MAXSERV);
-	// if (getnameinfo((sockaddr*)&addrClient, csize, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
-	// {
-	// 	std::cout << host << " connected on port " << service << std::endl;
-	// }
-	// else
-	// {
-	// 	std::cout << "Error" << std::endl;
-	// }
+	char host[NI_MAXHOST];
+	char service[NI_MAXSERV];
+	memset(host, 0, NI_MAXHOST);
+	memset(service, 0, NI_MAXSERV);
+	if (getnameinfo((sockaddr*)&addrClient, csize, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+		std::cout << host << " connected on port " << service << std::endl;
+	else
+		std::cout << "Error" << std::endl;
+	
 	return (socketClient);
 }
 
@@ -71,10 +84,10 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	char	buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
 	
-	// wait for client to send data
 	int bytesReceived = recv(socketClient, buffer, 4096, 0);
-	/*******************************************************************************************************/
-	std::cout << buffer << std::endl;
+
+	///////////// Send RSP_WELCOME 001 msg
+	send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
 	
 	if (bytesReceived == -1)
 	{
@@ -92,26 +105,23 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	}
 	if (buffer[strlen(buffer) - 1] == '\n')
 	{
-		// std::cout << "Msg received : " << buffer << std::endl;
-		//////// Echo msg to clients
+		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
 					send(i, buffer, bytesReceived + 1, 0);
 		}
-		// send(socketClient, buffer, bytesReceived + 1, 0);
 	}
 	return ;
 }
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
-	(void)ac;
-	(void)av;
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
+	signalOn(socketServer);	
 
 	fd_set currentSockets;
 	fd_set readSockets;
@@ -126,8 +136,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 		readSockets = currentSockets;		// because select is destructive, it keeps only the sockets ready for reading/writing but we want to keep tracks of all sockets we are watching
 		writeSockets = currentSockets;
 		
-		// int socketCount = select(FD_SETSIZE, &readSockets, nullptr, nullptr, nullptr);
-		// std::cout << "socketCount = " << socketCount << std::endl;
 		if (select(FD_SETSIZE, &readSockets, &writeSockets, nullptr, nullptr) == -1)
 		{
 			std::cerr << "select() error" << std::endl;
@@ -147,22 +155,17 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 						return (1);
 					FD_SET(socketClient, &currentSockets);			// add a new clientSocket to the set of sockets we are watching
 					FD_SET(socketClient, &writeSockets);
-					// send(socketClient, ":pouet CAP * LS :\r\n", sizeof(":pouet CAP * LS :\r\n"), 0);
-					for(int i = 0; i < 3; i++)
-					{
-						// send(socketClient, ":pouet NICK dvallien\r\n", sizeof(":pouet NICK dvallien\r\n"), 0);
-						send(socketClient, ":pouet 001 dvallien :Welcome to the irc diane!\r\n", sizeof(":pouet 001 dvallien :Welcome to the irc diane!\r\n"), 0);
-						send(socketClient, ":pouet NICK diane\r\n", sizeof(":pouet NICK diane\r\n"), 0);
-					}
 				}
 				else
 				{
-					// std::cout << "something to do with connection " << i << std::endl;
+					std::cout << "something to do with connection " << i << std::endl;
 					handleConnection(i, &currentSockets, &writeSockets);							// do what we want to do with this connection
 				}
 			}
 		}
 	}
 	close(socketServer); //// A faire dans un signalHandler
+	(void)ac;
+	(void)av;
 	return (0);
 }
