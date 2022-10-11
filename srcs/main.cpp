@@ -6,12 +6,13 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 16:03:57 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:11:01 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 #include "../incs/signalManager.hpp"
+#include "../incs/User.hpp"
 
 /* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
@@ -52,11 +53,13 @@ int serverSetup()
 	return (socketServer);
 }
 
-int acceptConnection(int socketServer)
+
+int acceptConnection(int socketServer, std::map<int, User> &userMap)
 {
 	int socketClient;
 	struct sockaddr_in addrClient;
 	socklen_t csize = sizeof(addrClient);
+	// User	newUser;
 	
 	// Accepte les demandes de connexion. Crée une nvlle socket connectée et renvoie un fd pour cette socket // Socket de dialogue
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
@@ -67,6 +70,7 @@ int acceptConnection(int socketServer)
 	}
 
 	// Pas utile, affiche juste des infos sur le client connecté	
+	/////////////////////////////////
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 	memset(host, 0, NI_MAXHOST);
@@ -75,18 +79,22 @@ int acceptConnection(int socketServer)
 		std::cout << host << " connected on port " << service << std::endl;
 	else
 		std::cout << "Error" << std::endl;
-	
+	/////////////////////////////////
+    userMap[socketClient];
+	userMap[socketClient].setSocket(socketClient);
+
+	// std::cout << userMap[socketClient];
+
 	return (socketClient);
+	(void)userMap;	
 }
 
-void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets)
+void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap)
 {
 	std::string buffer;
-	
+    std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer);
-    std::cout << "recu de " << socketClient << " : " << buffer;
-	///////////// Send RSP_WELCOME 001 msg
-	send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
+
 	
 	if (bytesReceived == -1)
 	{
@@ -104,6 +112,22 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	}
 	else
 	{
+		//////////////////
+		// ici on gere le msg recu
+		//////////////////
+        //userMap[socketClient].appendCommand(buffer);
+        User &current = userMap.find(socketClient)->second;
+        current.appendCommand(buffer);
+		///////////// Send RSP_WELCOME 001 msg
+		sentence = current.deliverCommand();
+        std::cout << "j obtiens : " << current.getCommand() << std::endl;
+		while (!sentence.empty())
+        {
+            std::cout << "> " << sentence;
+            sentence = current.deliverCommand();
+        }
+		sendMsg(socketClient, ":my_irc 001 amarchal\r\n");
+		
 		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
@@ -117,6 +141,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	std::map<int, User> userMap; 
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
@@ -149,7 +174,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				{
 					// this is a new connection
 					std::cout << "New connection requested" << std::endl;
-					int socketClient = acceptConnection(socketServer);
+					int socketClient = acceptConnection(socketServer, userMap);
 					if (socketClient == -1)
 						return (1);
 					FD_SET(socketClient, &currentSockets);			// add a new clientSocket to the set of sockets we are watching
@@ -158,11 +183,13 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				else
 				{
 					std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets);							// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets, userMap);							// do what we want to do with this connection
 				}
 			}
 		}
 	}
+	
+	close(socketServer); //// A faire dans un signalHandler
 	(void)ac;
 	(void)av;
 	return (0);
