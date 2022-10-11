@@ -25,7 +25,7 @@ int serverSetup()
 	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6, contains technique informations of socket
 	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrServer.sin_family = AF_INET;
-	addrServer.sin_port = htons(30000);						// host to network, port to connect
+	addrServer.sin_port = htons(6667);						// host to network
 	
 	// BIND ADDR IP & PORT TO A SOCKET
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
@@ -59,7 +59,9 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		std::cerr << "Can't accept" << std::endl;
 		return (-1);
 	}
+
 	// DISPLAY INFOS ON CONNECTED CLIENT	
+
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 	memset(host, 0, NI_MAXHOST);
@@ -68,19 +70,18 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		std::cout << host << " connected on port " << service << std::endl;
 	else
 		std::cout << "Error" << std::endl;
-	/////////////////////////////////
-	userMap[socketClient];
+
+    userMap[socketClient];
 	userMap[socketClient].setSocket(socketClient);
-	// std::cout << userMap[socketClient];
+
 	return (socketClient);
-	(void)userMap;	
 }
 
 void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap)
 {
-	char	buffer[4096];
-	memset(buffer, 0, sizeof(buffer));
-	int bytesReceived = recv(socketClient, buffer, 4096, 0);
+	std::string buffer;
+    std::string sentence;
+	int bytesReceived = receiveMsg(socketClient, buffer);
 
 	if (bytesReceived == -1)
 	{
@@ -96,17 +97,23 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
 		return ;	
 	}
-	if (buffer[strlen(buffer) - 1] == '\n')
+	else
 	{
-		// SEND RSP_WELCOME 001 msg
-		getInfosClient(socketClient, buffer, userMap);
-		send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
-		// ECHO MSG TO ALL CLIENTS
+        User &current = userMap.find(socketClient)->second;
+        current.appendCommand(buffer);
+		sentence = current.deliverCommand();
+		while (!sentence.empty())
+        {
+            getInfosClient(socketClient, sentence,userMap);
+            sentence = current.deliverCommand();
+        }
+		
+		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
-					send(i, buffer, bytesReceived + 1, 0);
+					sendMsg(i, buffer);
 		}
 	}
 	return ;
@@ -116,6 +123,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
 	(void)ac;
 	(void)av;
+
 	std::map<int, User> userMap; 
 	int socketServer = serverSetup();
 	if (socketServer == -1)

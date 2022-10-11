@@ -21,6 +21,7 @@ class User
 		std::string 	_nickname;
 		std::string 	_username;
 		unsigned int	_id;
+        std::string     _command;
 
 	public:
 		User(void);
@@ -37,6 +38,9 @@ class User
 		std::string 	getNickname(void) const;
 		std::string 	getUsername(void) const;
 		unsigned int	getId(void) const;
+        void            appendCommand(const std::string &str);
+        const std::string     &getCommand(void) const;
+        std::string     deliverCommand(void);
 };
 
 std::ostream 	&operator<<(std::ostream &stream, const User &source);

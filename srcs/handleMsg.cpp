@@ -22,9 +22,7 @@ std::vector<std::string> splitMsg(std::string content)
 	
 	while(line != NULL)
 	{
-		std::cout << "Line : " << line << std::endl;
 		clientInfos.push_back(line);
-		// std::cout << "Line2 : " << clientInfos.back() << std::endl; //check if added to tab
 		line = strtok(NULL, "\r \n");
 	}
 	delete[] words;
@@ -34,22 +32,27 @@ std::vector<std::string> splitMsg(std::string content)
 void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
 {
 	std::vector<std::string> clientInfos;
-	
-	(void)socketClient;
-	
-	std::cout << content << std::endl;
+	bool    welcome = false;
+
 	clientInfos = splitMsg(content);
 	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != clientInfos.end(); it++)
 	{
-		if (it->compare("NICK") == 0)
-		{
-			std::string nickname = *(++it);
-			userMap[socketClient].setNickname(nickname);
-			std::cout << ' ' << *it << std::endl;
-			std::cout << "Nickname: " << nickname << std::endl;
+		if (it->compare("NICK") == 0) {
+            if (userMap[socketClient].getNickname().empty())
+                welcome = true;
+            std::string nickname = *(++it);
+            userMap[socketClient].setNickname(nickname);
+            if (welcome)
+            {
+                std::string welcomeStr = SERVER_TALKING;
+                welcomeStr += "001 ";
+                welcomeStr += userMap[socketClient].getNickname();
+                welcomeStr += "_le_boss";
+                welcomeStr += SERVER_DESCRIPTION;
+                welcomeStr += userMap[socketClient].getNickname();
+                welcomeStr += " !";
+                sendMsg(socketClient, welcomeStr);
+            }
 		}
 	}
-	
-	
-	
 }

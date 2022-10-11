@@ -14,6 +14,7 @@
 # define CHANNEL_HPP
 # include "ircserv.hpp"
 # include "User.hpp"
+
 class User;
 
 class Channel

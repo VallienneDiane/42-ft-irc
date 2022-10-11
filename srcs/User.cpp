@@ -13,19 +13,19 @@
 #include "../incs/User.hpp"
 
 /****************** CANONIC FORM ******************/
-User::User(void) : _socket(0), _nickname(""), _username(""), _id(0)
+User::User(void) : _socket(0), _id(0)
 {}
 
-User::User(const User &src)
-{
-	*this = src;
-}
+User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _username(src._username), _id(src._id), _command(src._command)
+{}
 
 User & User::operator=(const User &src)
 {
-	this->_nickname = src.getNickname();
-	this->_username = src.getUsername();
-	this->_id = src.getId();
+	this->_nickname = src._nickname;
+	this->_username = src._username;
+    this->_socket = src._socket;
+    this->_id = src._id;
+    this->_command = src._command;
 	return (*this);
 }
 
@@ -81,6 +81,29 @@ unsigned int User::getId(void) const
 {
 	return (this->_id);
 }
+
+void    User::appendCommand(const std::string &str)
+{
+    _command += str;
+}
+
+std::string User::deliverCommand(void)
+{
+    std::string commandDelivered;
+    size_t found = _command.find("\r\n");
+    if (found != std::string::npos)
+    {
+        commandDelivered.assign(_command, 0, found);
+        _command.erase(0, found + 2);
+    }
+    return (commandDelivered);
+}
+
+const std::string &User::getCommand(void) const
+{
+    return (_command);
+}
+
 
 /****************** STREAM OVERLOAD ******************/
 std::ostream &operator<<(std::ostream &stream, const User &source)
