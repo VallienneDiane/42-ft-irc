@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 14:00:51 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:06:19 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,14 +71,12 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 	/////////////////////////////////
 	userMap[socketClient];
 	userMap[socketClient].setSocket(socketClient);
-
 	// std::cout << userMap[socketClient];
-
 	return (socketClient);
 	(void)userMap;	
 }
 
-void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets)
+void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap)
 {
 	char	buffer[4096];
 	memset(buffer, 0, sizeof(buffer));
@@ -116,6 +114,8 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	(void)ac;
+	(void)av;
 	std::map<int, User> userMap; 
 	int socketServer = serverSetup();
 	if (socketServer == -1)
@@ -157,7 +157,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				else
 				{
 					std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets);		// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets, userMap);		// do what we want to do with this connection
 				}
 			}
 		}

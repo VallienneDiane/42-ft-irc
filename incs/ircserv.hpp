@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 13:58:03 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:04:32 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,8 @@
 # include <netinet/in.h>
 # include <netdb.h>
 # include <map>
-<<<<<<< HEAD
-# include <string>
-# include <csignal>
-=======
 # include <csignal>
 # include <vector>
->>>>>>> diane
 
 # include "User.hpp"
 # include "Channel.hpp"
@@ -44,10 +39,7 @@ int sendMsg(const int socket, std::string &str);
 int sendMsg(const int socket, const char * str);
 int capMsg(const int socket);
 int welcomeMsg(const int socket);
-<<<<<<< HEAD
-=======
 std::vector<std::string>	splitMsg(std::string content);
 void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
->>>>>>> diane
 
 #endif

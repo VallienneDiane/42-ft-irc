@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 13:57:35 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 14:07:11 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ void	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 		{
 			std::string nickname = *(++it);
 			userMap[socketClient].setNickname(nickname);
-			// std::cout << ' ' << *it << std::endl;
-			// std::cout << "Nickname: " << nickname << std::endl;
+			std::cout << ' ' << *it << std::endl;
+			std::cout << "Nickname: " << nickname << std::endl;
 		}
 	}
 	
