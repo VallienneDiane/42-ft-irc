@@ -21,11 +21,11 @@ User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _u
 
 User & User::operator=(const User &src)
 {
-	this->_nickname = src.getNickname();
-	this->_username = src.getUsername();
-    _socket = src._socket;
-    _id = src._id;
-    _command = src._command;
+	this->_nickname = src._nickname;
+	this->_username = src._username;
+    this->_socket = src._socket;
+    this->_id = src._id;
+    this->_command = src._command;
 	return (*this);
 }
 
@@ -84,9 +84,6 @@ unsigned int User::getId(void) const
 
 void    User::appendCommand(const std::string &str)
 {
-    std::cout << _socket << std::endl;
-    std::cout << "pretraitement : " << _command << std::endl;
-    std::cout << "j ajoute : " << str << std::endl;
     _command += str;
 }
 

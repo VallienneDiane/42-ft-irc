@@ -115,18 +115,15 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		//////////////////
 		// ici on gere le msg recu
 		//////////////////
-        //userMap[socketClient].appendCommand(buffer);
         User &current = userMap.find(socketClient)->second;
         current.appendCommand(buffer);
 		///////////// Send RSP_WELCOME 001 msg
 		sentence = current.deliverCommand();
-        std::cout << "j obtiens : " << current.getCommand() << std::endl;
 		while (!sentence.empty())
         {
-            std::cout << "> " << sentence;
+            getInfosClient(socketClient, sentence,userMap);
             sentence = current.deliverCommand();
         }
-		sendMsg(socketClient, ":my_irc 001 amarchal\r\n");
 		
 		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
