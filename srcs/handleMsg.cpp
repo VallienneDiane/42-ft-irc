@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 14:07:11 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:02:07 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,13 @@ std::vector<std::string> splitMsg(std::string content)
 void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
 {
 	std::vector<std::string> clientInfos;
-	bool    welcome = false;
+
 
 	clientInfos = splitMsg(content);
 	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != clientInfos.end(); it++)
 	{
-		if (it->compare("NICK") == 0) {
-            if (userMap[socketClient].getNickname().empty())
-                welcome = true;
-            std::string nickname = *(++it);
-            userMap[socketClient].setNickname(nickname);
-            if (welcome)
-            {
-                std::string welcomeStr = SERVER_TALKING;
-                welcomeStr += "001 ";
-                welcomeStr += userMap[socketClient].getNickname();
-                welcomeStr += "_le_boss";
-                welcomeStr += SERVER_DESCRIPTION;
-                welcomeStr += userMap[socketClient].getNickname();
-                welcomeStr += " !";
-                sendMsg(socketClient, welcomeStr);
-            }
-		}
+		if (it->compare("NICK") == 0) 
+			nickHandle(socketClient, *(++it), &userMap);
 	}
 }
+
