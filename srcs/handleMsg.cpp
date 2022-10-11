@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 16:02:07 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:25:53 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,21 @@ void	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 {
 	std::vector<std::string> clientInfos;
 
-
 	clientInfos = splitMsg(content);
-	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != clientInfos.end(); it++)
+	std::vector<std::string>::iterator itEnd = clientInfos.end();
+	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != itEnd; it++)
 	{
-		if (it->compare("NICK") == 0) 
-			nickHandle(socketClient, *(++it), &userMap);
+		if (it->compare("NICK") == 0)
+		{
+			std::cout << "nick " << std::endl;
+			nickHandle(socketClient, *(++it), userMap);
+		}
+		if (it->compare("USER") == 0)
+		{
+			std::string username = *(++it);
+			std::cout << "user " << std::endl;
+			userHandle(socketClient, *(++it), userMap);
+		}
 	}
 }
 
