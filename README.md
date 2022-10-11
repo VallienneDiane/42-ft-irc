@@ -62,6 +62,8 @@ Articles :
 
 	Programmation sockets : http://tvaira.free.fr/bts-sn/reseaux/cours/cours-programmation-sockets.pdf
 
+	Logging into an irc server : http://chi.cs.uchicago.edu/chirc/irc_examples.html
+
 Videos :
 
 	Weechat : adding a server and connection : https://www.youtube.com/watch?v=v0HoaQIz39w
