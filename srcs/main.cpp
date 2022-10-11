@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 11:54:34 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:58:22 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	if (buffer[strlen(buffer) - 1] == '\n')
 	{
 		// SEND RSP_WELCOME 001 msg
-		getInfosClient(socketClient, buffer);
+		getInfosClient(socketClient, buffer, userMap);
 		send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
 		// ECHO MSG TO ALL CLIENTS
 		for (int i = 0; i < FD_SETSIZE; i++)

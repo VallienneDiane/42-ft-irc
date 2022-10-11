@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 11:56:08 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 13:58:03 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ int sendMsg(const int socket, const char * str);
 int capMsg(const int socket);
 int welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-void						getInfosClient(int socketClient, std::string content);
+void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
 
 #endif
