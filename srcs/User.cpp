@@ -6,14 +6,14 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 10:17:53 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:10:52 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
 /****************** CANONIC FORM ******************/
-User::User(void) : _nickname("nickname"), _username("username"), _id(0)
+User::User(void) : _socket(0), _nickname(""), _username(""), _id(0)
 {}
 
 User::User(const User &src)
@@ -41,6 +41,11 @@ User::User(std::string nickname, std::string username, unsigned int id)
 }
 
 /****************** SETTERS ******************/
+void	User::setSocket(int socket)
+{
+	this->_socket = socket;
+}
+
 void	User::setNickname(std::string nickname)
 {
 	this->_nickname = nickname;
@@ -57,6 +62,11 @@ void	User::setId(unsigned int id)
 }
 
 /****************** GETTERS ******************/
+int User::getSocket(void) const
+{
+	return (this->_socket);
+}
+
 std::string User::getNickname(void) const
 {
 	return (this->_nickname);
@@ -70,4 +80,14 @@ std::string User::getUsername(void) const
 unsigned int User::getId(void) const
 {
 	return (this->_id);
+}
+
+/****************** STREAM OVERLOAD ******************/
+std::ostream &operator<<(std::ostream &stream, const User &source)
+{
+	stream 	<< "~~ User ~~" << std::endl
+			<< "Socket\t:" << source.getSocket() << std::endl
+			<< "Nickname\t:" << source.getNickname() << std::endl
+			<< "Username\t:" << source.getUsername() << std::endl;
+	return (stream);
 }

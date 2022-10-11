@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 14:46:38 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/10 16:31:44 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define CHANNEL_HPP
 # include "ircserv.hpp"
 # include "User.hpp"
+
+class User;
 
 class Channel
 {

@@ -17,8 +17,8 @@ int receiveMsg(const int socket, std::string &buffer)
     {
         buffer += c;
         size += 1;
-        if (buffer.size() >= 2 &&
-                (buffer[size - 2] == '\r' && buffer[size - 1] == '\n'))
+        if (buffer.size() &&				//  >= 2 
+                (buffer[size - 1] == '\n')) //buffer[size - 2] == '\r' && 
             return (buffer.size());
         if (buffer[size - 1] == '\0')
             std::cout << "je me suis trompé\n";
@@ -36,7 +36,7 @@ int receiveMsg(const int socket, std::string &buffer)
 
 int sendMsg(const int socket, std::string &str)
 {
-    str += "\r\n";
+    str += "\r\n"; // 
     return (send(socket, str.data(), str.size(), 0));
 }
 
