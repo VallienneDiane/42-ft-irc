@@ -25,7 +25,9 @@ LST_SRCS		=	main.cpp \
 					User.cpp \
 					init_connect.cpp \
 					signalManager.cpp \
-					handleMsg.cpp
+					handleMsg.cpp \
+					loginMsg.cpp \
+					channelMsg.cpp
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 
