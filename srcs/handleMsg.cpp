@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 14:07:11 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 16:25:53 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,30 +29,25 @@ std::vector<std::string> splitMsg(std::string content)
 	return (clientInfos);
 }
 
-void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
+bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
 {
 	std::vector<std::string> clientInfos;
-	bool    welcome = false;
 
 	clientInfos = splitMsg(content);
-	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != clientInfos.end(); it++)
+	std::vector<std::string>::iterator itEnd = clientInfos.end();
+	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != itEnd; it++)
 	{
-		if (it->compare("NICK") == 0) {
-            if (userMap[socketClient].getNickname().empty())
-                welcome = true;
-            std::string nickname = *(++it);
-            userMap[socketClient].setNickname(nickname);
-            if (welcome)
-            {
-                std::string welcomeStr = SERVER_TALKING;
-                welcomeStr += "001 ";
-                welcomeStr += userMap[socketClient].getNickname();
-                welcomeStr += "_le_boss";
-                welcomeStr += SERVER_DESCRIPTION;
-                welcomeStr += userMap[socketClient].getNickname();
-                welcomeStr += " !";
-                sendMsg(socketClient, welcomeStr);
-            }
+		if (it->compare("NICK") == 0)
+		{
+			std::cout << "nick " << std::endl;
+			return (nickHandle(socketClient, *(++it), userMap));
+		}
+		if (it->compare("USER") == 0)
+		{
+			std::string username = *(++it);
+			std::cout << "user " << std::endl;
 		}
 	}
+    return false;
 }
+

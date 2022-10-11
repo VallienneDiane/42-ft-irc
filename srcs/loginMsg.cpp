@@ -12,16 +12,18 @@
 
 #include "../incs/ircserv.hpp"
 
-bool    containedNickname(std::string name, std::map<int, User> &userMap)
+bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
 {
-    std::map<int, User>::iterator end = userMap.end();
-    for (std::map<int, User>::iterator it = userMap.begin(); it != end; ++it)
+    std::map<int, User>::const_iterator end = userMap.end();
+    for (std::map<int, User>::const_iterator it = userMap.begin(); it != end; ++it)
     {
-
+        if (!it->second.getNickname().compare(name))
+            return true;
     }
+    return false;
 }
 
-bool    nickHandle(int socketClient, std::string nickname, std::map<int, User> &userMap)
+bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap)
 {
 	bool    welcome = false;
 	
@@ -31,23 +33,26 @@ bool    nickHandle(int socketClient, std::string nickname, std::map<int, User> &
 	{
         if (!containedNickname(nickname, userMap))
         {
+            userMap[socketClient].setNickname(nickname);
             std::string welcomeStr = SERVER_TALKING;
             welcomeStr += "001 ";
             welcomeStr += userMap[socketClient].getNickname();
-            welcomeStr += "_le_boss";
+            welcomeStr += "_le_capouet";
             welcomeStr += SERVER_DESCRIPTION;
             welcomeStr += userMap[socketClient].getNickname();
             welcomeStr += " !";
             sendMsg(socketClient, welcomeStr);
-            userMap[socketClient].setNickname(nickname);
         }
         else
         {
+            sendMsg(socketClient, "Sorry, this nickname is already used : connection refused :(\r\n");
             userMap.erase(socketClient);
             close(socketClient);
             return (1);
         }
 	}
+    else if (containedNickname(nickname, userMap))
+        sendMsg(socketClient, "Sorry :( this nickname is already used.\r\n");
     else
         userMap[socketClient].setNickname(nickname);
 	return (0);

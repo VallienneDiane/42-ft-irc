@@ -38,5 +38,5 @@ int sendMsg(const int socket, std::string &str)
 int sendMsg(const int socket, const char * str)
 {
     std::cout << "msg send  : " << str;
-    return (send(socket, str, sizeof(str), 0));
+    return (send(socket, str, strlen(str), 0));
 }

@@ -104,7 +104,11 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		sentence = current.deliverCommand();
 		while (!sentence.empty())
         {
-            getInfosClient(socketClient, sentence,userMap);
+            if (getInfosClient(socketClient, sentence,userMap))
+            {
+                FD_CLR(socketClient, currentSockets);
+                return ;
+            }
             sentence = current.deliverCommand();
         }
 		

@@ -40,7 +40,7 @@ int                         sendMsg(const int socket, const char * str);
 int                         capMsg(const int socket);
 int                         welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-void	                    getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
-bool nickHandle(int socketClient, std::string nickname, std::map<int, User> &userMap);
+bool	                    getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
+bool nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
 
 #endif
