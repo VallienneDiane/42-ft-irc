@@ -6,44 +6,17 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 17:46:14 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:54:34 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 #include "../incs/signalManager.hpp"
-#include <map>
 
 /* 
 	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
 */
-
-std::string firstWord(std::string content)
-{
-	char *words = new char [content.length() + 1];
-
-	std::strcpy(words, content.c_str()); // copy all infos in content (cap, nick, user)
-
-	char *line = strtok(words, " \n");
-	while (line)
-	{
-		std::cout << "Line : " << line << std::endl;
-		line = strtok (NULL, " ");
-	}
-	delete[] words;
-	return (line);
-}
-
-void	getInfosClient(int socketClient, std::string content) //, std::map<int, User> repertory
-{
-	(void)socketClient;
-	std::cout << "CONTENT : " << content << std::endl;
-	if (firstWord(content) == "NICK")
-	{
-		std::cout << "HERE !!!! " << std::endl;
-	}
-}
 
 int serverSetup()
 {
@@ -92,7 +65,7 @@ int acceptConnection(int socketServer)
 		std::cout << host << " connected on port " << service << std::endl;
 	else
 		std::cout << "Error" << std::endl;
-	
+	//************************************************// ADD USER AND SENTENCE WITH COMMANDS TO HANDLE CTR+D
 	return (socketClient);
 }
 

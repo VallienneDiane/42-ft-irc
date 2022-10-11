@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 16:06:05 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/11 11:47:58 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <netinet/in.h>
 # include <netdb.h>
 # include <map>
-# include <string>
 # include <csignal>
+# include <vector>
 
 # include "User.hpp"
 # include "Channel.hpp"
