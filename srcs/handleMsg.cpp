@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleMsg.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 10:21:34 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/12 11:32:16 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 		"QUIT",
 		"ERROR"
 	};
+	std::cout << BGREEN << "CMD name : " << *(clientInfos.begin()) << END << std::endl;
 	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != itEnd; it++)
 	{
 		for(i = 0; i < it->size(); i++)
