@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 16:25:53 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/12 10:21:34 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,79 @@ std::vector<std::string> splitMsg(std::string content)
 	return (clientInfos);
 }
 
-void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
+bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
 {
 	std::vector<std::string> clientInfos;
-
+	size_t i = 0;
 	clientInfos = splitMsg(content);
+	std::cout << content << std::endl;
 	std::vector<std::string>::iterator itEnd = clientInfos.end();
+	std::string cmds[] = {
+		"CAP",
+		"AUTHENTICATE",
+		"PASS",
+		"NICK",
+		"USER",
+		"PING",
+		"PONG",
+		"OPER",
+		"QUIT",
+		"ERROR"
+	};
 	for(std::vector<std::string>::iterator it = clientInfos.begin(); it != itEnd; it++)
 	{
-		if (it->compare("NICK") == 0)
+		for(i = 0; i < it->size(); i++)
 		{
-			std::cout << "nick " << std::endl;
-			nickHandle(socketClient, *(++it), userMap);
+			if (cmds[i] == *it)
+				break;
 		}
-		if (it->compare("USER") == 0)
+		switch (i)
 		{
-			std::string username = *(++it);
-			std::cout << "user " << std::endl;
-			userHandle(socketClient, *(++it), userMap);
+			case 0:
+				std::cout << "cap " << std::endl;
+				break;
+			case 1:
+				std::cout << "authenticate " << std::endl;
+				break;
+			case 2:
+				std::cout << "pass " << std::endl;
+				break;
+			case 3:
+				std::cout << "nick " << std::endl;
+				return (nickHandle(socketClient, *(++it), userMap));
+				break;
+			case 4:
+				std::cout << "user " << std::endl;
+				userHandle(socketClient, *(++it), userMap);
+				break;
+			case 5:
+				std::cout << "ping " << std::endl;
+				break;
+			case 6:
+				std::cout << "pong " << std::endl;
+				break;
+			case 7:
+				std::cout << "oper " << std::endl;
+				break;
+			case 8:
+				std::cout << "quit " << std::endl;
+				break;
+			case 9:
+				std::cout << "error " << std::endl;
+				break;
+			default:
+				break;
 		}
+		// if (it->compare("NICK") == 0)
+		// {
+		// 	std::cout << "nick " << std::endl;
+		// }
+		// if (it->compare("USER") == 0)
+		// {
+		// 	std::string username = *(++it);
+		// 	std::cout << "user " << std::endl;
+		// }
 	}
+	return (0);
 }
 
