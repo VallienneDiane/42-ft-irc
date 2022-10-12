@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 11:00:43 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/12 11:09:00 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@
 #define SERVER_ID "97K"
 #define SERVER_NETWORK "pouet.irc.fr"
 
-int                         receiveMsg(const int socket, std::string &buffer);
-int                         sendMsg(const int socket, std::string &str);
-int                         sendMsg(const int socket, const char * str);
-int                         capMsg(const int socket);
-int                         welcomeMsg(const int socket);
+int							receiveMsg(const int socket, std::string &buffer);
+int							sendMsg(const int socket, std::string &str);
+int							sendMsg(const int socket, const char * str);
+int							capMsg(const int socket);
+int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-void	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
-
+bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
+bool						nickHandle(int socketClient, std::string nickname, std::map<int, User> &userMap);
+void						userHandle(int socketClient, std::string username, std::map<int, User> &userMap);
 #endif
