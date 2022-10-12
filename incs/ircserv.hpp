@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 16:53:54 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/12 13:47:03 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
 bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
-bool						nickHandle(int socketClient, std::string nickname, std::map<int, User> &userMap);
+bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
+bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
 void						userHandle(int socketClient, std::string username, std::map<int, User> &userMap);
 #endif
