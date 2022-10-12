@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 11:11:01 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/12 10:59:59 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,37 +14,28 @@
 #include "../incs/signalManager.hpp"
 #include "../incs/User.hpp"
 
-/* The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
+/* 
+	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
-
-// CREATE A SOCKET //
-	//socket(family socket, type socket, 0);
-	//SOCK stream : direct connection btw 2 computers et send packages
-	//SOCK dgram : send directly package to destination without accept or connect
-// BIND ADDR IP & PORT TO A SOCKET
-	//struct of SOCKADDR contains technique informations of socket
-	//family socket, the type AF_INET
-	//port to connect
-	//define server address
-	//bind : attach socket to port and address (socket, struct SOCKADDR_IN, size struct)
 */
 
 int serverSetup()
 {
-	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// Socket d'ecoute
-	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6
+	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
+	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6, contains technique informations of socket
 	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrServer.sin_family = AF_INET;
-	addrServer.sin_port = htons(30000);						// host to network
+	addrServer.sin_port = htons(6667);						// host to network
 	
-	// Demande de l'attachement local de la socket
+	// BIND ADDR IP & PORT TO A SOCKET
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
 	{
 		std::cerr << "Can't bind" << std::endl;
+		close(socketServer);
 		return (-1);
 	}
 	
-	// Indique que la socket attend des connexions, fixe la taille de la liste d'attente
+	// SOCKET WAITING CONNEXIONS, FIX THE WAITING LIST
 	if (listen(socketServer, SOMAXCONN) == -1)								
 	{
 		std::cerr << "Can't listen" << std::endl;
@@ -61,7 +52,7 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 	socklen_t csize = sizeof(addrClient);
 	// User	newUser;
 	
-	// Accepte les demandes de connexion. Crée une nvlle socket connectée et renvoie un fd pour cette socket // Socket de dialogue
+	// ACCEPT CONNEXION DEMAND. CREATE NEW SOCKET AND SEND BACK FD FOR THIS SOCKET : DIALOG SOCKET
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
 	if (socketClient == -1)
 	{
@@ -69,8 +60,8 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		return (-1);
 	}
 
-	// Pas utile, affiche juste des infos sur le client connecté	
-	/////////////////////////////////
+	// DISPLAY INFOS ON CONNECTED CLIENT	
+
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 	memset(host, 0, NI_MAXHOST);
@@ -79,23 +70,20 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		std::cout << host << " connected on port " << service << std::endl;
 	else
 		std::cout << "Error" << std::endl;
-	/////////////////////////////////
-	userMap[socketClient];
-	userMap[socketClient].setSocket(socketClient);
 
-	// std::cout << userMap[socketClient];
+    userMap[socketClient];
+	userMap[socketClient].setSocket(socketClient);
 
 	return (socketClient);
 	(void)userMap;	
 }
 
-void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets)
+void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap)
 {
-	char	buffer[4096];
-	memset(buffer, 0, sizeof(buffer));
-	int bytesReceived = recv(socketClient, buffer, 4096, 0);
+	std::string buffer;
+    std::string sentence;
+	int bytesReceived = receiveMsg(socketClient, buffer);
 
-	
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
@@ -110,21 +98,23 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
 		return ;	
 	}
-	if (buffer[strlen(buffer) - 1] == '\n')
+	else
 	{
-		//////////////////
-		// ici on gere le msg recu
-		//////////////////
-		
-		///////////// Send RSP_WELCOME 001 msg
-		send(socketClient, ":my_irc 001 amarchal\n", sizeof(":my_irc 001 amarchal\n"), 0);
+        User &current = userMap.find(socketClient)->second;
+        current.appendCommand(buffer);
+		sentence = current.deliverCommand();
+		while (!sentence.empty())
+        {
+            getInfosClient(socketClient, sentence,userMap);
+            sentence = current.deliverCommand();
+        }
 		
 		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
-					send(i, buffer, bytesReceived + 1, 0);
+					sendMsg(i, buffer);
 		}
 	}
 	return ;
@@ -132,6 +122,9 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
+	(void)ac;
+	(void)av;
+
 	std::map<int, User> userMap; 
 	int socketServer = serverSetup();
 	if (socketServer == -1)
@@ -142,7 +135,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 	fd_set readSockets;
 	fd_set writeSockets;
 
-	// initialize current set
+	// INITIALIZE CURRENT SET
 	FD_ZERO(&currentSockets);				// initialize
 	FD_SET(socketServer, &currentSockets);	// add serverSocket to the set of sockets we are watching
 	
@@ -156,7 +149,6 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 			std::cerr << "select() error" << std::endl;
 			return (1);
 		}
-		
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, &readSockets))
@@ -174,14 +166,11 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				else
 				{
 					std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets);							// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets, userMap);		// do what we want to do with this connection
 				}
 			}
 		}
 	}
-	
-	close(socketServer); //// A faire dans un signalHandler
-	(void)ac;
-	(void)av;
+	close(socketServer); // TO DO IN signalHandler
 	return (0);
 }

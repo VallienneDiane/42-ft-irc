@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/10 10:15:48 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/07 14:15:10 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Channel.hpp"
 
 /****************** CANONIC FORM ******************/
-// Channel::Channel(void)
-// {}
 
 Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
-{
-	*this = src;
-}
+{}
+// Channel::Channel(void)
+// {}
 
 Channel & Channel::operator=(const Channel &src)
 {
