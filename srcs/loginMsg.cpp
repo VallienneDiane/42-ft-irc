@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 13:09:37 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:52:33 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
 	{
         if (!containedNickname(nickname, userMap))
         {
-<<<<<<< HEAD
-			nickAnswer += SERVER_TALKING;
-            current.setNickname(nickname);
-            nickAnswer += " 001 ";
-	        nickAnswer += current.getNickname();
-	        nickAnswer += SERVER_DESCRIPTION;
-	        nickAnswer += current.getNickname();
-	        nickAnswer += " !";
-=======
             userMap[socketClient].setNickname(nickname);
             std::string welcomeStr = SERVER_TALKING;
             // numericReply(RPL_WELCOME, socketClient, userMap);
@@ -57,7 +48,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
             welcomeStr += userMap[socketClient].getNickname();
             welcomeStr += " !";
             sendMsg(socketClient, welcomeStr);
->>>>>>> 4b99febd676fb2c4bf144b5a451f4de7054418a8
         }
         else
         {
@@ -74,7 +64,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         }
 	}
     else if (containedNickname(nickname, userMap))
-<<<<<<< HEAD
 	{
 		nickAnswer += SERVER_TALKING;
 		nickAnswer += " ";
@@ -93,14 +82,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
 		nickAnswer += nickname;
 	}
 	sendMsg(socketClient, nickAnswer);
-=======
-        sendMsg(socketClient, "Sorry, this nickname is already used.\r\n");
-    else
-	{
-		std::cout << BCYAN << "setNickname" << END << std::endl;
-        userMap[socketClient].setNickname(nickname);
-	}
->>>>>>> 4b99febd676fb2c4bf144b5a451f4de7054418a8
 	return (0);
 }
 
@@ -112,11 +93,7 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 		welcome = true;
 	else
 	{
-<<<<<<< HEAD
-		//numericReply(ERR_ALREADYREGISTERED);
-=======
 		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap);
->>>>>>> 4b99febd676fb2c4bf144b5a451f4de7054418a8
 		return (1);
 	}
 	userMap[socketClient].setUsername(username);
@@ -125,4 +102,4 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 }
 
 
-void    operMsg()
+// void    operMsg()
