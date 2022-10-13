@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 16:05:01 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:59:51 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         if (!containedNickname(nickname, userMap))
         {
             userMap[socketClient].setNickname(nickname);
-            numericReply(RPL_WELCOME, socketClient, userMap);
+            numericReply(RPL_WELCOME, socketClient, "NULL", userMap);
         }
         else
         {
@@ -86,7 +86,7 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 		welcome = true;
 	else
 	{
-		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap);
+		numericReply(ERR_ALREADYREGISTERED, socketClient, "NULL", userMap);
 		return (1);
 	}
 	userMap[socketClient].setUsername(username);

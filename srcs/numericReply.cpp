@@ -6,13 +6,13 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 14:00:07 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:54:08 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
+void	numericReply(int error, int socketClient, std::string channel, std::map<int, User> &userMap)
 {
 	std::string str;
 	User & user = userMap[socketClient];
@@ -45,7 +45,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 			break;
 		//PART
 		case 442:
-			std::cout << "<client> <channel> :You're not on that channel" << std::endl;
+			str = user.getNickname();
+			str += " ";
+			str += channel;
+			str += " :You're not on that channel";
+			sendMsg(socketClient, str);
 			break;
 		// USERNAME
 		case 461:

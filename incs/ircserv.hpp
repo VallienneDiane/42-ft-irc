@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:57:39 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:54:13 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,11 @@ bool						getInfosClient(int socketClient, std::string content, std::map<int, Us
 bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
 bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
-void						numericReply(int error, int socketClient, std::map<int, User> &userMap);
+void						numericReply(int error, int socketClient, std::string channel, std::map<int, User> &userMap);
 void						checkNichname(const std::string name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
 bool						join(int socketClient, const std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
-
+bool						part(int socketClient, std::string channels, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
+std::vector<std::string> 	splitNames(std::string names);
 #endif
