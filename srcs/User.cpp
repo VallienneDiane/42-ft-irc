@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 11:10:52 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/12 14:47:18 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 User::User(void) : _socket(0), _id(0)
 {}
 
-User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _username(src._username), _id(src._id), _command(src._command)
+User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command)
 {}
 
 User & User::operator=(const User &src)
 {
+    this->_socket = src._socket;
 	this->_nickname = src._nickname;
 	this->_username = src._username;
-    this->_socket = src._socket;
+	this->_realname = src._realname;
     this->_id = src._id;
     this->_command = src._command;
 	return (*this);
@@ -56,6 +57,11 @@ void	User::setUsername(std::string username)
 	this->_username = username;
 }
 
+void	User::setRealname(std::string realname)
+{
+	this->_realname = realname;
+}
+
 void	User::setId(unsigned int id)
 {
 	this->_id = id;
@@ -75,6 +81,11 @@ std::string User::getNickname(void) const
 std::string User::getUsername(void) const
 {
 	return (this->_username);
+}
+
+std::string User::getRealname(void) const
+{
+	return (this->_realname);
 }
 
 unsigned int User::getId(void) const
