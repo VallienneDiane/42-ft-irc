@@ -45,7 +45,7 @@
 # include "Channel.hpp"
 # include "numericReply.hpp"
 
-#define SERVER_TALKING ":pouet_irc "
+#define SERVER_TALKING ":pouet_irc"
 #define SERVER_NAME "pouet_irc"
 #define SERVER_DESCRIPTION " Welcome to pouet irc "
 #define SERVER_ID "97K"

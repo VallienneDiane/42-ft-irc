@@ -31,35 +31,55 @@ bool    containedNickname(const std::string name, const std::map<int, User> &use
 bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap)
 {
 	bool    welcome = false;
-	
-	if (userMap[socketClient].getNickname().empty())
+	User    &current = userMap[socketClient];
+	if (current.getNickname().empty())
 				welcome = true;
+	std::string nickAnswer;
 	if (welcome)
 	{
         if (!containedNickname(nickname, userMap))
         {
-            userMap[socketClient].setNickname(nickname);
-            std::string welcomeStr = SERVER_TALKING;
-            welcomeStr += "001 ";
-            welcomeStr += userMap[socketClient].getNickname();
-            welcomeStr += "_le_capouet";
-            welcomeStr += SERVER_DESCRIPTION;
-            welcomeStr += userMap[socketClient].getNickname();
-            welcomeStr += " !";
-            sendMsg(socketClient, welcomeStr);
+			nickAnswer += SERVER_TALKING;
+            current.setNickname(nickname);
+            nickAnswer += " 001 ";
+	        nickAnswer += current.getNickname();
+	        nickAnswer += SERVER_DESCRIPTION;
+	        nickAnswer += current.getNickname();
+	        nickAnswer += " !";
         }
         else
         {
-            sendMsg(socketClient, "Sorry, this nickname is already used : connection refused :(\r\n");
+	        nickAnswer += SERVER_TALKING;
+			nickAnswer += " ";
+			nickAnswer += ERR_NICKNAMEINUSE;
+			nickAnswer += " ";
+			nickAnswer += nickname;
+			nickAnswer += " :this nickname is already in use, please use another one.";
+            sendMsg(socketClient, nickAnswer);
             userMap.erase(socketClient);
             close(socketClient);
             return (1);
         }
 	}
     else if (containedNickname(nickname, userMap))
-        sendMsg(socketClient, "Sorry, this nickname is already used.\r\n");
-    else
-        userMap[socketClient].setNickname(nickname);
+	{
+		nickAnswer += SERVER_TALKING;
+		nickAnswer += " ";
+		nickAnswer += ERR_NICKNAMEINUSE;
+		nickAnswer += " ";
+		nickAnswer += nickname;
+		nickAnswer += " :this nickname is already in use, please use another one.";
+	}
+	else
+	{
+		nickAnswer += ":";
+		nickAnswer += current.getNickname();
+		nickAnswer += "!njaros@127.0.0.1 ";
+		current.setNickname(nickname);
+		nickAnswer += " NICK ";
+		nickAnswer += nickname;
+	}
+	sendMsg(socketClient, nickAnswer);
 	return (0);
 }
 
@@ -71,7 +91,7 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 		welcome = true;
 	else
 	{
-		numericReply(ERR_ALREADYREGISTERED);
+		//numericReply(ERR_ALREADYREGISTERED);
 		return (1);
 	}
 	userMap[socketClient].setUsername(username);
