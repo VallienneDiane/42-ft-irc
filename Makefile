@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
+#    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/12 13:42:47 by dvallien         ###   ########.fr        #
+#    Updated: 2022/10/12 14:43:20 by amarchal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,14 +19,17 @@ PATH_DEP		=	dep
 PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
 
-LST_SRCS		=	main.cpp \
-					iomanagement.cpp \
-					Channel.cpp \
-					User.cpp \
-					signalManager.cpp \
-					handleMsg.cpp \
-					channelMsg.cpp \
-					loginMsg.cpp
+LST_SRCS		=	main.cpp 			\
+					iomanagement.cpp 	\
+					Channel.cpp 		\
+					User.cpp 			\
+					signalManager.cpp 	\
+					handleMsg.cpp 		\
+					channelMsg.cpp 		\
+					loginMsg.cpp		\
+					pingPong.cpp		\
+
+
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 
