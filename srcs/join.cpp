@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/13 15:44:30 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 17:57:04 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ static std::vector<std::string> splitNames(std::string names)
 
 bool	join(int socketClient, const std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string> names = splitNames(channelName);
-	std::vector<std::string>::iterator name = names.begin();
-	while (name != names.end())
+	std::vector<std::string> chanNames = splitNames(channelName);
+	std::vector<std::string>::iterator name = chanNames.begin();
+	std::vector<std::string>::iterator end = chanNames.end();
+	while (name != end)
 	{
 		//////////// NEW CHANNEL
 		if (channelMap.find(*name) == channelMap.end())
@@ -38,6 +39,7 @@ bool	join(int socketClient, const std::string &channelName, std::map<int, User> 
 			channelMap.find(*name)->second.getUserList()[socketClient];
 			std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 			sendMsg(socketClient, msg);
+			names(socketClient, *name, userMap, channelMap);
 		}
 		//////////// EXISTING CHANNEL
 		else
@@ -53,6 +55,7 @@ bool	join(int socketClient, const std::string &channelName, std::map<int, User> 
 				channelMap.find(*name)->second.getUserList()[socketClient];
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				sendMsg(socketClient, msg);
+				names(socketClient, *name, userMap, channelMap);
 				
 			}
 		}
