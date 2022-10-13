@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:57:25 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:46:40 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,22 @@
 
 void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 {
+	std::string str;
+	User & user = userMap[socketClient];
 	switch(error)
 	{
 		case 001:
-			std::cout << "<client> :Welcome to the " << SERVER_NAME << " Network, " << userMap[socketClient].getNickname() 
-			<< "[!" << userMap[socketClient].getUsername() << "@" << userMap[socketClient].getHostname() << ']' << std::endl;
+			str = "001 ";
+			str += user.getNickname();
+			str += " :Welcome to the ";
+			str += SERVER_NAME;
+			str += " Network, ";
+			str += user.getNickname();
+			str += "!" ;
+			str += user.getUsername();
+			str += "@";
+			str += user.getHostname();
+			sendMsg(socketClient, str);
 			break;
 		// NICKNAME
 		case 431:
