@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:56:23 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:02:01 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ std::vector<std::string> splitMsg(std::string content)
 	return (clientInfos);
 }
 
-bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap)
+bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::vector<std::string> clientInfos;
 	clientInfos = splitMsg(content);
@@ -102,7 +102,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 10:
 			std::cout << "join " << std::endl;
-			// return (join())
+			return (join(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 11:
 			std::cout << "part " << std::endl;

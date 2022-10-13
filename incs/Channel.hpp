@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 11:01:15 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:37:43 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,25 @@ class User;
 class Channel
 {
 	private:
-		Channel(void);
-		std::string		_name;
-		User &			_founder;
-		std::string		_topic;
-		std::string		_mode;
+		// Channel(void);
+		std::string			_name;
+		std::map<int, User>	_operList;
+		std::string			_topic;
+		std::string			_mode;
+		std::map<int, User>	_userList;
 
 	public:
+		// Channel();
 		Channel(const Channel &src);
 		Channel & operator=(const Channel &src);
 		~Channel(void);
 
-		Channel(std::string name, User & founder);
+		Channel(std::string name, User & oper);
 		void		setName(std::string name);
-		void		setFounder(User & founder);
+		void		setOperList(std::map<int, User> operList);
 		std::string getName(void) const;
-		User &		getFounder(void) const;
+		std::map<int, User>	getOperList(void) const;
+		std::map<int, User> getUserList(void);
 };
 
 #endif

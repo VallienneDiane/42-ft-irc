@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:59:32 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:29:04 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@
 # include "Channel.hpp"
 # include "numericReply.hpp"
 
+class Channel;
+
 #define SERVER_TALKING ":pouet_irc "
 #define SERVER_NAME "pouet_irc"
 #define SERVER_DESCRIPTION " Welcome to pouet irc "
@@ -57,7 +59,7 @@ int							sendMsg(const int socket, const char * str);
 int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
+bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
 bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
@@ -65,5 +67,6 @@ void						numericReply(int error);
 void						checkNichname(const std::string name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
+bool						join(int socketClient, const std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/13 10:57:20 by amarchal         ###   ########.fr        #
+#    Updated: 2022/10/13 12:35:02 by amarchal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ LST_SRCS		=	main.cpp 			\
 					channelMsg.cpp 		\
 					loginMsg.cpp		\
 					pingPong.cpp		\
+					join.cpp			\
 					numericReply.cpp
 
 
