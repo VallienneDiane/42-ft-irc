@@ -6,24 +6,17 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/10/11 16:05:06 by dvallien         ###   ########.fr       */
-=======
 /*   Updated: 2022/10/13 10:31:07 by dvallien         ###   ########.fr       */
->>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-<<<<<<< HEAD
-=======
 void	checkNichname(const std::string name)
 {
     (void)name;
 }
 
->>>>>>> master
 bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
 {
     std::map<int, User>::const_iterator end = userMap.end();

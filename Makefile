@@ -28,7 +28,6 @@ LST_SRCS		=	main.cpp \
 					channelMsg.cpp \
 					loginMsg.cpp	\
 					numericReply.cpp
->>>>>>> master
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 
