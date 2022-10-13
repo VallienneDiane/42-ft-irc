@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 11:01:15 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:16:40 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class Channel
 	private:
 		Channel(void);
 		std::string		_name;
-		User &			_founder;
+		User &			_oper;
 		std::string		_topic;
 		std::string		_mode;
 
@@ -31,11 +31,11 @@ class Channel
 		Channel & operator=(const Channel &src);
 		~Channel(void);
 
-		Channel(std::string name, User & founder);
+		Channel(std::string name, User & oper);
 		void		setName(std::string name);
-		void		setFounder(User & founder);
+		void		setOper(User & oper);
 		std::string getName(void) const;
-		User &		getFounder(void) const;
+		User &		getOper(void) const;
 };
 
 #endif

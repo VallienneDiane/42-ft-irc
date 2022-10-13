@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:59:06 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:09:37 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,3 +82,5 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 	return (0);
 }
 
+
+void    operMsg()
