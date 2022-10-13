@@ -33,15 +33,25 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 			break;
 		// NICKNAME
 		case 431:
+			str += SERVER_TALKING;
+			str += " 431 :Nickname is empty.";
+			sendMsg(socketClient, str);
 			break;
 		case 432:
-			std::cout << "<client> " << userMap[socketClient].getNickname() << ":Erroneus nickname" << std::endl;
+			str += SERVER_TALKING;
+			str += " 432 ";
+			if (user.getNickname().size() > 20)
+				str += " :Nickname is too long (it will pollute the chat).";
+			else if (!isalpha(user.getNickname().front()))
+				str += " :Nickname has to begin with a letter.";
+			else
+				str += " :Nickname must only contain alphanum characters or underscores.";
+			sendMsg(socketClient, str);
 			break;
 		case 433:
 			str += SERVER_TALKING;
 			str += " 433 ";
-			str += user.getNickname();
-			str += " :this nickname is already in use, try another nickname";
+			str += " :this nickname is already in use, try another nickname.";
 			sendMsg(socketClient, str);
 			break;
 		case 436:

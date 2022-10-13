@@ -40,6 +40,7 @@
 # include <map>
 # include <csignal>
 # include <vector>
+# include <algorithm>
 
 # include "User.hpp"
 # include "Channel.hpp"
@@ -52,6 +53,7 @@
 #define SERVER_NETWORK "pouet.irc.fr"
 
 int							receiveMsg(const int socket, std::string &buffer);
+int							assignReadValue(int &a, const int b);
 int							sendMsg(const int socket, std::string &str);
 int							sendMsg(const int socket, const char * str);
 std::string 				userSource(User &user);
@@ -60,10 +62,10 @@ int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
 bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
 bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
-bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
+bool    					containedNickname(const std::string &name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
 void						numericReply(int error, int socketClient, std::map<int, User> &userMap);
-void						checkNichname(const std::string name);
+int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
 
