@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleMsg.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:33:09 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:56:23 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,11 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 5:
 			std::cout << "ping " << std::endl;
+			return (ping(socketClient));
 			break;
 		case 6:
 			std::cout << "pong " << std::endl;
+			return (pong(socketClient));
 			break;
 		case 7:
 			std::cout << "oper " << std::endl;
@@ -100,6 +102,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 10:
 			std::cout << "join " << std::endl;
+			// return (join())
 			break;
 		case 11:
 			std::cout << "part " << std::endl;

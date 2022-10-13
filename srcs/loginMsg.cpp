@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loginMsg.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:31:07 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:56:13 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
             std::string welcomeStr = SERVER_TALKING;
             welcomeStr += "001 ";
             welcomeStr += userMap[socketClient].getNickname();
-            welcomeStr += "_le_capouet";
             welcomeStr += SERVER_DESCRIPTION;
             welcomeStr += userMap[socketClient].getNickname();
             welcomeStr += " !";
@@ -59,7 +58,10 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
     else if (containedNickname(nickname, userMap))
         sendMsg(socketClient, "Sorry, this nickname is already used.\r\n");
     else
+	{
+		std::cout << BCYAN << "setNickname" << END << std::endl;
         userMap[socketClient].setNickname(nickname);
+	}
 	return (0);
 }
 

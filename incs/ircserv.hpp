@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:33:03 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:59:32 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,7 @@ bool    					containedNickname(const std::string name, const std::map<int, User>
 bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
 void						numericReply(int error);
 void						checkNichname(const std::string name);
+bool						ping(int socketClient);
+bool						pong(int socketClient);
 
 #endif

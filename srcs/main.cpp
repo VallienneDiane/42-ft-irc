@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 10:59:59 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:56:31 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	if (bytesReceived == 0)
 	{
 		std::cout << "Client disconnected" << std::endl;
+		userMap.erase(socketClient);
 		close(socketClient);
 		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
 		return ;	
