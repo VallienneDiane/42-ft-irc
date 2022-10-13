@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:04:35 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:37:23 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:00:31 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,16 @@
 
 #define RPL_WELCOME 001
 // NICKNAME
+#define ERR_NONICKNAMEGIVEN 431
+#define ERR_ERRONEUSNICKNAME 432
+#define ERR_NICKNAMEINUSE 433
+#define ERR_NICKCOLLISION 436
 // USERNAME
-
 #define ERR_NEEDMOREPARAMS 461
 #define ERR_ALREADYREGISTERED 462
 // OPER
-
+#define ERR_PASSWDMISMATCH 464
+#define ERR_NOOPERHOST 491
 // JOIN
 #define ERR_NOSUCHCHANNEL 403
 #define ERR_CHANNELISFULL 471

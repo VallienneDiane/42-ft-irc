@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 13:54:24 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:02:10 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         {
 	        nickAnswer += SERVER_TALKING;
 			nickAnswer += " ";
-			nickAnswer += ERR_NICKNAMEINUSE;
+			// nickAnswer += ERR_NICKNAMEINUSE;
 			nickAnswer += " ";
 			nickAnswer += nickname;
 			nickAnswer += " :this nickname is already in use, please use another one.";
@@ -60,7 +60,7 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
 	{
 		nickAnswer += SERVER_TALKING;
 		nickAnswer += " ";
-		nickAnswer += ERR_NICKNAMEINUSE;
+		// nickAnswer += ERR_NICKNAMEINUSE;
 		nickAnswer += " ";
 		nickAnswer += nickname;
 		nickAnswer += " :this nickname is already in use, please use another one.";

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
+#    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/13 10:57:20 by amarchal         ###   ########.fr        #
+#    Updated: 2022/10/13 15:59:14 by dvallien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,11 +25,9 @@ LST_SRCS		=	main.cpp 			\
 					User.cpp 			\
 					signalManager.cpp 	\
 					handleMsg.cpp 		\
-					channelMsg.cpp 		\
 					loginMsg.cpp		\
 					pingPong.cpp		\
 					numericReply.cpp
-
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}

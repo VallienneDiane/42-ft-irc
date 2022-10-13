@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleMsg.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:56:23 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 14:37:49 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 	std::vector<std::string>::iterator it = clientInfos.begin();
 	std::string cmds[] = {
 		"CAP",
-		"AUTHENTICATE",
 		"PASS",
 		"NICK",
 		"USER",
@@ -74,6 +73,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 2:
 			std::cout << "pass " << std::endl;
+			
 			break;
 		case 3:
 			std::cout << "nick " << std::endl;
