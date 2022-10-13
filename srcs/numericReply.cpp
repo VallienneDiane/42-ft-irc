@@ -38,7 +38,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 			std::cout << "<client> " << userMap[socketClient].getNickname() << ":Erroneus nickname" << std::endl;
 			break;
 		case 433:
-			std::cout << "<client> " << userMap[socketClient].getNickname() << ":Nickname is already in use" << std::endl;
+			str += SERVER_TALKING;
+			str += " 433 ";
+			str += user.getNickname();
+			str += " :this nickname is already in use, try another nickname";
+			sendMsg(socketClient, str);
 			break;
 		case 436:
 			std::cout << "<client> " << userMap[socketClient].getNickname() << " <channel> :They aren't on that channel" << std::endl;

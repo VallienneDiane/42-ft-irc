@@ -54,6 +54,7 @@
 int							receiveMsg(const int socket, std::string &buffer);
 int							sendMsg(const int socket, std::string &str);
 int							sendMsg(const int socket, const char * str);
+std::string 				userSource(User &user);
 int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
