@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 13:16:40 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:57:14 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,25 @@ class User;
 class Channel
 {
 	private:
-		Channel(void);
-		std::string		_name;
-		User &			_oper;
-		std::string		_topic;
-		std::string		_mode;
+		// Channel(void);
+		std::string			_name;
+		std::map<int, User>	_operList;
+		std::string			_topic;
+		std::string			_mode;
+		std::map<int, User>	_userList;
 
 	public:
+		// Channel();
 		Channel(const Channel &src);
 		Channel & operator=(const Channel &src);
 		~Channel(void);
 
 		Channel(std::string name, User & oper);
 		void		setName(std::string name);
-		void		setOper(User & oper);
+		void		setOperList(std::map<int, User> operList);
 		std::string getName(void) const;
-		User &		getOper(void) const;
+		std::map<int, User>	getOperList(void) const;
+		std::map<int, User> getUserList(void);
 };
 
 #endif
