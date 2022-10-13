@@ -110,12 +110,13 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
             sentence = current.deliverCommand();
         }
 		//////// Echo msg to all clients
-		for (int i = 0; i < FD_SETSIZE; i++)
+		(void)writeSockets;
+		/*for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
 					sendMsg(i, buffer);
-		}
+		}*/
 	}
 	return ;
 }

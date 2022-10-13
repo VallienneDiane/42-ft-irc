@@ -12,12 +12,22 @@
 
 #include "../incs/ircserv.hpp"
 
-void	checkNichname(const std::string name)
+bool	isNotAlNumOrUnderscore(char c)
 {
-    (void)name;
+	return (!(isalnum(c) || c == '_'));
 }
 
-bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
+int	checkNickname(const std::string &name)
+{
+	if (name.empty())
+		return (1);
+	if (name.size() > 20 || !isalpha(name.front()) ||
+			std::find_if(name.begin(), name.end(), isNotAlNumOrUnderscore) != name.end())
+		return (2);
+	return (0);
+}
+
+bool    containedNickname(const std::string &name, const std::map<int, User> &userMap)
 {
     std::map<int, User>::const_iterator end = userMap.end();
     for (std::map<int, User>::const_iterator it = userMap.begin(); it != end; ++it)
@@ -28,53 +38,55 @@ bool    containedNickname(const std::string name, const std::map<int, User> &use
     return false;
 }
 
+void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap)
+{
+	switch (err)
+	{
+		case 1:
+			numericReply(ERR_NONICKNAMEGIVEN, socketClient, userMap);
+			break;
+		case 2:
+			numericReply(ERR_ERRONEUSNICKNAME, socketClient, userMap);
+			break;
+		default:
+			numericReply(ERR_NICKNAMEINUSE, socketClient, userMap);
+	}
+}
+
 bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap)
 {
-	bool    welcome = false;
-	User    &current = userMap[socketClient];
+	bool		welcome = false;
+	std::string	nickAnswer;
+	int 		checkNick;
+	User		&current = userMap[socketClient];
+
 	if (current.getNickname().empty())
 				welcome = true;
-	std::string nickAnswer;
 	if (welcome)
 	{
-        if (!containedNickname(nickname, userMap))
+        if (!assignReadValue(checkNick, checkNickname(nickname)) && !containedNickname(nickname, userMap))
         {
-            userMap[socketClient].setNickname(nickname);
+            current.setNickname(nickname);
             numericReply(RPL_WELCOME, socketClient, userMap);
         }
         else
         {
-	        nickAnswer += SERVER_TALKING;
-			nickAnswer += " ";
-			// nickAnswer += ERR_NICKNAMEINUSE;
-			nickAnswer += " ";
-			nickAnswer += nickname;
-			nickAnswer += " :this nickname is already in use, please use another one.";
-            sendMsg(socketClient, nickAnswer);
-            userMap.erase(socketClient);
-            close(socketClient);
+			nickReplyError(checkNick, socketClient, userMap);
+			userMap.erase(socketClient);
+			close(socketClient);
             return (1);
         }
 	}
-    else if (containedNickname(nickname, userMap))
-	{
-		nickAnswer += SERVER_TALKING;
-		nickAnswer += " ";
-		// nickAnswer += ERR_NICKNAMEINUSE;
-		nickAnswer += " ";
-		nickAnswer += nickname;
-		nickAnswer += " :this nickname is already in use, please use another one.";
-	}
+    else if (assignReadValue(checkNick, checkNickname(nickname)) || containedNickname(nickname, userMap))
+		nickReplyError(checkNick, socketClient, userMap);
 	else
 	{
-		nickAnswer += ":";
-		nickAnswer += current.getNickname();
-		nickAnswer += "!njaros@127.0.0.1 ";
+		nickAnswer += userSource(current);
 		current.setNickname(nickname);
 		nickAnswer += " NICK ";
 		nickAnswer += nickname;
+		sendMsg(socketClient, nickAnswer);
 	}
-	sendMsg(socketClient, nickAnswer);
 	return (0);
 }
 

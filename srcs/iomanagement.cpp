@@ -40,3 +40,14 @@ int sendMsg(const int socket, const char * str)
     std::cout << "msg send  : " << str;
     return (send(socket, str, strlen(str), 0));
 }
+
+std::string userSource(User &user)
+{
+	std::string source = ":";
+	source += user.getNickname();
+	source += "!";
+	source += user.getUsername();
+	source += "@";
+	source += user.getHostname();
+	return (source);
+}
