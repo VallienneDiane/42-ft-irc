@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 10:59:59 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:59:20 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 #include "../incs/signalManager.hpp"
 #include "../incs/User.hpp"
-
 /* 
 	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
 */
-
 int serverSetup()
 {
 	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
@@ -34,7 +32,6 @@ int serverSetup()
 		close(socketServer);
 		return (-1);
 	}
-	
 	// SOCKET WAITING CONNEXIONS, FIX THE WAITING LIST
 	if (listen(socketServer, SOMAXCONN) == -1)								
 	{
@@ -44,14 +41,12 @@ int serverSetup()
 	return (socketServer);
 }
 
-
 int acceptConnection(int socketServer, std::map<int, User> &userMap)
 {
 	int socketClient;
 	struct sockaddr_in addrClient;
 	socklen_t csize = sizeof(addrClient);
 	// User	newUser;
-	
 	// ACCEPT CONNEXION DEMAND. CREATE NEW SOCKET AND SEND BACK FD FOR THIS SOCKET : DIALOG SOCKET
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
 	if (socketClient == -1)
@@ -59,21 +54,20 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		std::cerr << "Can't accept" << std::endl;
 		return (-1);
 	}
-
 	// DISPLAY INFOS ON CONNECTED CLIENT	
-
 	char host[NI_MAXHOST];
 	char service[NI_MAXSERV];
 	memset(host, 0, NI_MAXHOST);
 	memset(service, 0, NI_MAXSERV);
 	if (getnameinfo((sockaddr*)&addrClient, csize, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+	{
 		std::cout << host << " connected on port " << service << std::endl;
+		userMap[socketClient].setHostname(host);
+	}
 	else
 		std::cout << "Error" << std::endl;
-
     userMap[socketClient];
 	userMap[socketClient].setSocket(socketClient);
-
 	return (socketClient);
 	(void)userMap;	
 }
@@ -94,6 +88,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	if (bytesReceived == 0)
 	{
 		std::cout << "Client disconnected" << std::endl;
+		userMap.erase(socketClient);
 		close(socketClient);
 		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
 		return ;	
@@ -112,7 +107,6 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
             }
             sentence = current.deliverCommand();
         }
-		
 		//////// Echo msg to all clients
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{

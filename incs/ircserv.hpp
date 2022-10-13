@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:33:03 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:59:02 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ bool						getInfosClient(int socketClient, std::string content, std::map<int, Us
 bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
 bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
-void						numericReply(int error);
+void						numericReply(int error, int socketClient, std::map<int, User> &userMap);
 void						checkNichname(const std::string name);
+bool						ping(int socketClient);
+bool						pong(int socketClient);
 
 #endif

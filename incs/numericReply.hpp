@@ -6,41 +6,55 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:04:35 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:29:44 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:37:23 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef NUMERICREPLY_HPP
 # define NUMERICREPLY_HPP
 
+#define RPL_WELCOME 001
 // NICKNAME
 #define ERR_NONICKNAMEGIVEN "431"
 #define ERR_ERRONEUSNICKNAME "432"
 #define ERR_NICKNAMEINUSE "433"
 #define ERR_NICKCOLLISION "436"
 // USERNAME
+<<<<<<< HEAD
 #define ERR_NEEDMOREPARAMS "461"
 #define ERR_ALREADYREGISTERED "462"
 // PING
 #define ERR_NOORIGIN "409"
 #define ERR_NOSUCHSERVER "402"
+=======
+#define ERR_NEEDMOREPARAMS 461
+#define ERR_ALREADYREGISTERED 462
+>>>>>>> 4b99febd676fb2c4bf144b5a451f4de7054418a8
 // OPER
-#define ERR_PASSWDMISMATCH "464"
-#define ERR_NOOPERHOST "491"
+
 // JOIN
-#define ERR_NOSUCHCHANNEL "403"
-#define ERR_INVITEONLYCHAN "473"
-#define ERR_BANNEDFROMCHAN "474"
-#define ERR_BADCHANNELKEY "475"
-#define ERR_CHANNELISFULL "471"
-
-
+#define ERR_NOSUCHCHANNEL 403
+#define ERR_CHANNELISFULL 471
+#define ERR_INVITEONLYCHAN 473
+#define ERR_BANNEDFROMCHAN 474
+#define ERR_BADCHANNELKEY 475
+// PART
+#define ERR_NOTONCHANNEL 442
+// TOPIC
+#define ERR_CHANOPRIVSNEEDED 482
+// INVITE
+#define ERR_USERONCHANNEL 443
+// KICK
+#define ERR_USERNOTINCHANNEL 441
+#define ERR_BADCHANMASK 476
+//PRIVMSG
+#define ERR_NOSUCHNICK 401
+#define ERR_CANNOTSENDTOCHAN 404
+>>>>>>> 4b99febd676fb2c4bf144b5a451f4de7054418a8
 
 #define ERR_YOUREBANNEDCREEP 465
 #define ERR_UNKNOWNMODE 472
-#define ERR_BADCHANMASK 476
 #define ERR_NOPRIVILEGES 481
-#define ERR_CHANOPRIVSNEEDED 482
 #define ERR_CANTKILLSERVER 483
 #define ERR_UMODEUNKNOWNFLAG 501
 #define ERR_USERSDONTMATCH 502

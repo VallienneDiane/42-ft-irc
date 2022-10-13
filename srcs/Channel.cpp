@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/07 14:15:10 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 13:17:22 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /****************** CANONIC FORM ******************/
 
-Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
+Channel::Channel(const Channel &src) : _name(src._name), _oper(src._oper)
 {}
 // Channel::Channel(void)
 // {}
@@ -22,7 +22,7 @@ Channel::Channel(const Channel &src) : _name(src._name), _founder(src._founder)
 Channel & Channel::operator=(const Channel &src)
 {
 	this->_name = src._name;
-	this->_founder = src._founder;
+	this->_oper = src._oper;
 	return (*this);
 }
 
@@ -30,7 +30,7 @@ Channel::~Channel(void)
 {}
 
 /****************** CONSTRUCTOR BY NAME ******************/
-Channel::Channel(std::string name, User & founder) : _name(name), _founder(founder)
+Channel::Channel(std::string name, User & oper) : _name(name), _oper(oper)
 {}
 
 /****************** SETTERS ******************/
@@ -39,9 +39,9 @@ void	Channel::setName(std::string name)
 	this->_name = name;
 }
 
-void	Channel::setFounder(User & founder)
+void	Channel::setOper(User & oper)
 {
-	this->_founder = founder;
+	this->_oper = oper;
 }
 
 /****************** GETTERS ******************/
@@ -50,7 +50,7 @@ std::string Channel::getName(void) const
 	return (this->_name);
 }
 
-User & Channel::getFounder(void) const
+User & Channel::getOper(void) const
 {
-	return (this->_founder);
+	return (this->_oper);
 }

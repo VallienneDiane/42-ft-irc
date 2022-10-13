@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:42:03 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 15:00:19 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:53:16 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ class User
 		std::string 	_realname;
 		unsigned int	_id;
         std::string     _command;
+		std::string		_hostname;
 
 	public:
 		User(void);
@@ -36,11 +37,13 @@ class User
 		void					setUsername(std::string username);
 		void					setRealname(std::string realname);
 		void					setId(unsigned int id);
+		void					setHostname(std::string hostname);
 		int						getSocket(void) const;
 		std::string 			getNickname(void) const;
 		std::string 			getUsername(void) const;
 		std::string 			getRealname(void) const;
 		unsigned int			getId(void) const;
+		std::string				getHostname(void) const;
         void            		appendCommand(const std::string &str);
         const std::string		&getCommand(void) const;
         std::string     		deliverCommand(void);
