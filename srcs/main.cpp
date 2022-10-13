@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:59:20 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:57:20 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,13 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 	(void)userMap;	
 }
 
-void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap)
+void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::string buffer;
     std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer);
+
+	std::cout << YELLOW << buffer << END << std::endl;
 
 	if (bytesReceived == -1)
 	{
@@ -100,7 +102,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		sentence = current.deliverCommand();
 		while (!sentence.empty())
         {
-            if (getInfosClient(socketClient, sentence,userMap))
+            if (getInfosClient(socketClient, sentence, userMap, channelMap))
             {
                 FD_CLR(socketClient, currentSockets);
                 return ;
@@ -123,7 +125,9 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 	(void)ac;
 	(void)av;
 
-	std::map<int, User> userMap; 
+	std::map<int, User> userMap;
+	std::map<std::string, Channel> channelMap;
+	
 	int socketServer = serverSetup();
 	if (socketServer == -1)
 		return (1);
@@ -164,7 +168,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				else
 				{
 					std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets, userMap);		// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap);		// do what we want to do with this connection
 				}
 			}
 		}

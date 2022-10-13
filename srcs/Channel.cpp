@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 13:17:22 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:58:39 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 /****************** CANONIC FORM ******************/
 
-Channel::Channel(const Channel &src) : _name(src._name), _oper(src._oper)
+Channel::Channel(const Channel &src) : _name(src._name), _operList(src._operList), _userList(src._userList)
 {}
+
 // Channel::Channel(void)
 // {}
 
 Channel & Channel::operator=(const Channel &src)
 {
 	this->_name = src._name;
-	this->_oper = src._oper;
+	this->_operList = src._operList;
+	this->_userList = src._userList;
 	return (*this);
 }
 
@@ -30,8 +32,10 @@ Channel::~Channel(void)
 {}
 
 /****************** CONSTRUCTOR BY NAME ******************/
-Channel::Channel(std::string name, User & oper) : _name(name), _oper(oper)
-{}
+Channel::Channel(std::string name, User &oper) : _name(name)
+{
+	this->_operList.insert(std::pair<int, User>(oper.getSocket(), oper));
+}
 
 /****************** SETTERS ******************/
 void	Channel::setName(std::string name)
@@ -39,9 +43,9 @@ void	Channel::setName(std::string name)
 	this->_name = name;
 }
 
-void	Channel::setOper(User & oper)
+void	Channel::setOperList(std::map<int, User> operList)
 {
-	this->_oper = oper;
+	this->_operList = operList;
 }
 
 /****************** GETTERS ******************/
@@ -50,7 +54,12 @@ std::string Channel::getName(void) const
 	return (this->_name);
 }
 
-User & Channel::getOper(void) const
+std::map<int, User>  Channel::getOperList(void) const
 {
-	return (this->_oper);
+	return (this->_operList);
+}
+
+std::map<int, User> Channel::getUserList(void)
+{
+	return (this->_userList);
 }

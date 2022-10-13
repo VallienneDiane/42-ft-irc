@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   numericReply.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:04:35 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:37:23 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 16:00:32 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #define RPL_WELCOME 001
 // NICKNAME
+#define ERR_NICKNAMEINUSE 433
 // USERNAME
 
 #define ERR_NEEDMOREPARAMS 461
