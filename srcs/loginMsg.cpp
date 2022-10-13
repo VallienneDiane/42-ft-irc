@@ -6,11 +6,16 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 13:48:55 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:31:07 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
+
+void	checkNichname(const std::string name)
+{
+    (void)name;
+}
 
 bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
 {
@@ -37,7 +42,6 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
             std::string welcomeStr = SERVER_TALKING;
             welcomeStr += "001 ";
             welcomeStr += userMap[socketClient].getNickname();
-            welcomeStr += "_le_capouet";
             welcomeStr += SERVER_DESCRIPTION;
             welcomeStr += userMap[socketClient].getNickname();
             welcomeStr += " !";
@@ -52,31 +56,25 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         }
 	}
     else if (containedNickname(nickname, userMap))
-        sendMsg(socketClient, "Sorry :( this nickname is already used.\r\n");
+        sendMsg(socketClient, "Sorry, this nickname is already used.\r\n");
     else
         userMap[socketClient].setNickname(nickname);
 	return (0);
 }
 
-void	userHandle(int socketClient, std::string username, std::map<int, User> &userMap)
+bool	userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap)
 {
-	(void)socketClient;
-	(void)username;
-	(void)userMap;
-	// bool    welcome = false;
+	bool    welcome = false;
 	
-	// if (userMap[socketClient].getUsername().empty())
-	// 			welcome = true;
-	// userMap[socketClient].setUsername(username);
-	// if (welcome)
-	// {
-	// 	std::string welcomeStr = SERVER_TALKING;
-	// 	welcomeStr += "001 ";
-	// 	welcomeStr += userMap[socketClient].getUsername();
-	// 	welcomeStr += "userhandle";
-	// 	welcomeStr += SERVER_DESCRIPTION;
-	// 	welcomeStr += userMap[socketClient].getUsername();
-	// 	welcomeStr += " !";
-	// 	sendMsg(socketClient, welcomeStr);
-	// }
+	if (userMap[socketClient].getUsername().empty() && userMap[socketClient].getRealname().empty())
+		welcome = true;
+	else
+	{
+		numericReply(ERR_ALREADYREGISTERED);
+		return (1);
+	}
+	userMap[socketClient].setUsername(username);
+	userMap[socketClient].setRealname(realname);
+	return (0);
 }
+

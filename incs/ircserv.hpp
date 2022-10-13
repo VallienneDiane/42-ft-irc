@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/12 13:58:37 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/13 10:33:03 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 
 # include "User.hpp"
 # include "Channel.hpp"
+# include "numericReply.hpp"
 
 #define SERVER_TALKING ":pouet_irc "
 #define SERVER_NAME "pouet_irc"
@@ -59,5 +60,7 @@ std::vector<std::string>	splitMsg(std::string content);
 bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap);
 bool						nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap);
 bool    					containedNickname(const std::string name, const std::map<int, User> &userMap);
-void						userHandle(int socketClient, std::string username, std::map<int, User> &userMap);
+bool						userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap);
+void						numericReply(int error);
+void						checkNichname(const std::string name);
 #endif
