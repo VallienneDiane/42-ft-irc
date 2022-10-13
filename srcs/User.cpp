@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 10:33:19 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 12:59:27 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 User::User(void) : _socket(0), _id(0)
 {}
 
-User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command)
+User::User(const User &src) : _socket(src._socket), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command), _hostname(src._hostname)
 {}
 
 User & User::operator=(const User &src)
@@ -27,6 +27,7 @@ User & User::operator=(const User &src)
 	this->_realname = src._realname;
     this->_id = src._id;
     this->_command = src._command;
+	this->_hostname = src._hostname;
 	return (*this);
 }
 
@@ -67,6 +68,11 @@ void	User::setId(unsigned int id)
 	this->_id = id;
 }
 
+void	User::setHostname(std::string hostname)
+{
+	this->_hostname = hostname;
+}
+
 /****************** GETTERS ******************/
 int User::getSocket(void) const
 {
@@ -93,6 +99,12 @@ unsigned int User::getId(void) const
 	return (this->_id);
 }
 
+std::string User::getHostname(void) const
+{
+	return (this->_hostname);
+}
+
+/****************** FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
 {
     _command += str;
