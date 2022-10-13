@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:42:03 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/11 11:06:14 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/12 15:00:19 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ class User
 		int				_socket;
 		std::string 	_nickname;
 		std::string 	_username;
+		std::string 	_realname;
 		unsigned int	_id;
         std::string     _command;
 
@@ -30,20 +31,20 @@ class User
 		~User(void);
 		
 		User(std::string nickname, std::string username, unsigned int id);
-		void			setSocket(int socket);
-		void			setNickname(std::string nickname);
-		void			setUsername(std::string username);
-		void			setId(unsigned int id);
-		int				getSocket(void) const;
-		std::string 	getNickname(void) const;
-		std::string 	getUsername(void) const;
-		unsigned int	getId(void) const;
-        void            appendCommand(const std::string &str);
-        const std::string     &getCommand(void) const;
-        std::string     deliverCommand(void);
+		void					setSocket(int socket);
+		void					setNickname(std::string nickname);
+		void					setUsername(std::string username);
+		void					setRealname(std::string realname);
+		void					setId(unsigned int id);
+		int						getSocket(void) const;
+		std::string 			getNickname(void) const;
+		std::string 			getUsername(void) const;
+		std::string 			getRealname(void) const;
+		unsigned int			getId(void) const;
+        void            		appendCommand(const std::string &str);
+        const std::string		&getCommand(void) const;
+        std::string     		deliverCommand(void);
 };
-
 std::ostream 	&operator<<(std::ostream &stream, const User &source);
-
 
 #endif

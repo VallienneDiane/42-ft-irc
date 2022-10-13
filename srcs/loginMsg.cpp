@@ -6,12 +6,24 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/10/11 16:05:06 by dvallien         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/13 10:31:07 by dvallien         ###   ########.fr       */
+>>>>>>> master
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
+<<<<<<< HEAD
+=======
+void	checkNichname(const std::string name)
+{
+    (void)name;
+}
+
+>>>>>>> master
 bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
 {
     std::map<int, User>::const_iterator end = userMap.end();
@@ -52,8 +64,25 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         }
 	}
     else if (containedNickname(nickname, userMap))
-        sendMsg(socketClient, "Sorry :( this nickname is already used.\r\n");
+        sendMsg(socketClient, "Sorry, this nickname is already used.\r\n");
     else
         userMap[socketClient].setNickname(nickname);
 	return (0);
 }
+
+bool	userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap)
+{
+	bool    welcome = false;
+	
+	if (userMap[socketClient].getUsername().empty() && userMap[socketClient].getRealname().empty())
+		welcome = true;
+	else
+	{
+		numericReply(ERR_ALREADYREGISTERED);
+		return (1);
+	}
+	userMap[socketClient].setUsername(username);
+	userMap[socketClient].setRealname(realname);
+	return (0);
+}
+
