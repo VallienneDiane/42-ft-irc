@@ -12,7 +12,7 @@
 
 #include "../incs/ircserv.hpp"
 
-void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
+void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context)
 {
 	std::string str;
 	User & user = userMap[socketClient];
@@ -40,9 +40,10 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 		case 432:
 			str += SERVER_TALKING;
 			str += " 432 ";
-			if (user.getNickname().size() > 20)
+			str += *context;
+			if (context->size() > 20)
 				str += " :Nickname is too long (it will pollute the chat).";
-			else if (!isalpha(user.getNickname().front()))
+			else if (!isalpha(context->front()))
 				str += " :Nickname has to begin with a letter.";
 			else
 				str += " :Nickname must only contain alphanum characters or underscores.";
@@ -51,6 +52,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap)
 		case 433:
 			str += SERVER_TALKING;
 			str += " 433 ";
+			str += *context;
 			str += " :this nickname is already in use, try another nickname.";
 			sendMsg(socketClient, str);
 			break;

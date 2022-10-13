@@ -38,22 +38,22 @@ bool    containedNickname(const std::string &name, const std::map<int, User> &us
     return false;
 }
 
-void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap)
+void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std::string *context)
 {
 	switch (err)
 	{
 		case 1:
-			numericReply(ERR_NONICKNAMEGIVEN, socketClient, userMap);
+			numericReply(ERR_NONICKNAMEGIVEN, socketClient, userMap, context);
 			break;
 		case 2:
-			numericReply(ERR_ERRONEUSNICKNAME, socketClient, userMap);
+			numericReply(ERR_ERRONEUSNICKNAME, socketClient, userMap, context);
 			break;
 		default:
-			numericReply(ERR_NICKNAMEINUSE, socketClient, userMap);
+			numericReply(ERR_NICKNAMEINUSE, socketClient, userMap, context);
 	}
 }
 
-bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap)
+bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap)
 {
 	bool		welcome = false;
 	std::string	nickAnswer;
@@ -67,18 +67,18 @@ bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, 
         if (!assignReadValue(checkNick, checkNickname(nickname)) && !containedNickname(nickname, userMap))
         {
             current.setNickname(nickname);
-            numericReply(RPL_WELCOME, socketClient, userMap);
+            numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
         }
         else
         {
-			nickReplyError(checkNick, socketClient, userMap);
+			nickReplyError(checkNick, socketClient, userMap, &nickname);
 			userMap.erase(socketClient);
 			close(socketClient);
             return (1);
         }
 	}
     else if (assignReadValue(checkNick, checkNickname(nickname)) || containedNickname(nickname, userMap))
-		nickReplyError(checkNick, socketClient, userMap);
+		nickReplyError(checkNick, socketClient, userMap, &nickname);
 	else
 	{
 		nickAnswer += userSource(current);
@@ -98,7 +98,7 @@ bool	userHandle(int socketClient, const std::string &username, const std::string
 		welcome = true;
 	else
 	{
-		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap);
+		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
 		return (1);
 	}
 	userMap[socketClient].setUsername(username);
