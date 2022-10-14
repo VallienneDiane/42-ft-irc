@@ -45,6 +45,10 @@ class Channel
 		void		addOper(User &user);
 		void		delOper(User &user);
 		void		delOper(int userSocket);
+		std::pair<bool, std::map<int, User>::iterator>	isInUserList(User &user);
+		std::pair<bool, std::map<int, User>::iterator>	isInUserList(int userSocket);
+		std::pair<bool, std::map<int, User>::iterator>	isInOperList(User &user);
+		std::pair<bool, std::map<int, User>::iterator>	isInOperList(int userSocket);
 };
 
 #endif

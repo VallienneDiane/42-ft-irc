@@ -88,3 +88,25 @@ void	Channel::delOper(User &user) {
 void	Channel::delOper(int userSocket) {
 	_operList.erase(userSocket);
 }
+
+std::pair<bool, std::map<int, User>::iterator>	Channel::isInUserList(User &user) {
+	return (this->isInUserList(user.getSocket()));
+}
+
+std::pair<bool, std::map<int, User>::iterator>	Channel::isInUserList(int userSocket) {
+	std::map<int, User>::iterator	found = _userList.find(userSocket);
+	if (found != _userList.end())
+		return (std::make_pair(true, found));
+	return (std::make_pair(false, found));
+}
+
+std::pair<bool, std::map<int, User>::iterator>	Channel::isInOperList(User &user) {
+	return (this->isInOperList(user.getSocket()));
+}
+
+std::pair<bool, std::map<int, User>::iterator>	Channel::isInOperList(int userSocket) {
+	std::map<int, User>::iterator	found = _operList.find(userSocket);
+	if (found != _operList.end())
+		return (std::make_pair(true, found));
+	return (std::make_pair(false, found));
+}
