@@ -9,6 +9,6 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(command[1]));
 		return ;
 	}
-	if (channel->second.getOperList())
+	//if (channel->second.getOperList())
 	std::vector<std::string>	kickList = splitNames(command[2]);
 }
