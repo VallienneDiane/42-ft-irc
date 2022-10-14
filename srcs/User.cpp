@@ -146,3 +146,10 @@ std::ostream &operator<<(std::ostream &stream, const User &source)
 			<< "Username\t:" << source.getUsername() << std::endl;
 	return (stream);
 }
+
+/****************** USEFUL USER TOOLS FUNCTIONS *********************/
+
+bool	fullyRegistered(const User &user)
+{
+	return (!user.getUsername().empty() && !user.getNickname().empty() && !user.getRealname().empty() && !user.getHostname().empty());
+}

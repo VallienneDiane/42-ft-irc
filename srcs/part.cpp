@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:10:21 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 13:52:27 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:10:01 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ bool	part(int socketClient, std::string channels, std::map<int, User> & userMap,
 		if(channelMap.find(*nameChannel) == channelMap.end()) //si channel n'existe pas renvoie error
 		{
 			std::cout << "si channel existe pas" << std::endl;
-			numericReply(ERR_NOSUCHCHANNEL,socketClient, *nameChannel, userMap);
+			numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, nameChannel.base());
 			return (1);
 		}
 		else if(usersList.find(socketClient) == usersList.end()) //si user pas dans channel mais que channel existe
 		{
 			std::cout << "si channel existe mais user pas dedans" << std::endl;
-			numericReply(ERR_NOSUCHCHANNEL, socketClient, *nameChannel, userMap);
+			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, nameChannel.base());
 			return (1);
 		}
 		channelMap.find(*nameChannel)->second.getUserList().erase(socketClient);

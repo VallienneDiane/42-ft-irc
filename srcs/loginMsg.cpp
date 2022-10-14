@@ -6,18 +6,28 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 17:59:51 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:02:31 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-void	checkNichname(const std::string name)
+bool	isNotAlNumOrUnderscore(char c)
 {
-    (void)name;
+	return (!(isalnum(c) || c == '_'));
 }
 
-bool    containedNickname(const std::string name, const std::map<int, User> &userMap)
+int	checkNickname(const std::string &name)
+{
+	if (name.empty())
+		return (1);
+	if (name.size() > 20 || !isalpha(name.front()) ||
+			std::find_if(name.begin(), name.end(), isNotAlNumOrUnderscore) != name.end())
+		return (2);
+	return (0);
+}
+
+bool    containedNickname(const std::string &name, const std::map<int, User> &userMap)
 {
     std::map<int, User>::const_iterator end = userMap.end();
     for (std::map<int, User>::const_iterator it = userMap.begin(); it != end; ++it)
@@ -28,68 +38,90 @@ bool    containedNickname(const std::string name, const std::map<int, User> &use
     return false;
 }
 
-bool    nickHandle(int socketClient, const std::string &nickname, std::map<int, User> &userMap)
+void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std::string *context)
 {
-	bool    welcome = false;
-	User    &current = userMap[socketClient];
+	switch (err)
+	{
+		case 1:
+			numericReply(ERR_NONICKNAMEGIVEN, socketClient, userMap, context);
+			break;
+		case 2:
+			numericReply(ERR_ERRONEUSNICKNAME, socketClient, userMap, context);
+			break;
+		default:
+			numericReply(ERR_NICKNAMEINUSE, socketClient, userMap, context);
+	}
+}
+
+bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap)
+{
+	bool		welcome = false;
+	std::string	nickAnswer;
+	int 		checkNick;
+	User		&current = userMap[socketClient];
+
 	if (current.getNickname().empty())
 				welcome = true;
-	std::string nickAnswer;
 	if (welcome)
 	{
-        if (!containedNickname(nickname, userMap))
+        if (!assignReadValue(checkNick, checkNickname(nickname)) && !containedNickname(nickname, userMap))
         {
-            userMap[socketClient].setNickname(nickname);
-            numericReply(RPL_WELCOME, socketClient, "NULL", userMap);
+            current.setNickname(nickname);
+			if (fullyRegistered(current))
+            	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
         }
         else
         {
-	        nickAnswer += SERVER_TALKING;
-			nickAnswer += " ";
-			// nickAnswer += ERR_NICKNAMEINUSE;
-			nickAnswer += " ";
-			nickAnswer += nickname;
-			nickAnswer += " :this nickname is already in use, please use another one.";
-            sendMsg(socketClient, nickAnswer);
-            userMap.erase(socketClient);
-            close(socketClient);
+			nickReplyError(checkNick, socketClient, userMap, &nickname);
+			userMap.erase(socketClient);
+			close(socketClient);
             return (1);
         }
 	}
-    else if (containedNickname(nickname, userMap))
-	{
-		nickAnswer += SERVER_TALKING;
-		nickAnswer += " ";
-		// nickAnswer += ERR_NICKNAMEINUSE;
-		nickAnswer += " ";
-		nickAnswer += nickname;
-		nickAnswer += " :this nickname is already in use, please use another one.";
-	}
+    else if (assignReadValue(checkNick, checkNickname(nickname)) || containedNickname(nickname, userMap))
+		nickReplyError(checkNick, socketClient, userMap, &nickname);
 	else
 	{
-		nickAnswer += ":";
-		nickAnswer += current.getNickname();
-		nickAnswer += "!njaros@127.0.0.1 ";
+		nickAnswer += userSource(current);
 		current.setNickname(nickname);
 		nickAnswer += " NICK ";
 		nickAnswer += nickname;
+		sendMsg(socketClient, nickAnswer);
 	}
-	sendMsg(socketClient, nickAnswer);
 	return (0);
 }
 
-bool	userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap)
+bool	identServer(std::string &ident)
 {
-	bool    welcome = false;
-	
-	if (userMap[socketClient].getUsername().empty() && userMap[socketClient].getRealname().empty())
-		welcome = true;
-	else
-	{
-		numericReply(ERR_ALREADYREGISTERED, socketClient, "NULL", userMap);
-		return (1);
+	/////// If we want to auto-generate username for some ident, we do it here
+	if (ident.empty()) {
+		ident.assign("unknown");
+		return true;
 	}
-	userMap[socketClient].setUsername(username);
-	userMap[socketClient].setRealname(realname);
+	if (ident.length() > 12) {
+		std::string::iterator start = ident.begin();
+		start += 11;
+		ident.erase(start, ident.end());
+	}
+		return false;
+}
+
+bool	userHandle(int socketClient, std::string &username, std::string &realname, std::map<int, User> &userMap)
+{
+	User	&current = userMap[socketClient];
+
+	if (!current.getUsername().empty())
+	{
+		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
+		return (0);
+	}
+	if (!identServer(username))
+		username.insert(username.begin(), '~');
+	current.setUsername(username);
+	if (realname.empty())
+		realname.assign("Gordon Freeman");
+	current.setRealname(realname);
+	if (fullyRegistered(current))
+	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:57:20 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:36:20 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,12 +110,13 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
             sentence = current.deliverCommand();
         }
 		//////// Echo msg to all clients
-		for (int i = 0; i < FD_SETSIZE; i++)
+		(void)writeSockets;
+		/*for (int i = 0; i < FD_SETSIZE; i++)
 		{
 			if (FD_ISSET(i, writeSockets))
 				if (i != socketClient)
 					sendMsg(i, buffer);
-		}
+		}*/
 	}
 	return ;
 }
@@ -167,7 +168,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				}
 				else
 				{
-					std::cout << "something to do with connection " << i << std::endl;
+					// std::cout << "something to do with connection " << i << std::endl;
 					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap);		// do what we want to do with this connection
 				}
 			}

@@ -6,13 +6,13 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 10:51:57 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:10:24 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-void	numericReply(int error, int socketClient, std::string channel, std::map<int, User> &userMap)
+void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context)
 {
 	std::string str;
 	User & user = userMap[socketClient];
@@ -24,21 +24,33 @@ void	numericReply(int error, int socketClient, std::string channel, std::map<int
 			str += " :Welcome to the ";
 			str += SERVER_NAME;
 			str += " Network, ";
-			str += user.getNickname();
-			str += "!" ;
-			str += user.getUsername();
-			str += "@";
-			str += user.getHostname();
+			str += userSource(user);
 			sendMsg(socketClient, str);
 			break;
 		// NICKNAME
 		case 431:
+			str += SERVER_TALKING;
+			str += " 431 :Nickname is empty.";
+			sendMsg(socketClient, str);
 			break;
 		case 432:
-			std::cout << "<client> " << userMap[socketClient].getNickname() << ":Erroneus nickname" << std::endl;
+			str += SERVER_TALKING;
+			str += " 432 ";
+			str += *context;
+			if (context->size() > 20)
+				str += " :Nickname is too long (it will pollute the chat).";
+			else if (!isalpha(context->front()))
+				str += " :Nickname has to begin with a letter.";
+			else
+				str += " :Nickname must only contain alphanum characters or underscores.";
+			sendMsg(socketClient, str);
 			break;
 		case 433:
-			std::cout << "<client> " << userMap[socketClient].getNickname() << ":Nickname is already in use" << std::endl;
+			str += SERVER_TALKING;
+			str += " 433 ";
+			str += *context;
+			str += " :this nickname is already in use, try another nickname.";
+			sendMsg(socketClient, str);
 			break;
 		case 436:
 			std::cout << "<client> " << userMap[socketClient].getNickname() << " <channel> :They aren't on that channel" << std::endl;
@@ -47,7 +59,7 @@ void	numericReply(int error, int socketClient, std::string channel, std::map<int
 		case 442:
 			str = user.getNickname();
 			str += " ";
-			str += channel;
+			str += *context;
 			str += " :You're not on that channel";
 			sendMsg(socketClient, str);
 			break;
@@ -69,7 +81,7 @@ void	numericReply(int error, int socketClient, std::string channel, std::map<int
 		case 403:
 			str = user.getNickname();
 			str += " ";
-			str += channel;
+			str += *context;
 			str += " :No such channel";
 			sendMsg(socketClient, str);
 			break;
