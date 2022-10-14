@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/14 13:34:12 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:24:55 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,15 @@ static std::vector<std::string> splitNames(std::string &names)
 	return (result);
 }
 
-bool	join(int socketClient, std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+bool	join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string> chanNames = splitNames(channelName);
+	std::vector<std::string> chanNames = splitNames(channelNames);
 	std::vector<std::string>::iterator name = chanNames.begin();
 	std::vector<std::string>::iterator end = chanNames.end();
 	while (name != end)
 	{
+		if (name->front() != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
+			name->insert(0, 1, '#');
 		//////////// NEW CHANNEL
 		if (channelMap.find(*name) == channelMap.end())
 		{
