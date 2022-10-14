@@ -6,13 +6,13 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/13 17:57:04 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:34:12 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-static std::vector<std::string> splitNames(std::string names)
+static std::vector<std::string> splitNames(std::string &names)
 {
 	std::string tmp = names;
 	std::stringstream ss(names);
@@ -24,7 +24,7 @@ static std::vector<std::string> splitNames(std::string names)
 	return (result);
 }
 
-bool	join(int socketClient, const std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+bool	join(int socketClient, std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::vector<std::string> chanNames = splitNames(channelName);
 	std::vector<std::string>::iterator name = chanNames.begin();
@@ -34,10 +34,11 @@ bool	join(int socketClient, const std::string &channelName, std::map<int, User> 
 		//////////// NEW CHANNEL
 		if (channelMap.find(*name) == channelMap.end())
 		{
-			Channel newChannel(*name, userMap[socketClient]);
-			channelMap.insert(std::pair<std::string, Channel>(*name, newChannel));
-			channelMap.find(*name)->second.getUserList()[socketClient];
+			Channel newChannel(*name, userMap[socketClient]);								///////// CREATE NEW CHANNEL WITH ITS NAME AND OPERATOR
+			channelMap.insert(std::pair<std::string, Channel>(*name, newChannel));			///////// INSERT NEW CHANNEL INTO CHANNELMAP
+			channelMap.find(*name)->second.getUserList().insert(std::pair<int, User>(socketClient, userMap[socketClient])); //////////// ADD USER IN CHANNEL'S USERLIST
 			std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
+			// std::cout << MAGENTA << msg << END << std::endl;
 			sendMsg(socketClient, msg);
 			names(socketClient, *name, userMap, channelMap);
 		}
@@ -52,7 +53,8 @@ bool	join(int socketClient, const std::string &channelName, std::map<int, User> 
 			//////////// CLIENT NOT IN THIS CHANNEL
 			else
 			{
-				channelMap.find(*name)->second.getUserList()[socketClient];
+				// channelMap.find(*name)->second.getUserList()[socketClient];
+				channelMap.find(*name)->second.getUserList().insert(std::pair<int, User>(socketClient, userMap[socketClient]));
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				sendMsg(socketClient, msg);
 				names(socketClient, *name, userMap, channelMap);

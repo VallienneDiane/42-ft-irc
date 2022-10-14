@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 14:37:40 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 11:46:11 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,12 @@ std::string Channel::getName(void) const
 	return (this->_name);
 }
 
-std::map<int, User>  Channel::getOperList(void) const
+std::map<int, User>  &Channel::getOperList(void)
 {
 	return (this->_operList);
 }
 
-std::map<int, User> Channel::getUserList(void)
+std::map<int, User> &Channel::getUserList(void)
 {
 	return (this->_userList);
 }
