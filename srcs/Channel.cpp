@@ -63,3 +63,21 @@ std::map<int, User> &Channel::getUserList(void)
 {
 	return (this->_userList);
 }
+
+/***************** MEMBER OPERANDS ***************/
+
+void	Channel::addUser(User &user) {
+	_userList.insert(std::make_pair(user.getSocket(), user));
+}
+
+void	Channel::delUser(User &user) {
+	_userList.erase(user.getSocket());
+}
+
+void	Channel::addOper(User &user) {
+	_operList.insert(std::make_pair(user.getSocket(), user));
+}
+
+void	Channel::delOper(User &user) {
+	_operList.erase(user.getSocket());
+}

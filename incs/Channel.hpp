@@ -39,6 +39,10 @@ class Channel
 		std::string getName(void) const;
 		std::map<int, User>	&getOperList(void);
 		std::map<int, User> &getUserList(void);
+		void		addUser(User &user);
+		void		delUser(User &user);
+		void		addOper(User &user);
+		void		delOper(User &user);
 };
 
 #endif
