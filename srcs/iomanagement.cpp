@@ -41,12 +41,22 @@ int sendMsg(const int socket, const char * str)
     return (send(socket, str, strlen(str), 0));
 }
 
-std::string userSource(User &user)
+std::string delTilde(const std::string &str)
+{
+	if (str.front() == '~') {
+		std::string cpy(str);
+		cpy.erase(0, 1);
+		return (cpy);
+	}
+	return str;
+}
+
+std::string userSource(const User &user)
 {
 	std::string source = ":";
 	source += user.getNickname();
 	source += "!";
-	source += user.getUsername();
+	source += delTilde(user.getUsername());
 	source += "@";
 	source += user.getHostname();
 	return (source);

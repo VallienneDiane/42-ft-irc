@@ -67,7 +67,8 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
         if (!assignReadValue(checkNick, checkNickname(nickname)) && !containedNickname(nickname, userMap))
         {
             current.setNickname(nickname);
-            numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
+			if (fullyRegistered(current))
+            	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
         }
         else
         {
@@ -90,18 +91,37 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
 	return (0);
 }
 
-bool	userHandle(int socketClient, const std::string &username, const std::string &realname, std::map<int, User> &userMap)
+bool	identServer(std::string &ident)
 {
-	bool    welcome = false;
-	
-	if (userMap[socketClient].getUsername().empty() && userMap[socketClient].getRealname().empty())
-		welcome = true;
-	else
+	/////// If we want to auto-generate username for some ident, we do it here
+	if (ident.empty()) {
+		ident.assign("unknown");
+		return true;
+	}
+	if (ident.length() > 12) {
+		std::string::iterator start = ident.begin();
+		start += 11;
+		ident.erase(start, ident.end());
+	}
+		return false;
+}
+
+bool	userHandle(int socketClient, std::string &username, std::string &realname, std::map<int, User> &userMap)
+{
+	User	&current = userMap[socketClient];
+
+	if (!current.getUsername().empty())
 	{
 		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
-		return (1);
+		return (0);
 	}
-	userMap[socketClient].setUsername(username);
-	userMap[socketClient].setRealname(realname);
+	if (!identServer(username))
+		username.insert(username.begin(), '~');
+	current.setUsername(username);
+	if (realname.empty())
+		realname.assign("Gordon Freeman");
+	current.setRealname(realname);
+	if (fullyRegistered(current))
+	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
 	return (0);
 }

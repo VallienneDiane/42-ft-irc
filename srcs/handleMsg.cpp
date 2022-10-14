@@ -82,15 +82,12 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 		case 4:
 			std::cout << "user " << std::endl;
 			return (userHandle(socketClient, *(++it), *(it + 3), userMap));
-			break;
 		case 5:
 			std::cout << "ping " << std::endl;
 			return (ping(socketClient));
-			break;
 		case 6:
 			std::cout << "pong " << std::endl;
 			return (pong(socketClient));
-			break;
 		case 7:
 			std::cout << "oper " << std::endl;
 			break;

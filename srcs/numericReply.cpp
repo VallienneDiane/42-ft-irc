@@ -24,11 +24,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " :Welcome to the ";
 			str += SERVER_NAME;
 			str += " Network, ";
-			str += user.getNickname();
-			str += "!" ;
-			str += user.getUsername();
-			str += "@";
-			str += user.getHostname();
+			str += userSource(user);
 			sendMsg(socketClient, str);
 			break;
 		// NICKNAME

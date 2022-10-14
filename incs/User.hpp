@@ -49,5 +49,6 @@ class User
         std::string     		deliverCommand(void);
 };
 std::ostream 	&operator<<(std::ostream &stream, const User &source);
+bool			fullyRegistered(const User &user);
 
 #endif
