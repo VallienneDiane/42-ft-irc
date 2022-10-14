@@ -57,7 +57,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//PART
 		case 442:
-			str = user.getNickname();
+			str = SERVER_TALKING;
 			str += " ";
 			str += *context;
 			str += " :You're not on that channel";
@@ -99,7 +99,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//TOPIC
 		case 482:
-			std::cout << "<client> <channel> :You're not channel operator" << std::endl;
+			str += SERVER_TALKING;
+			str += " 482 ";
+			str += *context;
+			str += " :You are not the sheriff here !";
+			sendMsg(socketClient, str);
 			break;
 		//INVITE
 		case 443:
