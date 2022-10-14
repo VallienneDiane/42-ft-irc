@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 13:46:40 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 14:10:24 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//PART
 		case 442:
-			std::cout << "<client> <channel> :You're not on that channel" << std::endl;
+			str = user.getNickname();
+			str += " ";
+			str += *context;
+			str += " :You're not on that channel";
+			sendMsg(socketClient, str);
 			break;
 		// USERNAME
 		case 461:
@@ -66,9 +70,20 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		case 462:
 			std::cout << "<client> :You may not reregister" << std::endl;
 			break;
+		// OPER
+		case 464:
+			std::cout << "<client> :Password incorrect" << std::endl;
+			break;
+		case 491:
+			std::cout << "<client> :No O-lines for your host" << std::endl;
+			break;
 		// JOIN
 		case 403:
-			std::cout << "<client> <channel> :No such channel" << std::endl;
+			str = user.getNickname();
+			str += " ";
+			str += *context;
+			str += " :No such channel";
+			sendMsg(socketClient, str);
 			break;
 		case 471:
 			std::cout << "<client> <channel> :Cannot join channel (+l)" << std::endl;

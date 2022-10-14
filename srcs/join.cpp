@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/14 13:34:12 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:56:30 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-static std::vector<std::string> splitNames(std::string &names)
+std::vector<std::string> splitNames(std::string &names)
 {
 	std::string tmp = names;
 	std::stringstream ss(names);
@@ -58,7 +58,6 @@ bool	join(int socketClient, std::string &channelName, std::map<int, User> &userM
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				sendMsg(socketClient, msg);
 				names(socketClient, *name, userMap, channelMap);
-				
 			}
 		}
 		name++;	

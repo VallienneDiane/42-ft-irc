@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:42:03 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 12:53:16 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/13 15:50:59 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ class User
 {
 	private:
 		int				_socket;
+		std::string		_passwd;
 		std::string 	_nickname;
 		std::string 	_username;
 		std::string 	_realname;
@@ -33,12 +34,14 @@ class User
 		
 		User(std::string nickname, std::string username, unsigned int id);
 		void					setSocket(int socket);
+		void					setPasswd(std::string passwd);
 		void					setNickname(std::string nickname);
 		void					setUsername(std::string username);
 		void					setRealname(std::string realname);
 		void					setId(unsigned int id);
 		void					setHostname(std::string hostname);
 		int						getSocket(void) const;
+		std::string 			getPasswd(void) const;
 		std::string 			getNickname(void) const;
 		std::string 			getUsername(void) const;
 		std::string 			getRealname(void) const;

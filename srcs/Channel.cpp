@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 13:35:56 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:57:19 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Channel.hpp"
 
 /****************** CANONIC FORM ******************/
-
 Channel::Channel(const Channel &src) : _name(src._name), _operList(src._operList), _userList(src._userList)
 {}
 

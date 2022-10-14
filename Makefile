@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
+#    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/13 16:48:20 by amarchal         ###   ########.fr        #
+#    Updated: 2022/10/14 13:58:47 by dvallien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98
+FLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
 
 PATH_SRCS		=	srcs
 PATH_DEP		=	dep
@@ -25,13 +25,13 @@ LST_SRCS		=	main.cpp 			\
 					User.cpp 			\
 					signalManager.cpp 	\
 					handleMsg.cpp 		\
-					channelMsg.cpp 		\
 					loginMsg.cpp		\
 					pingPong.cpp		\
 					join.cpp			\
-					names.cpp			\
-					numericReply.cpp
-
+					numericReply.cpp	\
+					part.cpp			\
+					topic.cpp			\
+					names.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
