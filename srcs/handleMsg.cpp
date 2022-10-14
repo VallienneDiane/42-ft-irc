@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 16:57:17 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 12:21:02 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 11:
 			std::cout << "part " << std::endl;
-			return(part(socketClient, *(++it), userMap, channelMap));
+			return(part(socketClient, *(it + 2), userMap, channelMap));
 			break;
 		case 12:
 			std::cout << "topic " << std::endl;

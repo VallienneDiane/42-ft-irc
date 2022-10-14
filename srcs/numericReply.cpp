@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 17:54:08 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 10:51:57 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ void	numericReply(int error, int socketClient, std::string channel, std::map<int
 			break;
 		// JOIN
 		case 403:
-			std::cout << "<client> <channel> :No such channel" << std::endl;
+			str = user.getNickname();
+			str += " ";
+			str += channel;
+			str += " :No such channel";
+			sendMsg(socketClient, str);
 			break;
 		case 471:
 			std::cout << "<client> <channel> :Cannot join channel (+l)" << std::endl;
