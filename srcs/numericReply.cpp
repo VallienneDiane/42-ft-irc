@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 14:10:24 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 17:32:30 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,9 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//PART
 		case 442:
-			str = SERVER_TALKING;
+			str += SERVER_TALKING;
+			str += " 442 ";
+			str += user.getNickname();
 			str += " ";
 			str += *context;
 			str += " :You're not on that channel";
@@ -79,8 +81,10 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		// JOIN
 		case 403:
-			str = SERVER_TALKING;
+			str += SERVER_TALKING;
 			str += " 403 ";
+			str = user.getNickname();
+			str += " ";
 			str += *context;
 			str += " :No such channel";
 			sendMsg(socketClient, str);
