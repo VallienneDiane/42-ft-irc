@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:57:14 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:35:38 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ class Channel
 		void		setName(std::string name);
 		void		setOperList(std::map<int, User> operList);
 		std::string getName(void) const;
-		std::map<int, User>	getOperList(void) const;
-		std::map<int, User> getUserList(void);
+		std::map<int, User>	&getOperList(void);
+		std::map<int, User> &getUserList(void);
 };
 
 #endif

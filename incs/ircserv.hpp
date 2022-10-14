@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:57:39 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:35:45 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,10 @@ void						numericReply(int error, int socketClient, std::map<int, User> &userMap
 int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
-bool						join(int socketClient, const std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						join(int socketClient, std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+
+
+
 
 #endif

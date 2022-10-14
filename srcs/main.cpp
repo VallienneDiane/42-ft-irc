@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:57:20 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/14 13:36:20 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,7 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 				}
 				else
 				{
-					std::cout << "something to do with connection " << i << std::endl;
+					// std::cout << "something to do with connection " << i << std::endl;
 					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap);		// do what we want to do with this connection
 				}
 			}
