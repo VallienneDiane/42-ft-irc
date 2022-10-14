@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 14:15:24 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:39:27 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void						numericReply(int error, int socketClient, std::map<int, User> &userMap
 int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
-bool						join(int socketClient, std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						part(int socketClient, std::string channels, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
 void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 std::vector<std::string> 	splitNames(std::string &names);

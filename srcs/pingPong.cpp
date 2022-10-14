@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pingPong.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:42:35 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/13 14:44:26 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/14 16:48:15 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ bool	ping(int socketClient)
 
 bool	pong(int socketClient)
 {
-	return (sendMsg(socketClient, "PING 127.0.0.1\r\n"));
+	return (sendMsg(socketClient, "PONG 127.0.0.1\r\n"));
 }
