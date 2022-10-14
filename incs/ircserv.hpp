@@ -68,11 +68,12 @@ bool						nickHandle(int socketClient, std::string &nickname, std::map<int, User
 bool    					containedNickname(const std::string &name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, std::string &username, std::string &realname, std::map<int, User> &userMap);
 void						numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context);
-void						checkNichname(const std::string name);
+int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
 bool						join(int socketClient, std::string &channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						part(int socketClient, std::string channels, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
+void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 std::vector<std::string> 	splitNames(std::string &names);
 bool						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 #endif

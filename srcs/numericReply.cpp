@@ -79,8 +79,8 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		// JOIN
 		case 403:
-			str = user.getNickname();
-			str += " ";
+			str = SERVER_TALKING;
+			str += " 403 ";
 			str += *context;
 			str += " :No such channel";
 			sendMsg(socketClient, str);

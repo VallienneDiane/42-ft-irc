@@ -73,10 +73,18 @@ void	Channel::delUser(User &user) {
 	_userList.erase(user.getSocket());
 }
 
+void	Channel::delUser(int userSocket) {
+	_userList.erase(userSocket);
+}
+
 void	Channel::addOper(User &user) {
 	_operList.insert(std::make_pair(user.getSocket(), user));
 }
 
 void	Channel::delOper(User &user) {
 	_operList.erase(user.getSocket());
+}
+
+void	Channel::delOper(int userSocket) {
+	_operList.erase(userSocket);
 }

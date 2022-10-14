@@ -31,6 +31,7 @@ LST_SRCS		=	main.cpp 			\
 					numericReply.cpp	\
 					part.cpp			\
 					topic.cpp			\
+					kick.cpp			\
 					names.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}

@@ -122,6 +122,7 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 			break;
 		case 16:
 			std::cout << "kick " << std::endl;
+			kick(socketClient, clientInfos, userMap, channelMap);
 			break;
 		case 17:
 			std::cout << "privmsg " << std::endl;

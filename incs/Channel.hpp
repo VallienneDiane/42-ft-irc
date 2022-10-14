@@ -41,8 +41,10 @@ class Channel
 		std::map<int, User> &getUserList(void);
 		void		addUser(User &user);
 		void		delUser(User &user);
+		void		delUser(int userSocket);
 		void		addOper(User &user);
 		void		delOper(User &user);
+		void		delOper(int userSocket);
 };
 
 #endif
