@@ -64,7 +64,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 		if (cmds[i] == *it)
 			break;
 	}
-	if (!fullyRegistered(userMap.find(socketClient)->second) && (i != 3 && i != 4))
+	if (!fullyRegistered(userMap.find(socketClient)->second) && (i != 0 && i != 2 && i != 3 && i != 4 && i != 5))
 	{
 		numericReply(ERR_NOTREGISTERED, socketClient, userMap, nullptr);
 		return (0);
@@ -79,7 +79,6 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 2:
 			std::cout << "pass " << std::endl;
-			
 			break;
 		case 3:
 			std::cout << "nick " << std::endl;
@@ -90,8 +89,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			return (userHandle(socketClient, clientInfos, userMap));
 		case 5:
 			std::cout << "ping " << std::endl;
-			// return (pong(socketClient));
-			break;
+			return (pong(socketClient, content));
 		case 6:
 			std::cout << "pong " << std::endl;
 			// return (pong(socketClient));

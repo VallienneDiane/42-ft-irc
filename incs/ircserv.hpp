@@ -72,7 +72,7 @@ bool						userHandle(int socketClient, std::vector<std::string> &username, std::
 void						numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context);
 int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
-bool						pong(int socketClient);
+bool						pong(int socketClient, std::string &ping);
 bool						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
