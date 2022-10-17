@@ -32,8 +32,8 @@ LST_SRCS		=	main.cpp 			\
 					topic.cpp			\
 					kick.cpp			\
 					privmsg.cpp			\
-					names.cpp
-					#part.cpp			\#
+					names.cpp			\
+					part.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}

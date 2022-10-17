@@ -24,7 +24,7 @@ void	notHereUser(int socketClient, std::map<int, User> userMap, const std::strin
 void	kickOneByOne(const User &kicker, const User &toKick, const std::string &reason, Channel &chan)
 {
 	std::string	response = userSource(kicker);
-	std::map<int, User>::iterator	end = chan.getUserList().end();
+	std::set<int>::iterator	end = chan.getUserSet().end();
 
 	response += " KICK ";
 	response += chan.getName();
@@ -34,8 +34,8 @@ void	kickOneByOne(const User &kicker, const User &toKick, const std::string &rea
 		response += " ";
 		response += reason;
 	}
-	for (std::map<int, User>::iterator it = chan.getUserList().begin(); it != end; ++it)
-		sendMsg(it->second.getSocket(), response);
+	for (std::set<int>::iterator it = chan.getUserSet().begin(); it != end; ++it)
+		sendMsg(*it, response);
 	chan.delUser(toKick.getSocket());
 }
 
@@ -52,7 +52,7 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(command[1]));
 		return ;
 	}
-	if (!channel->second.isInOperList(socketClient).first) {
+	if (!channel->second.isInOperSet(socketClient).first) {
 		numericReply(ERR_CHANOPRIVSNEEDED, socketClient, userMap, &(command[1]));
 		return ;
 	}
@@ -63,7 +63,7 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 	for (size_t i = 0; i < sizeKickList; ++i)
 	{
 		std::map<int, User>::const_iterator	toKick = findUserByNickName(kickList[i], userMap);
-		if (toKick == userMap.end() || !channel->second.isInUserList(toKick->second.getSocket()).first) {
+		if (toKick == userMap.end() || !channel->second.isInUserSet(toKick->second.getSocket()).first) {
 			if (!notOnList.empty())
 				notOnList += ',';
 			notOnList += kickList[i];
