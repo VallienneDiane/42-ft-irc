@@ -6,50 +6,45 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:10:21 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 17:29:16 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/17 16:34:43 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-// MANQUE A GERER LA RAISON DU DEPART DU CHANNEL
-// FAIRE FONCTIONNER MESSAGES NUMERIC REPLY
-bool	part(int socketClient, std::string channels, std::map<int, User> & userMap, std::map<std::string, Channel> &channelMap)
+bool	part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string> tabChannels = splitNames(channels); //channels table
-	std::vector<std::string>::iterator nameChannel = tabChannels.begin(); //iterator on the first channel
-	User		&current = userMap[socketClient];
+	User								&current = userMap[socketClient];
+	std::vector<std::string>			tabChannels = splitNames(channels);
+	std::vector<std::string>::iterator	nameChannel = tabChannels.begin();
+	std::vector<std::string>::iterator	it;
+	std::string 						buffer;
 	
+	for( it = reason.begin() + 2; it != reason.end(); it++) //GET REASON FOR LEAVING CHAN
+		buffer = buffer + (*it) + " ";
 	while(nameChannel != tabChannels.end())
 	{
-		std::cout << "CHANNEL : " << tabChannels[0] << std::endl;
-		
-		if(channelMap.find(*nameChannel) == channelMap.end()) //if channel doesn't exist
+		if(nameChannel->front() == '#') // IF FIRST LETTER OF CHAN IS #
 		{
-			numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, nameChannel.base());
-			std::cout << RED << "Channel doesn't exist : " << *nameChannel << std::endl;
-			break;
-		}
-		else if(channelMap.find(*nameChannel)->second.getUserList().find(socketClient) 
-				== channelMap.find(*nameChannel)->second.getUserList().end()) //if user doesn't belong to this channel
-		{
-			numericReply(ERR_NOTONCHANNEL, socketClient, userMap, nameChannel.base());
-			std::cout << BMAGENTA << "User doesn't belong to this channel : " << *nameChannel << std::endl;
-			break;
-		}
-		std::cout << CYAN << "Erase user of the channel" << *nameChannel << std::endl;
-		// std::cout << *nameChannel << "Q\n";
-		// std::cout << channelMap.begin()->first << "Q\n";
-		channelMap.find(*nameChannel)->second.getUserList().erase(socketClient);
-		std::string msg = userSource(current) + " PART :" + *nameChannel;
-		sendMsg(socketClient, msg);
-		
-		// SOLUTIONS POUR DELETE CHAN A TROUVER
-		//if no remaining users in channel, delete channel 
-		if(channelMap.find(*nameChannel)->second.getUserList().empty()) 
-		{
-			channelMap.erase(channelMap.find(*nameChannel));
-			std::cout << BBLUE << "Erase channel : " << *nameChannel << std::endl;
+			//IF CHANNEL DOESN'T EXIST
+			if(channelMap.find(*nameChannel) == channelMap.end())
+				numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, &(*nameChannel)); //err 403k
+			else //IF CHANNEL EXIST
+			{
+				if(channelMap.find(*nameChannel)->second.getUserSet().find(socketClient) //IF USER DOESN'T BELONG TO THIS CHAN
+						== channelMap.find(*nameChannel)->second.getUserSet().end())
+				{
+					numericReply(ERR_NOTONCHANNEL, socketClient, userMap, &(*nameChannel)); //err 442
+				}
+				else
+				{
+					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
+					std::string msg = userSource(current) + " PART " + *nameChannel + " " + buffer;
+					sendMsg(socketClient, msg);
+					if(channelMap.find(*nameChannel)->second.getUserSet().empty()) //IF NO USER LEFT, DELETE CHAN
+						channelMap.erase(channelMap.find(*nameChannel));
+				}
+			} 
 		}
 		nameChannel++;
 	}

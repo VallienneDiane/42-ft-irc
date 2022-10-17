@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 13:36:20 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/17 11:21:20 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
     std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer);
 
-	std::cout << YELLOW << buffer << END << std::endl;
+	std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
 
 	if (bytesReceived == -1)
 	{
