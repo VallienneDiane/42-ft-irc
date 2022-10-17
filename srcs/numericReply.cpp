@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   numericReply.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2022/10/14 17:32:30 by dvallien         ###   ########.fr       */
-=======
-/*   Updated: 2022/10/17 14:06:10 by amarchal         ###   ########.fr       */
->>>>>>> alexi
+/*   Updated: 2022/10/17 16:37:04 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +59,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		case 442:
 			str += SERVER_TALKING;
 			str += " 442 ";
-			str += user.getNickname();
-			str += " ";
 			str += *context;
 			str += " :You're not on that channel";
 			sendMsg(socketClient, str);
@@ -91,8 +85,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		case 403:
 			str += SERVER_TALKING;
 			str += " 403 ";
-			str = user.getNickname();
-			str += " ";
 			str += *context;
 			str += " :No such channel";
 			sendMsg(socketClient, str);
