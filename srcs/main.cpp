@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 13:53:40 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 13:36:20 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/17 10:48:02 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		sentence = current.deliverCommand();
 		while (!sentence.empty())
         {
-            if (getInfosClient(socketClient, sentence, userMap, channelMap))
+            if (getInfosClient(socketClient, sentence, writeSockets, userMap, channelMap))
             {
                 FD_CLR(socketClient, currentSockets);
                 return ;

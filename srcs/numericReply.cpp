@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   numericReply.cpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2022/10/14 17:32:30 by dvallien         ###   ########.fr       */
+=======
+/*   Updated: 2022/10/17 14:06:10 by amarchal         ###   ########.fr       */
+>>>>>>> alexi
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +134,12 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//PRIVMSG
 		case 401:
-			std::cout << "<client> <nickname> :No such nick/channel" << std::endl;
+			// std::cout << "<client> <nickname> :No such nick/channel" << std::endl;
+			str = SERVER_TALKING;
+			str += " 401 ";
+			str += *context;
+			str += " :No such nick";
+			sendMsg(socketClient, str);
 			break;
 		case 404:
 			std::cout << "<client> <channel> :Cannot send to channel" << std::endl;

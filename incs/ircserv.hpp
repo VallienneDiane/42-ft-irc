@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 16:39:27 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/17 14:52:09 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # include <netinet/in.h>
 # include <netdb.h>
 # include <map>
+# include <set>
 # include <csignal>
 # include <vector>
 # include <algorithm>
@@ -64,7 +65,7 @@ std::string 				userSource(const User &user);
 int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-bool						getInfosClient(int socketClient, std::string content, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						getInfosClient(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap);
 bool    					containedNickname(const std::string &name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, std::vector<std::string> &username, std::map<int, User> &userMap);
@@ -73,6 +74,7 @@ int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient);
 bool						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						part(int socketClient, std::string channels, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
 void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 std::vector<std::string> 	splitNames(std::string &names);
