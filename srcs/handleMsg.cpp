@@ -64,6 +64,11 @@ bool	getInfosClient(int socketClient, std::string content, std::map<int, User> &
 		if (cmds[i] == *it)
 			break;
 	}
+	if (!fullyRegistered(userMap.find(socketClient)->second) && (i != 3 && i != 4))
+	{
+		numericReply(ERR_NOTREGISTERED, socketClient, userMap, nullptr);
+		return (0);
+	}
 	switch (i)
 	{
 		case 0:

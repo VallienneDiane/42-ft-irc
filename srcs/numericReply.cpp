@@ -135,5 +135,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		case 404:
 			std::cout << "<client> <channel> :Cannot send to channel" << std::endl;
 			break;
+		//OTHER ERRORS
+		case 451:
+			str += SERVER_TALKING;
+			str += "451 :You have not registered";
+			sendMsg(socketClient, str);
+			break;
 	}
 }

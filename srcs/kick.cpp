@@ -24,6 +24,8 @@ void	notHereUser(int socketClient, std::map<int, User> userMap, const std::strin
 void	kickOneByOne(const User &kicker, const User &toKick, const std::string &reason, Channel &chan)
 {
 	std::string	response = userSource(kicker);
+	std::map<int, User>::iterator	end = chan.getUserList().end();
+
 	response += " KICK ";
 	response += chan.getName();
 	response += " ";
@@ -32,8 +34,9 @@ void	kickOneByOne(const User &kicker, const User &toKick, const std::string &rea
 		response += " ";
 		response += reason;
 	}
+	for (std::map<int, User>::iterator it = chan.getUserList().begin(); it != end; ++it)
+		sendMsg(it->second.getSocket(), response);
 	chan.delUser(toKick.getSocket());
-	sendMsg(kicker.getSocket(), response);
 }
 
 void	kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
