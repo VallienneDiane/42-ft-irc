@@ -1,5 +1,11 @@
 #include "../incs/ircserv.hpp"
 
+void	delColon(std::string &str)
+{
+	if (!str.empty() && str.front() == ':')
+		str.erase(0,1);
+}
+
 bool    isCrlf(std::string str)
 {
     std::string::size_type size = str.size();

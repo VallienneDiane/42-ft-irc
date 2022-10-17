@@ -106,7 +106,7 @@ bool	identServer(std::string &ident)
 		return false;
 }
 
-bool	userHandle(int socketClient, std::string &username, std::string &realname, std::map<int, User> &userMap)
+bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<int, User> &userMap)
 {
 	User	&current = userMap[socketClient];
 
@@ -115,12 +115,18 @@ bool	userHandle(int socketClient, std::string &username, std::string &realname, 
 		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
 		return (0);
 	}
-	if (!identServer(username))
-		username.insert(username.begin(), '~');
-	current.setUsername(username);
-	if (realname.empty())
-		realname.assign("Gordon Freeman");
-	current.setRealname(realname);
+	if (username.size() < 5)
+	{
+		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &username[0]);
+		return (0);
+	}
+	if (!identServer(username[1]))
+		username[1].insert(username[1].begin(), '~');
+	current.setUsername(username[1]);
+	delColon(username[4]);
+	if (username[4].empty())
+		username[4].assign("Gordon Freeman");
+	current.setRealname(username[4]);
 	if (fullyRegistered(current))
 	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
 	return (0);

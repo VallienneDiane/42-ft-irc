@@ -67,7 +67,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		// USERNAME
 		case 461:
-			std::cout << "<client> <command> :Not enough parameters" << std::endl;
+			str += SERVER_TALKING;
+			str += " 461 ";
+			str += *context;
+			str += " Not enough parameters";
+			sendMsg(socketClient, str);
 			break;
 		case 462:
 			std::cout << "<client> :You may not reregister" << std::endl;
