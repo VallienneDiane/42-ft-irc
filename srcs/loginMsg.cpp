@@ -118,7 +118,7 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 	if (username.size() < 5)
 	{
 		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &username[0]);
-		return (0);
+		return (1);
 	}
 	if (!identServer(username[1]))
 		username[1].insert(username[1].begin(), '~');
