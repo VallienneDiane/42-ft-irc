@@ -119,7 +119,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//KICK
 		case 441:
-			std::cout << "<client> <nick> <channel> :They aren't on that channel" << std::endl;
+			str += SERVER_TALKING;
+			str += "441 ";
+			str += *context;
+			str += " :Not on that channel";
+			sendMsg(socketClient, str);
 			break;
 		case 476:
 			std::cout << "<channel> :Bad Channel Mask" << std::endl;

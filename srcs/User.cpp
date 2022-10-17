@@ -153,3 +153,14 @@ bool	fullyRegistered(const User &user)
 {
 	return (!user.getUsername().empty() && !user.getNickname().empty() && !user.getRealname().empty() && !user.getHostname().empty());
 }
+
+std::map<int, User>::const_iterator	findUserByNickName(const std::string &nick, const std::map<int, User> &userMap)
+{
+	std::map<int, User>::const_iterator 	end = userMap.end();
+	for (std::map<int, User>::const_iterator it = userMap.begin(); it != end; ++it)
+	{
+		if (!(it->second.getNickname().compare(nick)))
+			return (it);
+	}
+	return (end);
+}

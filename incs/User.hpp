@@ -53,5 +53,6 @@ class User
 };
 std::ostream 	&operator<<(std::ostream &stream, const User &source);
 bool			fullyRegistered(const User &user);
+std::map<int, User>::const_iterator	findUserByNickName(const std::string &nick, const std::map<int, User> &userMap);
 
 #endif
