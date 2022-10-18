@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:04:35 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 16:08:27 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:57:45 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 // PART
 #define ERR_NOTONCHANNEL 442
 // TOPIC
+#define RPL_NOTOPIC 331
 #define ERR_CHANOPRIVSNEEDED 482
 // INVITE
 #define ERR_USERONCHANNEL 443
