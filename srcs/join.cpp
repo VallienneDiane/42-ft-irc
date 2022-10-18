@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/18 14:04:24 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:06:24 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 		{
 			Channel newChannel(*name, userMap[socketClient]);								///////// CREATE NEW CHANNEL WITH ITS NAME AND OPERATOR
 			channelMap.insert(std::pair<std::string, Channel>(*name, newChannel));			///////// INSERT NEW CHANNEL INTO CHANNELMAP
-			channelMap.find(*name)->second.addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
+			channelMap.find(*name)->second.addUser(socketClient);				 			///////// ADD USER SOCKET IN CHANNEL'S USERSET
+			userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 			std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 			informAllUsers(channelMap.find(*name)->second.getUserSet(), msg, *name, userMap, channelMap);
 		}
@@ -66,6 +67,7 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 			else
 			{
 				channelMap.find(*name)->second.addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
+				userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				informAllUsers(channelMap.find(*name)->second.getUserSet(), msg, *name, userMap, channelMap);
 			}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/13 15:52:47 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 13:56:36 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 User::User(void) : _socket(0), _id(0)
 {}
 
-User::User(const User &src) : _socket(src._socket), _passwd(src._passwd), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command), _hostname(src._hostname)
+User::User(const User &src) : _socket(src._socket), _passwd(src._passwd), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command), _hostname(src._hostname), _channels(src._channels), _privMsg(src._privMsg)
 {}
 
 User & User::operator=(const User &src)
@@ -29,6 +29,8 @@ User & User::operator=(const User &src)
     this->_id = src._id;
     this->_command = src._command;
 	this->_hostname = src._hostname;
+	this->_channels = src._channels;
+	this->_privMsg = src._privMsg;
 	return (*this);
 }
 
@@ -44,77 +46,26 @@ User::User(std::string nickname, std::string username, unsigned int id)
 }
 
 /****************** SETTERS ******************/
-void	User::setSocket(int socket)
-{
-	this->_socket = socket;
-}
-
-void	User::setPasswd(std::string passwd)
-{
-	this->_passwd = passwd;
-}
-void	User::setNickname(std::string nickname)
-{
-	this->_nickname = nickname;
-}
-
-void	User::setUsername(std::string username)
-{
-	this->_username = username;
-}
-
-void	User::setRealname(std::string realname)
-{
-	this->_realname = realname;
-}
-
-void	User::setId(unsigned int id)
-{
-	this->_id = id;
-}
-
-void	User::setHostname(std::string hostname)
-{
-	this->_hostname = hostname;
-}
+void	User::setSocket(int socket) {this->_socket = socket;}
+void	User::setPasswd(std::string passwd) {this->_passwd = passwd;}
+void	User::setNickname(std::string nickname) {this->_nickname = nickname;}
+void	User::setUsername(std::string username) {this->_username = username;}
+void	User::setRealname(std::string realname) {this->_realname = realname;}
+void	User::setId(unsigned int id) {this->_id = id;}
+void	User::setHostname(std::string hostname) {this->_hostname = hostname;}
 
 /****************** GETTERS ******************/
-int User::getSocket(void) const
-{
-	return (this->_socket);
-}
+int 						User::getSocket(void) const {return (this->_socket);}
+std::string 				User::getPasswd(void) const {return (this->_passwd);}
+std::string 				User::getNickname(void) const {return (this->_nickname);}
+std::string 				User::getUsername(void) const {return (this->_username);}
+std::string 				User::getRealname(void) const {return (this->_realname);}
+unsigned int 				User::getId(void) const {return (this->_id);}
+std::string 				User::getHostname(void) const {return (this->_hostname);}
+std::vector<std::string> 	User::getChannels(void) const {return (this->_channels);}
+std::vector<int> 			User::getPrivMsg(void) const {return (this->_privMsg);}
 
-std::string User::getPasswd(void) const
-{
-	return (this->_passwd);
-}
-
-std::string User::getNickname(void) const
-{
-	return (this->_nickname);
-}
-
-std::string User::getUsername(void) const
-{
-	return (this->_username);
-}
-
-std::string User::getRealname(void) const
-{
-	return (this->_realname);
-}
-
-unsigned int User::getId(void) const
-{
-	return (this->_id);
-}
-
-std::string User::getHostname(void) const
-{
-	return (this->_hostname);
-}
-
-/****************** FUNCTIONS ******************/
+/****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
 {
     _command += str;
@@ -135,6 +86,53 @@ std::string User::deliverCommand(void)
 const std::string &User::getCommand(void) const
 {
     return (_command);
+}
+
+void	User::addChannel(std::string channelName)
+{
+	this->_channels.push_back(channelName);
+}
+
+void	User::addPrivMsg(int userSocket)
+{
+	this->_privMsg.push_back(userSocket);
+}
+
+void	User::removeChannel(std::string channelName)
+{
+	std::vector<std::string>::iterator it = this->_channels.begin();
+	std::vector<std::string>::iterator end = this->_channels.end();
+	while (it != end)
+	{
+		if ((*it).compare(channelName) == 0)
+			this->_channels.erase(it);
+		it++;
+	}
+}
+
+void	User::removePrivMsg(int userSocket)
+{
+	std::vector<int>::iterator it = this->_privMsg.begin();
+	std::vector<int>::iterator end = this->_privMsg.end();
+	while (it != end)
+	{
+		if ((*it) == userSocket)
+			this->_privMsg.erase(it);
+		it++;
+	}
+}
+
+bool	User::isInPrivMsg(int userSocket)
+{
+	std::vector<int>::iterator it = this->_privMsg.begin();
+	std::vector<int>::iterator end = this->_privMsg.end();
+	while (it != end)
+	{
+		if ((*it) == userSocket)
+			return (true);
+		it++;
+	}
+	return (false);
 }
 
 /****************** STREAM OVERLOAD ******************/
