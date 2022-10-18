@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handleMsg.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 14:04:18 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 15:20:24 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 16:
 			std::cout << "kick " << std::endl;
-			// kick(socketClient, clientInfos, userMap, channelMap);
+			kick(socketClient, clientInfos, userMap, channelMap);
 			break;
 		case 17:
 			std::cout << "privmsg " << std::endl;
