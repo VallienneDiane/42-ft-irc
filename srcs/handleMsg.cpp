@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 17:00:14 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:04:18 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			return (pong(socketClient, content));
 		case 6:
 			std::cout << "pong " << std::endl;
-			// return (pong(socketClient));
+			//return (pong(socketClient, content));
 			break;
 		case 7:
 			std::cout << "oper " << std::endl;
@@ -112,6 +112,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 12:
 			std::cout << "topic " << std::endl;
+			return(topic(socketClient, *(++it),clientInfos, userMap, channelMap));
 			break;
 		case 13:
 			std::cout << "names " << std::endl;

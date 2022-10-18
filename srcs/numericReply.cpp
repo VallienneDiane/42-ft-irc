@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 16:37:04 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:04:34 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,13 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			std::cout << "<client> <channel> :Cannot join channel (+k)" << std::endl;
 			break;
 		//TOPIC
+		case 331:
+			str += SERVER_TALKING;
+			str += " 331 ";
+			str += *context;
+			str += " :No topic is set";
+			sendMsg(socketClient, str);
+			break;
 		case 482:
 			str += SERVER_TALKING;
 			str += " 482 ";

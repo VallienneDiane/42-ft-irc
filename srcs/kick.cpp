@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 16:58:23 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/18 10:58:00 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	kickOneByOne(const User &kicker, const User &toKick, const std::string &rea
 		response += " ";
 		response += reason;
 	}
+	std::cout << BRED << response << END << std::endl;
 	for (std::set<int>::iterator it = chan.getUserSet().begin(); it != end; ++it)
 		sendMsg(*it, response);
 	chan.delUser(toKick.getSocket());
