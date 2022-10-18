@@ -14,10 +14,14 @@
 
 bool	ping(int socketClient)
 {
-	return (sendMsg(socketClient, "PONG\r\n"));
+	return (sendMsg(socketClient, "PONG\r\n") == -1);
 }
 
-bool	pong(int socketClient)
+bool	pong(int socketClient, std::string &ping)
 {
-	return (sendMsg(socketClient, "PONG 127.0.0.1\r\n"));
+	ping[1] = 'O';
+	ping.insert(5, "pouet_irc ");
+	ping.insert(0, SERVER_TALKING);
+	std::cout << ping << std::endl;
+	return (sendMsg(socketClient, ping) == -1);
 }
