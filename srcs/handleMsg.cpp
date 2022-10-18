@@ -82,7 +82,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 3:
 			std::cout << "nick " << std::endl;
-			return (nickHandle(socketClient, *(++it), userMap));
+			return (nickHandle(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 4:
 			std::cout << "user " << std::endl;

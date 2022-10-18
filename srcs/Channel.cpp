@@ -63,7 +63,7 @@ std::set<int> &Channel::getUserSet(void)
 	return (this->_userSet);
 }
 
-/***************** MEMBER OPERANDS ***************/
+/***************** MEMBER'S SET'S OPERANDS ***************/
 
 void	Channel::addUser(User &user) {
 	_userSet.insert(user.getSocket());
@@ -117,4 +117,14 @@ std::pair<bool, std::set<int>::iterator>	Channel::isInOperSet(int userSocket) {
 	if (found != _operSet.end())
 		return (std::make_pair(true, found));
 	return (std::make_pair(false, found));
+}
+
+/****************** Communications member functions ***********************/
+
+void	Channel::sendToUsers(const std::string &content, int socketException) const {
+	std::set<int>::const_iterator 	itEnd = _userSet.end();
+	for (std::set<int>::const_iterator 	it = _userSet.begin(); it != itEnd; ++it) {
+		if (*it != socketException)
+			sendMsg(*it, content);
+	}
 }

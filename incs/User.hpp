@@ -52,8 +52,8 @@ class User
 		std::string 				getRealname(void) const;
 		unsigned int				getId(void) const;
 		std::string					getHostname(void) const;
-		std::vector<std::string>	getChannels(void) const;
-		std::vector<int>			getPrivMsg(void) const;
+		std::vector<std::string>	&getChannels(void);
+		std::vector<int>			&getPrivMsg(void);
 		
 		///////// [MEMBER FUNCTIONS]
         void            			appendCommand(const std::string &str);
@@ -68,6 +68,6 @@ class User
 
 std::ostream 						&operator<<(std::ostream &stream, const User &source);
 bool								fullyRegistered(const User &user);
-std::map<int, User>::const_iterator	findUserByNickName(const std::string &nick, const std::map<int, User> &userMap);
+std::map<int, User>::iterator		findUserByNickName(const std::string &nick, std::map<int, User> &userMap);
 
 #endif

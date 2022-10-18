@@ -33,7 +33,7 @@ void	notHereUser(int socketClient, std::map<int, User> userMap, const std::strin
 	numericReply(ERR_USERNOTINCHANNEL, socketClient, userMap, &context);
 }
 
-void	kickOneByOne(const User &kicker, const User &toKick, const std::string &reason, Channel &chan)
+void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, Channel &chan)
 {
 	std::string	response = userSource(kicker);
 	std::set<int>::iterator	end = chan.getUserSet().end();
@@ -52,6 +52,7 @@ void	kickOneByOne(const User &kicker, const User &toKick, const std::string &rea
 	chan.delUser(toKick.getSocket());
 	if (chan.isInOperSet(toKick.getSocket()).first)
 		chan.delOper(toKick.getSocket());
+	toKick.removeChannel(chan.getName());
 }
 
 void	kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
@@ -73,26 +74,19 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 	}
 	std::vector<std::string>	kickList = splitNames(command[2]);
 	size_t 						sizeKickList = kickList.size();
-	std::vector<User>			onList;
 	std::string					notOnList;
+	std::string reason = buildReason(command);
 	for (size_t i = 0; i < sizeKickList; ++i)
 	{
-		std::map<int, User>::const_iterator	toKick = findUserByNickName(kickList[i], userMap);
+		std::map<int, User>::iterator	toKick = findUserByNickName(kickList[i], userMap);
 		if (toKick == userMap.end() || !channel->second.isInUserSet(toKick->second.getSocket()).first) {
 			if (!notOnList.empty())
 				notOnList += ',';
 			notOnList += kickList[i];
 		}
 		else
-			onList.push_back(toKick->second);
+			kickOneByOne(userMap.find(socketClient)->second, toKick->second, reason, channel->second);
 	}
 	if (!notOnList.empty())
 		notHereUser(socketClient, userMap, notOnList, command[1]);
-	size_t onListSize = onList.size();
-	if (onListSize) {
-		std::string reason = buildReason(command);
-		for (size_t i = 0; i != onListSize; ++i) {
-			kickOneByOne(userMap.find(socketClient)->second, onList[i], reason, channel->second);
-		}
-	}
 }

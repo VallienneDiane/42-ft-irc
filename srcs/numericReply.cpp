@@ -19,7 +19,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 	switch(error)
 	{
 		case 001:
-			str = "001 ";
+			str += "001 ";
 			str += user.getNickname();
 			str += " :Welcome to the ";
 			str += SERVER_NAME;

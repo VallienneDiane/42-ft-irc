@@ -53,10 +53,27 @@ void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std
 	}
 }
 
-bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap)
+void	changeNickname(User &user, std::string &nickname, std::map<std::string, Channel> &channelMap)
+{
+	std::vector<std::string>::iterator	itChanEnd = user.getChannels().end();
+	std::vector<int>::iterator			itPrivateEnd = user.getPrivMsg().end();
+	std::string	nickAnswer;
+	nickAnswer += userSource(user);
+	user.setNickname(nickname);
+	nickAnswer += " NICK ";
+	nickAnswer += nickname;
+	sendMsg(user.getSocket(), nickAnswer);
+	for (std::vector<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; ++it) {
+		channelMap.find(*it)->second.sendToUsers(nickAnswer, user.getSocket());
+	}
+	for (std::vector<int>::iterator it = user.getPrivMsg().begin(); it != itPrivateEnd; ++it) {
+		sendMsg(*it, nickAnswer);
+	}
+}
+
+bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	bool		welcome = false;
-	std::string	nickAnswer;
 	int 		checkNick;
 	User		&current = userMap[socketClient];
 
@@ -81,13 +98,7 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
     else if (assignReadValue(checkNick, checkNickname(nickname)) || containedNickname(nickname, userMap))
 		nickReplyError(checkNick, socketClient, userMap, &nickname);
 	else
-	{
-		nickAnswer += userSource(current);
-		current.setNickname(nickname);
-		nickAnswer += " NICK ";
-		nickAnswer += nickname;
-		sendMsg(socketClient, nickAnswer);
-	}
+		changeNickname(current, nickname, channelMap);
 	return (0);
 }
 

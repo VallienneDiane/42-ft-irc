@@ -21,12 +21,12 @@ class Channel
 {
 	private:
 		// Channel(void);
-		std::string			_name;
-		std::set<int>		_operSet;
+		std::string				_name;
+		std::set<int>			_operSet;
 		// std::map<int, User>	_operList;
-		std::string			_topic;
-		std::string			_mode;
-		std::set<int>		_userSet;
+		std::string				_topic;
+		std::string				_mode;
+		std::set<int>			_userSet;
 		// std::map<int, User>	_userList;
 
 	public:
@@ -66,6 +66,7 @@ class Channel
 		std::pair<bool, std::set<int>::iterator>	isInUserSet(int userSocket);
 		std::pair<bool, std::set<int>::iterator>	isInOperSet(User &user);
 		std::pair<bool, std::set<int>::iterator>	isInOperSet(int userSocket);
+		void	sendToUsers(const std::string &content, int socketException) const;
 };
 
 #endif

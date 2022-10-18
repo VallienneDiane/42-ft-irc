@@ -57,7 +57,7 @@ class Channel;
 
 int							receiveMsg(const int socket, std::string &buffer);
 int							assignReadValue(int &a, const int b);
-int							sendMsg(const int socket, std::string &str);
+int							sendMsg(const int socket, std::string str);
 int							sendMsg(const int socket, const char * str);
 std::string 				delTilde(const std::string &str);
 void						delColon(std::string &str);
@@ -66,7 +66,7 @@ int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
 bool						getInfosClient(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
-bool						nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap);
+bool						nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool    					containedNickname(const std::string &name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, std::vector<std::string> &username, std::map<int, User> &userMap);
 void						numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context);

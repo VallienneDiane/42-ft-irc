@@ -62,8 +62,8 @@ std::string 				User::getUsername(void) const {return (this->_username);}
 std::string 				User::getRealname(void) const {return (this->_realname);}
 unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
-std::vector<std::string> 	User::getChannels(void) const {return (this->_channels);}
-std::vector<int> 			User::getPrivMsg(void) const {return (this->_privMsg);}
+std::vector<std::string> 	&User::getChannels(void) {return (this->_channels);}
+std::vector<int> 			&User::getPrivMsg(void) {return (this->_privMsg);}
 
 /****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
@@ -152,10 +152,10 @@ bool	fullyRegistered(const User &user)
 	return (!user.getUsername().empty() && !user.getNickname().empty() && !user.getRealname().empty() && !user.getHostname().empty());
 }
 
-std::map<int, User>::const_iterator	findUserByNickName(const std::string &nick, const std::map<int, User> &userMap)
+std::map<int, User>::iterator	findUserByNickName(const std::string &nick, std::map<int, User> &userMap)
 {
-	std::map<int, User>::const_iterator 	end = userMap.end();
-	for (std::map<int, User>::const_iterator it = userMap.begin(); it != end; ++it)
+	std::map<int, User>::iterator 	end = userMap.end();
+	for (std::map<int, User>::iterator it = userMap.begin(); it != end; ++it)
 	{
 		if (!(it->second.getNickname().compare(nick)))
 			return (it);

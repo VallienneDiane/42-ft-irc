@@ -35,9 +35,9 @@ int receiveMsg(const int socket, std::string &buffer)
     return rd;
 }
 
-int sendMsg(const int socket, std::string &str)
+int sendMsg(const int socket, std::string str)
 {
-    str += "\r\n"; // 
+    str += "\r\n";
     return (send(socket, str.data(), str.size(), 0));
 }
 

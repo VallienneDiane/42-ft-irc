@@ -35,6 +35,7 @@ void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int,
 	////////// CHECK IF USER SOCKET IS READY FOR WRITING
 	if (FD_ISSET(user.getSocket(), writeSockets) && user.getSocket() != socketClient)
 		sendMsg(user.getSocket(), buffer);
+	sendMsg(socketClient, buffer);
 	
 }
 
