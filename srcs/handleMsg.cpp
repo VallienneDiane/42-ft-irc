@@ -92,7 +92,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			return (pong(socketClient, content));
 		case 6:
 			std::cout << "pong " << std::endl;
-			// return (pong(socketClient));
+			//return (pong(socketClient, content));
 			break;
 		case 7:
 			std::cout << "oper " << std::endl;
@@ -125,7 +125,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 16:
 			std::cout << "kick " << std::endl;
-			// kick(socketClient, clientInfos, userMap, channelMap);
+			kick(socketClient, clientInfos, userMap, channelMap);
 			break;
 		case 17:
 			std::cout << "privmsg " << std::endl;
