@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:41:24 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/17 15:51:25 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/18 14:02:40 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int,
 	
 }
 
+void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
+{
+	userMap[socketClient].addPrivMsg(socketUser);
+	userMap[socketUser].addPrivMsg(socketClient);
+}
+
 bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::vector<std::string>::iterator it = msg.begin();
@@ -61,6 +67,9 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 		{
 			if (user->second.getNickname() == *it)
 			{
+				//////////// ADD USER IN CONTACT LIST IF NOT ALLREADY IN IT
+				if (userMap[socketClient].isInPrivMsg(user->second.getSocket()) == false)
+					linkUsers(socketClient, user->second.getSocket(), userMap);
 				msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd);
 				return (0);
 			}
