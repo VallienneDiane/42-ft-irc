@@ -6,7 +6,7 @@
 #    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/17 16:56:29 by dvallien         ###   ########.fr        #
+#    Updated: 2022/10/18 10:40:39 by dvallien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,10 +29,10 @@ LST_SRCS		=	main.cpp 			\
 					pingPong.cpp		\
 					join.cpp			\
 					numericReply.cpp	\
-					topic.cpp			\
 					privmsg.cpp			\
 					part.cpp			\
 					names.cpp			\
+					topic.cpp			\
 					kick.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
