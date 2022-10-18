@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:04:27 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/17 15:09:07 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/18 10:41:37 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ bool	names(int socketClient, std::string channelName, std::map<int, User> &userM
 		std::set<int>::iterator end = channelMap.find(channelName)->second.getUserSet().end();
 		while (user != end)
 		{
-			buffer = buffer + " " + (channelMap.find(channelName)->second.isInOperSet(socketClient).first == true ? "@" : "") + userMap[*user].getNickname();
+			buffer = buffer + " " + (channelMap.find(channelName)->second.isInOperSet(userMap[*user].getSocket()).first == true ? "@" : "") + userMap[*user].getNickname();
 			++user;
 		}
+		std::cout << BRED << buffer << std::endl;
 		sendMsg(socketClient, buffer);
 		std::string msg = ":127.0.0.1 366 = " + channelName + " :End of /NAMES list";
 		sendMsg(socketClient, msg);
 	}
 	return (0);
-	(void)userMap;
 }

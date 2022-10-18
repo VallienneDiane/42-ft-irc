@@ -6,7 +6,7 @@
 #    By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/17 16:03:15 by amarchal         ###   ########.fr        #
+#    Updated: 2022/10/17 16:30:53 by amarchal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,10 +30,10 @@ LST_SRCS		=	main.cpp 			\
 					join.cpp			\
 					numericReply.cpp	\
 					topic.cpp			\
-					kick.cpp			\
 					privmsg.cpp			\
-					names.cpp
-					#part.cpp			\#
+					names.cpp			\
+					# kick.cpp			
+					# part.cpp			
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
