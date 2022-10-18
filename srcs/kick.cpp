@@ -49,6 +49,8 @@ void	kickOneByOne(const User &kicker, const User &toKick, const std::string &rea
 	for (std::set<int>::iterator it = chan.getUserSet().begin(); it != end; ++it)
 		sendMsg(*it, response);
 	chan.delUser(toKick.getSocket());
+	if (chan.isInOperSet(toKick.getSocket()).first)
+		chan.delOper(toKick.getSocket());
 }
 
 void	kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
