@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 15:57:32 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/17 16:57:50 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ void	Channel::setOperSet(std::set<int> operSet)
 	this->_operSet = operSet;
 }
 
-// void	Channel::setOperList(std::map<int, User> operList)
-// {
-// 	this->_operList = operList;
-// }
-
 /****************** GETTERS ******************/
 std::string Channel::getName(void) const
 {
@@ -67,16 +62,6 @@ std::set<int> &Channel::getUserSet(void)
 {
 	return (this->_userSet);
 }
-
-// std::map<int, User>  &Channel::getOperList(void)
-// {
-// 	return (this->_operList);
-// }
-
-// std::map<int, User> &Channel::getUserList(void)
-// {
-// 	return (this->_userList);
-// }
 
 /***************** MEMBER OPERANDS ***************/
 
@@ -111,52 +96,6 @@ void	Channel::delOper(User &user) {
 void	Channel::delOper(int userSocket) {
 	_operSet.erase(userSocket);
 }
-
-// void	Channel::addUser(User &user) {
-// 	_userList.insert(std::make_pair(user.getSocket(), user));
-// }
-
-// void	Channel::delUser(User &user) {
-// 	_userList.erase(user.getSocket());
-// }
-
-// void	Channel::delUser(int userSocket) {
-// 	_userList.erase(userSocket);
-// }
-
-// void	Channel::addOper(User &user) {
-// 	_operList.insert(std::make_pair(user.getSocket(), user));
-// }
-
-// void	Channel::delOper(User &user) {
-// 	_operList.erase(user.getSocket());
-// }
-
-// void	Channel::delOper(int userSocket) {
-// 	_operList.erase(userSocket);
-// }
-
-// std::pair<bool, std::map<int, User>::iterator>	Channel::isInUserList(User &user) {
-// 	return (this->isInUserList(user.getSocket()));
-// }
-
-// std::pair<bool, std::map<int, User>::iterator>	Channel::isInUserList(int userSocket) {
-// 	std::map<int, User>::iterator	found = _userList.find(userSocket);
-// 	if (found != _userList.end())
-// 		return (std::make_pair(true, found));
-// 	return (std::make_pair(false, found));
-// }
-
-// std::pair<bool, std::map<int, User>::iterator>	Channel::isInOperList(User &user) {
-// 	return (this->isInOperList(user.getSocket()));
-// }
-
-// std::pair<bool, std::map<int, User>::iterator>	Channel::isInOperList(int userSocket) {
-// 	std::map<int, User>::iterator	found = _operList.find(userSocket);
-// 	if (found != _operList.end())
-// 		return (std::make_pair(true, found));
-// 	return (std::make_pair(false, found));
-// }
 
 std::pair<bool, std::set<int>::iterator>	Channel::isInUserSet(User &user) {
 	return (this->isInUserSet(user.getSocket()));
