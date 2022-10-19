@@ -6,14 +6,14 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:49:16 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 16:57:50 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 10:50:35 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/Channel.hpp"
 
 /****************** CANONIC FORM ******************/
-Channel::Channel(const Channel &src) : _name(src._name), _operSet(src._operSet), _userSet(src._userSet)
+Channel::Channel(const Channel &src) : _name(src._name), _topic(src._topic), _operSet(src._operSet), _userSet(src._userSet)
 {}
 
 // Channel::Channel(void)
@@ -22,6 +22,7 @@ Channel::Channel(const Channel &src) : _name(src._name), _operSet(src._operSet),
 Channel & Channel::operator=(const Channel &src)
 {
 	this->_name = src._name;
+	this->_topic = src._topic;
 	this->_operSet = src._operSet;
 	this->_userSet = src._userSet;
 	return (*this);
@@ -42,6 +43,11 @@ void	Channel::setName(std::string name)
 	this->_name = name;
 }
 
+void	Channel::setTopic(std::string topic)
+{
+	this->_topic = topic;
+}
+
 void	Channel::setOperSet(std::set<int> operSet)
 {
 	this->_operSet = operSet;
@@ -51,6 +57,11 @@ void	Channel::setOperSet(std::set<int> operSet)
 std::string Channel::getName(void) const
 {
 	return (this->_name);
+}
+
+std::string Channel::getTopic(void) const
+{
+	return (this->_topic);
 }
 
 std::set<int> &Channel::getOperSet(void)

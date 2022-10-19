@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 14:04:34 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:30:59 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,14 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_TALKING;
 			str += " 331 ";
 			str += *context;
-			str += " :No topic is set";
+			str += " :";
+			str += *context;
+			sendMsg(socketClient, str);
+			break;
+		case 332:
+			str += SERVER_TALKING;
+			str += " 332 ";
+			str += *context;
 			sendMsg(socketClient, str);
 			break;
 		case 482:
