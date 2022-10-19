@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 15:20:24 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:54:31 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 8:
 			std::cout << "quit " << std::endl;
+			return (quit(socketClient, content, userMap, channelMap));
 			break;
 		case 9:
 			std::cout << "error " << std::endl;

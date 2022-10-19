@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:10:21 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 16:53:51 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:08:35 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 				}
 				else
 				{
-					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					std::string msg = userSource(current) + " PART " + *nameChannel + " " + buffer;
-					sendMsg(socketClient, msg);
+					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), msg);
+					// sendMsg(socketClient, msg);
+					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					if(channelMap.find(*nameChannel)->second.getUserSet().empty()) //IF NO USER LEFT, DELETE CHAN
 						channelMap.erase(channelMap.find(*nameChannel));
 				}
