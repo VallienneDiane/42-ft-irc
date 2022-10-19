@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   topic.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:24:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:35:01 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:49:27 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 				// std::cout << RED << "set topic" << std::endl;
 				std::string msg = userSource(current) + " TOPIC " + channel + " " + buffer;
 				channelMap.find(channel)->second.setTopic(buffer);
-				informAllUsers(channelMap.find(channel)->second.getUserSet(), msg, channel, userMap, channelMap);
+				informAllUsers(channelMap.find(channel)->second.getUserSet(), msg);
 			}
 		}
 	}

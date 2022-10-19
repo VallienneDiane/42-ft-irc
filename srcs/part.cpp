@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:10:21 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 12:16:25 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:45:51 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 					numericReply(ERR_NOTONCHANNEL, socketClient, userMap, &(*nameChannel)); //err 442
 				else
 				{
-					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					std::string msg = userSource(current) + " PART " + *nameChannel + " " + buffer;
+					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), msg);
 					// sendMsg(socketClient, msg);
-					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), msg, *nameChannel, userMap, channelMap);
+					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					if(channelMap.find(*nameChannel)->second.getUserSet().empty()) //IF NO USER LEFT, DELETE CHAN
 						channelMap.erase(channelMap.find(*nameChannel));
 				}

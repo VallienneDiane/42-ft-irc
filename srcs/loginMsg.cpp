@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loginMsg.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/14 14:02:31 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:48:00 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,18 @@ void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std
 
 void	changeNickname(User &user, std::string &nickname, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string>::iterator	itChanEnd = user.getChannels().end();
-	std::vector<int>::iterator			itPrivateEnd = user.getPrivMsg().end();
+	std::set<std::string>::iterator	itChanEnd = user.getChannels().end();
+	std::set<int>::iterator			itPrivateEnd = user.getPrivMsg().end();
 	std::string	nickAnswer;
 	nickAnswer += userSource(user);
 	user.setNickname(nickname);
 	nickAnswer += " NICK ";
 	nickAnswer += nickname;
 	sendMsg(user.getSocket(), nickAnswer);
-	for (std::vector<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; ++it) {
+	for (std::set<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; ++it) {
 		channelMap.find(*it)->second.sendToUsers(nickAnswer, user.getSocket());
 	}
-	for (std::vector<int>::iterator it = user.getPrivMsg().begin(); it != itPrivateEnd; ++it) {
+	for (std::set<int>::iterator it = user.getPrivMsg().begin(); it != itPrivateEnd; ++it) {
 		sendMsg(*it, nickAnswer);
 	}
 }

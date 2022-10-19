@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:42:03 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 13:56:47 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:43:04 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ class User
 		unsigned int				_id;
         std::string     			_command;
 		std::string					_hostname;
-		std::vector<std::string> 	_channels;
-		std::vector<int> 			_privMsg;
+		std::set<std::string> 		_channels;
+		std::set<int> 				_privMsg;
 
 	public:
 		User(void);
@@ -52,8 +52,8 @@ class User
 		std::string 				getRealname(void) const;
 		unsigned int				getId(void) const;
 		std::string					getHostname(void) const;
-		std::vector<std::string>	&getChannels(void);
-		std::vector<int>			&getPrivMsg(void);
+		std::set<std::string>		getChannels(void) const;
+		std::set<int>				getPrivMsg(void) const;
 		
 		///////// [MEMBER FUNCTIONS]
         void            			appendCommand(const std::string &str);
