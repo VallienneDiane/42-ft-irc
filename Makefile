@@ -6,7 +6,7 @@
 #    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/18 14:04:42 by dvallien         ###   ########.fr        #
+#    Updated: 2022/10/19 10:42:56 by dvallien         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,8 @@ LST_SRCS		=	main.cpp 			\
 					part.cpp			\
 					names.cpp			\
 					topic.cpp			\
-					kick.cpp
+					kick.cpp			\
+					notice.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}

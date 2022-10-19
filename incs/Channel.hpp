@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 13:33:51 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 15:54:40 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/19 10:49:34 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ class Channel
 	private:
 		// Channel(void);
 		std::string			_name;
+		std::string			_topic;
 		std::set<int>		_operSet;
 		// std::map<int, User>	_operList;
-		std::string			_topic;
 		std::string			_mode;
 		std::set<int>		_userSet;
 		// std::map<int, User>	_userList;
@@ -37,9 +37,11 @@ class Channel
 
 		Channel(std::string name, User & oper);
 		void		setName(std::string name);
+		void		setTopic(std::string topic);
 		// void		setOperList(std::map<int, User> operList);
 		void		setOperSet(std::set<int> operSet);
 		std::string getName(void) const;
+		std::string getTopic(void) const;
 		// std::map<int, User>	&getOperList(void);
 		// std::map<int, User> &getUserList(void);
 		std::set<int>		&getOperSet(void);

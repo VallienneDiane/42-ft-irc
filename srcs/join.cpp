@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/18 14:04:24 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:46:58 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,18 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 			//////////// CLIENT NOT IN THIS CHANNEL
 			else
 			{
+				std::cout << RED << "ICI set topic" << std::endl;
 				channelMap.find(*name)->second.addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				informAllUsers(channelMap.find(*name)->second.getUserSet(), msg, *name, userMap, channelMap);
+				User	&current = userMap[socketClient];
+				std::string topic = userSource(current) + " TOPIC " + *name + " " + channelMap.find(*name)->second.getTopic();
+				// std::string topic = " TOPIC ";
+				// topic = *name;
+				// topic += " ";
+				// topic += channelMap.find(*name)->second.getTopic();
+				std::cout << "TOPIC "<< topic << std::endl;
+				numericReply(RPL_TOPIC, socketClient, userMap, &topic);
 			}
 		}
 		name++;	
