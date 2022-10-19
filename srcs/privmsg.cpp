@@ -52,7 +52,7 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 	it++;
 	
 	/////////// SEND MSG TO CHANNEL
-	if (it->front() == '#')	
+	if ((*it)[0] == '#')
 	{
 		/////////// CHECK IF CHANNEL EXIST
 		if (channelMap.find(*it) != channelMap.end())

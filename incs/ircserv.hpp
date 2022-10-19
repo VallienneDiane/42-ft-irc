@@ -31,6 +31,7 @@
 # include <iostream>
 # include <sstream>
 # include <string>
+# include <cstring>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -49,6 +50,7 @@
 
 class Channel;
 
+#define nullptr 0
 #define SERVER_TALKING ":pouet_irc "
 #define SERVER_NAME "pouet_irc"
 #define SERVER_DESCRIPTION " Welcome to pouet irc "

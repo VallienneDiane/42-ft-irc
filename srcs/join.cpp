@@ -41,7 +41,7 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 	std::vector<std::string>::iterator end = chanNames.end();
 	while (name != end)
 	{
-		if (name->front() != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
+		if ((*name)[0] != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
 			name->insert(0, 1, '#');
 		//////////// NEW CHANNEL
 		if (channelMap.find(*name) == channelMap.end())

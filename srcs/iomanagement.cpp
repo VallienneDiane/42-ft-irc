@@ -2,7 +2,7 @@
 
 void	delColon(std::string &str)
 {
-	if (!str.empty() && str.front() == ':')
+	if (!str.empty() && str[0] == ':')
 		str.erase(0,1);
 }
 
@@ -49,7 +49,7 @@ int sendMsg(const int socket, const char * str)
 
 std::string delTilde(const std::string &str)
 {
-	if (str.front() == '~') {
+	if (str[0] == '~') {
 		std::string cpy(str);
 		cpy.erase(0, 1);
 		return (cpy);

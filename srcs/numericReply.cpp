@@ -19,12 +19,14 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 	switch(error)
 	{
 		case 001:
+			str += SERVER_TALKING;
 			str += "001 ";
 			str += user.getNickname();
 			str += " :Welcome to the ";
 			str += SERVER_NAME;
 			str += " Network, ";
 			str += userSource(user);
+			std::cout << "welcome msg : " << str << std::endl;
 			sendMsg(socketClient, str);
 			break;
 		// NICKNAME
@@ -39,7 +41,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += *context;
 			if (context->size() > 20)
 				str += " :Nickname is too long (it will pollute the chat).";
-			else if (!isalpha(context->front()))
+			else if (!isalpha((*context)[0]))
 				str += " :Nickname has to begin with a letter.";
 			else
 				str += " :Nickname must only contain alphanum characters or underscores.";

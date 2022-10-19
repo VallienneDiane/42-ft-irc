@@ -21,7 +21,7 @@ int	checkNickname(const std::string &name)
 {
 	if (name.empty())
 		return (1);
-	if (name.size() > 20 || !isalpha(name.front()) ||
+	if (name.size() > 20 || !isalpha(name[0]) ||
 			std::find_if(name.begin(), name.end(), isNotAlNumOrUnderscore) != name.end())
 		return (2);
 	return (0);

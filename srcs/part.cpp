@@ -24,7 +24,7 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 		buffer = buffer + (*it) + " ";
 	while(nameChannel != tabChannels.end())
 	{
-		if(nameChannel->front() == '#') //IF FIRST LETTER OF CHAN IS #
+		if((*nameChannel)[0] == '#') //IF FIRST LETTER OF CHAN IS #
 		{
 			//IF CHANNEL DOESN'T EXIST
 			if(channelMap.find(*nameChannel) == channelMap.end())
