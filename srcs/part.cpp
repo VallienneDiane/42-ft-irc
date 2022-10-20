@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   part.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:10:21 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/17 16:53:51 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:45:51 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,18 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 	{
 		if((*nameChannel)[0] == '#') //IF FIRST LETTER OF CHAN IS #
 		{
-			//IF CHANNEL DOESN'T EXIST
-			if(channelMap.find(*nameChannel) == channelMap.end())
+			if(channelMap.find(*nameChannel) == channelMap.end())//IF CHANNEL DOESN'T EXIST
 				numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, &(*nameChannel)); //err 403
 			else //IF CHANNEL EXIST
 			{
 				if(channelMap.find(*nameChannel)->second.isInUserSet(socketClient).first == false) //IF USER DOESN'T BELONG TO THIS CHAN
-				{
 					numericReply(ERR_NOTONCHANNEL, socketClient, userMap, &(*nameChannel)); //err 442
-				}
 				else
 				{
-					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					std::string msg = userSource(current) + " PART " + *nameChannel + " " + buffer;
-					sendMsg(socketClient, msg);
+					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), msg);
+					// sendMsg(socketClient, msg);
+					channelMap.find(*nameChannel)->second.getUserSet().erase(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					if(channelMap.find(*nameChannel)->second.getUserSet().empty()) //IF NO USER LEFT, DELETE CHAN
 						channelMap.erase(channelMap.find(*nameChannel));
 				}

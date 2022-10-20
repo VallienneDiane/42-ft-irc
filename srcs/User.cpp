@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 13:56:36 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:46:13 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ std::string 				User::getUsername(void) const {return (this->_username);}
 std::string 				User::getRealname(void) const {return (this->_realname);}
 unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
-std::vector<std::string> 	&User::getChannels(void) {return (this->_channels);}
-std::vector<int> 			&User::getPrivMsg(void) {return (this->_privMsg);}
+std::set<std::string>	 	User::getChannels(void) const {return (this->_channels);}
+std::set<int> 				User::getPrivMsg(void) const {return (this->_privMsg);}
 
 /****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
@@ -90,18 +90,18 @@ const std::string &User::getCommand(void) const
 
 void	User::addChannel(std::string channelName)
 {
-	this->_channels.push_back(channelName);
+	this->_channels.insert(channelName);
 }
 
 void	User::addPrivMsg(int userSocket)
 {
-	this->_privMsg.push_back(userSocket);
+	this->_privMsg.insert(userSocket);
 }
 
 void	User::removeChannel(std::string channelName)
 {
-	std::vector<std::string>::iterator it = this->_channels.begin();
-	std::vector<std::string>::iterator end = this->_channels.end();
+	std::set<std::string>::iterator it = this->_channels.begin();
+	std::set<std::string>::iterator end = this->_channels.end();
 	while (it != end)
 	{
 		if ((*it).compare(channelName) == 0)
@@ -112,8 +112,8 @@ void	User::removeChannel(std::string channelName)
 
 void	User::removePrivMsg(int userSocket)
 {
-	std::vector<int>::iterator it = this->_privMsg.begin();
-	std::vector<int>::iterator end = this->_privMsg.end();
+	std::set<int>::iterator it = this->_privMsg.begin();
+	std::set<int>::iterator end = this->_privMsg.end();
 	while (it != end)
 	{
 		if ((*it) == userSocket)
@@ -124,8 +124,8 @@ void	User::removePrivMsg(int userSocket)
 
 bool	User::isInPrivMsg(int userSocket)
 {
-	std::vector<int>::iterator it = this->_privMsg.begin();
-	std::vector<int>::iterator end = this->_privMsg.end();
+	std::set<int>::iterator it = this->_privMsg.begin();
+	std::set<int>::iterator end = this->_privMsg.end();
 	while (it != end)
 	{
 		if ((*it) == userSocket)

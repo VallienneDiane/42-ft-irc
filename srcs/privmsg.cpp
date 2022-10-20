@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:41:24 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/18 14:02:40 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/19 11:22:53 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,11 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 	{
 		/////////// CHECK IF CHANNEL EXIST
 		if (channelMap.find(*it) != channelMap.end())
-			msgToChannel(socketClient, channelMap.find(*it)->second, writeSockets, userMap, ++it, msgEnd);
+		{
+			/////////// CHECK IF USER IS IN CHANNEL
+			if (channelMap.find(*it)->second.isInUserSet(socketClient).first)
+				msgToChannel(socketClient, channelMap.find(*it)->second, writeSockets, userMap, ++it, msgEnd);
+		}
 		else
 			numericReply(403, socketClient, userMap, &(*it));
 	}

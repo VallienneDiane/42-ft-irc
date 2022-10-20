@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 10:49:58 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/19 13:42:48 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,6 @@ void						kick(int socketClient, std::vector<std::string> &command, std::map<int
 std::vector<std::string> 	splitNames(std::string &names);
 bool						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						topic(int socketClient, std::string channel, std::vector<std::string> topic, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						quit(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						informAllUsers(std::set<int> userSet, std::string msg);
 #endif
