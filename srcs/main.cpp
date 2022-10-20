@@ -17,25 +17,52 @@
 	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
 	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
 */
-int serverSetup()
+
+std::pair<int, std::string>	parseEntries(int ac, char **av)
+{
+	if (ac != 3) {
+		std::cerr << "You must type ./irc <port> <password>\n";
+		exit (1);
+	}
+	return (std::make_pair(atoi(av[1]), av[2]));
+}
+
+int serverSetup(int port)
 {
 	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
 	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6, contains technique informations of socket
 	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
 	addrServer.sin_family = AF_INET;
-	addrServer.sin_port = htons(6667);						// host to network
-	
+	addrServer.sin_port = htons(port);						// host to network
+	unsigned int	sizeAddr = sizeof (addrServer);
 	// BIND ADDR IP & PORT TO A SOCKET
-	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeof(addrServer)) == -1)
+	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeAddr) == -1)
 	{
 		std::cerr << "Can't bind" << std::endl;
 		close(socketServer);
 		return (-1);
 	}
+	else
+		getsockname(socketServer, (struct sockaddr *) &addrServer, &sizeAddr);
 	// SOCKET WAITING CONNEXIONS, FIX THE WAITING LIST
 	if (listen(socketServer, SOMAXCONN) == -1)								
 	{
 		std::cerr << "Can't listen" << std::endl;
+		return (-1);
+	}
+	char host[NI_MAXHOST];
+	char service[NI_MAXSERV];
+	memset(host, 0, NI_MAXHOST);
+	memset(service, 0, NI_MAXSERV);
+	if (getnameinfo((sockaddr*)&addrServer, sizeAddr, host, NI_MAXHOST, service, NI_MAXSERV, 0) == 0)
+	{
+		if (!std::strcmp(service, "ircd"))
+			std::cout << host << " SERVER PORT : " << "6667 (ou ircd pour les intimes)\n";
+		else
+			std::cout << host << " SERVER PORT : " << service << std::endl;
+	}
+	else {
+		std::cerr << "can't get server information ?? \n";
 		return (-1);
 	}
 	return (socketServer);
@@ -123,15 +150,15 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 int main(int ac, char **av)  // ./ircserv [port] [passwd]
 {
-	(void)ac;
-	(void)av;
+	std::pair<int, std::string>	entries = parseEntries(ac, av);
 
 	std::map<int, User> userMap;
 	std::map<std::string, Channel> channelMap;
 	
-	int socketServer = serverSetup();
+	int socketServer = serverSetup(entries.first);
 	if (socketServer == -1)
 		return (1);
+	std::cout << "SERVER PASSWORD : " << entries.second << std::endl;
 	signalOn(socketServer);	
 
 	fd_set currentSockets;

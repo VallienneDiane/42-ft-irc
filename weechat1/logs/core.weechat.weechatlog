@@ -1,0 +1,43 @@
+2022-10-20 11:04:08		New key binding (context "default"): meta2-1;5P => /bar scroll buflist * -100%
+2022-10-20 11:04:08		New key binding (context "default"): meta2-1;5Q => /bar scroll buflist * +100%
+2022-10-20 11:04:08		New key binding (context "default"): meta-meta-OQ => /bar scroll buflist * e
+2022-10-20 11:04:08		New key binding (context "default"): meta2-1;3Q => /bar scroll buflist * e
+2022-10-20 11:04:08		New key binding (context "default"): meta2-1;3P => /bar scroll buflist * b
+2022-10-20 11:04:08		New key binding (context "default"): meta-meta-OP => /bar scroll buflist * b
+2022-10-20 11:04:08		New key binding (context "default"): meta-OQ => /bar scroll buflist * +100%
+2022-10-20 11:04:08		New key binding (context "default"): meta-OP => /bar scroll buflist * -100%
+2022-10-20 11:04:08		New key binding (context "default"): meta-meta2-12~ => /bar scroll buflist * e
+2022-10-20 11:04:08		New key binding (context "default"): meta-meta2-11~ => /bar scroll buflist * b
+2022-10-20 11:04:08		New key binding (context "default"): meta2-12^ => /bar scroll buflist * +100%
+2022-10-20 11:04:08		New key binding (context "default"): meta2-12~ => /bar scroll buflist * +100%
+2022-10-20 11:04:08		New key binding (context "default"): meta2-11^ => /bar scroll buflist * -100%
+2022-10-20 11:04:08		New key binding (context "default"): meta2-11~ => /bar scroll buflist * -100%
+2022-10-20 11:04:08	=!=	fifo: unable to create pipe for remote control (weechat1/weechat_fifo): error 95 Operation not supported
+2022-10-20 11:04:08		Plugins loaded: alias, buflist, charset, exec, fifo, fset, irc, logger, perl, python, relay, ruby, script, spell, trigger, xfer
+2022-10-20 11:04:35		irc: server added: pouet
+2022-10-20 11:04:48	=!=	irc: unable to add temporary server "noo" because the addition of temporary servers with command /connect is currently disabled
+2022-10-20 11:04:48	=!=	irc: if you want to add a standard server, use the command "/server add" (see /help server); if you really want to add a temporary server (NOT SAVED), turn on the option irc.look.temporary_servers
+2022-10-20 11:05:12		[irc]  /connect  [<server> [<server>...]] [-<option>[=<value>]] [-no<option>] [-nojoin] [-switch]
+2022-10-20 11:05:12		                 -all|-auto|-open [-nojoin] [-switch]
+2022-10-20 11:05:12		connect to IRC server(s)
+2022-10-20 11:05:12		    server: server name, which can be:
+2022-10-20 11:05:12		            - internal server name (added by /server add, recommended usage)
+2022-10-20 11:05:12		            - hostname/port or IP/port, port is 6667 by default
+2022-10-20 11:05:12		            - URL with format: irc[6][s]://[nickname[:password]@]irc.example.org[:port][/#channel1][,#channel2[...]]
+2022-10-20 11:05:12		            Note: for an address/IP/URL, a temporary server is added (NOT SAVED), see /help irc.look.temporary_servers
+2022-10-20 11:05:12		    option: set option for server (for boolean option, value can be omitted)
+2022-10-20 11:05:12		  nooption: set boolean option to 'off' (for example: -nossl)
+2022-10-20 11:05:12		      -all: connect to all servers defined in configuration
+2022-10-20 11:05:12		     -auto: connect to servers with autoconnect enabled
+2022-10-20 11:05:12		     -open: connect to all opened servers that are not currently connected
+2022-10-20 11:05:12		   -nojoin: do not join any channel (even if autojoin is enabled on server)
+2022-10-20 11:05:12		   -switch: switch to next server address
+2022-10-20 11:05:12		To disconnect from a server or stop any connection attempt, use command /disconnect.
+2022-10-20 11:05:12		Examples:
+2022-10-20 11:05:12		  /connect freenode
+2022-10-20 11:05:12		  /connect irc.oftc.net/6667
+2022-10-20 11:05:12		  /connect irc6.oftc.net/6667 -ipv6
+2022-10-20 11:05:12		  /connect irc6.oftc.net/6697 -ipv6 -ssl
+2022-10-20 11:05:12		  /connect my.server.org/6697 -ssl -password=test
+2022-10-20 11:05:12		  /connect irc://nick@irc.oftc.net/#channel
+2022-10-20 11:05:12		  /connect -switch

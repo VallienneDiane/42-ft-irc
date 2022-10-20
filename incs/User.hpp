@@ -22,6 +22,7 @@ class User
 		std::string 				_nickname;
 		std::string 				_username;
 		std::string 				_realname;
+		bool						_pass;
 		unsigned int				_id;
         std::string     			_command;
 		std::string					_hostname;
@@ -43,6 +44,7 @@ class User
 		void						setRealname(std::string realname);
 		void						setId(unsigned int id);
 		void						setHostname(std::string hostname);
+		void						setPassOk(void);
 		
 		///////// [GETTERS]
 		int							getSocket(void) const;
