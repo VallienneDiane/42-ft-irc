@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   loginMsg.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 16:04:25 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:48:00 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:40:33 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
         {
             current.setNickname(nickname);
 			if (fullyRegistered(current))
-            	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
+            	numericReply(RPL_WELCOME, socketClient, userMap, NULL);
         }
         else
         {
@@ -123,7 +123,7 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 
 	if (!current.getUsername().empty())
 	{
-		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
+		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, NULL);
 		return (0);
 	}
 	if (username.size() < 5)
@@ -139,6 +139,6 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 		username[4].assign("Gordon Freeman");
 	current.setRealname(username[4]);
 	if (fullyRegistered(current))
-	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
+	numericReply(RPL_WELCOME, socketClient, userMap, NULL);
 	return (0);
 }

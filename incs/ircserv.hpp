@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 11:47:17 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:41:32 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 
 class Channel;
 
-#define nullptr 0
+// #define nullptr NULL
 #define SERVER_TALKING ":pouet_irc "
 #define SERVER_NAME "pouet_irc"
 #define SERVER_DESCRIPTION " Welcome to pouet irc "
@@ -88,4 +88,5 @@ bool						names(int socketClient, std::string channelName, std::map<int, User> &
 bool						topic(int socketClient, std::string channel, std::vector<std::string> topic, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						quit(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 void						informAllUsers(std::set<int> userSet, std::string msg);
+bool						notice(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 #endif

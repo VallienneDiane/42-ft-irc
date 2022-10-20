@@ -19,7 +19,7 @@ void	setPass(std::string pass) {
 bool	passHandle(User &user, std::vector<std::string> &content, std::map<int, User> &userMap) {
 	if (user.getPass())
 	{
-		numericReply(ERR_ALREADYREGISTERED, user.getSocket(), userMap, nullptr);
+		numericReply(ERR_ALREADYREGISTERED, user.getSocket(), userMap, NULL);
 		return false;
 	}
 	if (content.size() < 2) {
@@ -27,7 +27,7 @@ bool	passHandle(User &user, std::vector<std::string> &content, std::map<int, Use
 		return true;
 	}
 	if (getPass().compare(content[1])) {
-		numericReply(ERR_PASSWDMISMATCH, user.getSocket(), userMap, nullptr);
+		numericReply(ERR_PASSWDMISMATCH, user.getSocket(), userMap, NULL);
 		return true;
 	}
 	user.setPassOk();

@@ -41,7 +41,7 @@ In term :
 
 	/server add cornichon 127.0.0.1/6000
 
-	/connect cornichon
+	/connect cornichon -password=
 
 	/disconnect
 

@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 15:04:35 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 13:07:17 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:31:15 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 #define RPL_TOPIC 332
 #define RPL_TOPICWHOTIME 333
 // INVITE
-#define ERR_USERONCHANNEL 443
+// #define ERR_USERONCHANNEL 443
 // KICK
 #define ERR_USERNOTINCHANNEL 441
 #define ERR_BADCHANMASK 476
