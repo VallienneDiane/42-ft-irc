@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ircserv.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:42:48 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/20 11:47:17 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 # include <csignal>
 # include <vector>
 # include <algorithm>
-
+# include <sys/time.h>
+# include <sstream>
 # include "User.hpp"
 # include "Channel.hpp"
 # include "numericReply.hpp"
