@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:30:59 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:33:17 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context)
 {
 	std::string str;
+	std::string msg;
 	User & user = userMap[socketClient];
 	switch(error)
 	{
@@ -116,13 +117,11 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += *context;
 			sendMsg(socketClient, str);
 			break;
-		case 482:
-			str += SERVER_TALKING;
-			str += " 482 ";
+		case 333:
+			str = SERVER_TALKING;
+			str += "333 ";
 			str += *context;
-			str += " :You are not the sheriff here !";
 			sendMsg(socketClient, str);
-			break;
 		//INVITE
 		case 443:
 			std::cout << "<client> <nick> <channel> :is already on channel" << std::endl;
@@ -132,11 +131,18 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_TALKING;
 			str += "441 ";
 			str += *context;
-			str += " :Not on that channel";
+			str += " :They aren't on that channel";
 			sendMsg(socketClient, str);
 			break;
 		case 476:
 			std::cout << "<channel> :Bad Channel Mask" << std::endl;
+			break;
+		case 482:
+			str += SERVER_TALKING;
+			str += "482 ";
+			str += *context;
+			str += " :You're not channel operator";
+			sendMsg(socketClient, str);
 			break;
 		//PRIVMSG
 		case 401:
