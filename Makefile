@@ -20,6 +20,7 @@ PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
 
 LST_SRCS		=	main.cpp 			\
+					passHandler.cpp		\
 					iomanagement.cpp 	\
 					Channel.cpp 		\
 					User.cpp 			\

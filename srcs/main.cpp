@@ -148,7 +148,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	return ;
 }
 
-int main(int ac, char **av)  // ./ircserv [port] [passwd]
+int main(int ac, char **av)
 {
 	std::pair<int, std::string>	entries = parseEntries(ac, av);
 
@@ -158,7 +158,8 @@ int main(int ac, char **av)  // ./ircserv [port] [passwd]
 	int socketServer = serverSetup(entries.first);
 	if (socketServer == -1)
 		return (1);
-	std::cout << "SERVER PASSWORD : " << entries.second << std::endl;
+	setPass(entries.second);
+	std::cout << "SERVER PASSWORD : " << getPass() << std::endl;
 	signalOn(socketServer);	
 
 	fd_set currentSockets;

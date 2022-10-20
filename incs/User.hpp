@@ -52,6 +52,7 @@ class User
 		std::string 				getNickname(void) const;
 		std::string 				getUsername(void) const;
 		std::string 				getRealname(void) const;
+		bool						getPass() const;
 		unsigned int				getId(void) const;
 		std::string					getHostname(void) const;
 		std::set<std::string>		getChannels(void) const;

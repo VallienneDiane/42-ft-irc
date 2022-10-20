@@ -74,11 +74,15 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			sendMsg(socketClient, str);
 			break;
 		case 462:
-			std::cout << "<client> :You may not reregister" << std::endl;
+			str += SERVER_TALKING;
+			str += "462 :You may not reregister";
+			sendMsg(socketClient, str);
 			break;
 		// OPER
 		case 464:
-			std::cout << "<client> :Password incorrect" << std::endl;
+			str += SERVER_TALKING;
+			str += "464 :Incorrect password";
+			sendMsg(socketClient, str);
 			break;
 		case 491:
 			std::cout << "<client> :No O-lines for your host" << std::endl;
@@ -155,7 +159,9 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		//OTHER ERRORS
 		case 451:
 			str += SERVER_TALKING;
-			str += "451 :You have not registered";
+			str += "451 ";
+			str += ":";
+			str += *context;
 			sendMsg(socketClient, str);
 			break;
 	}

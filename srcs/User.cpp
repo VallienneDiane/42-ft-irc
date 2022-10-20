@@ -62,6 +62,7 @@ std::string 				User::getPasswd(void) const {return (this->_passwd);}
 std::string 				User::getNickname(void) const {return (this->_nickname);}
 std::string 				User::getUsername(void) const {return (this->_username);}
 std::string 				User::getRealname(void) const {return (this->_realname);}
+bool						User::getPass(void) const {return (this->_pass);}
 unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
 std::set<std::string>	 	User::getChannels(void) const {return (this->_channels);}
