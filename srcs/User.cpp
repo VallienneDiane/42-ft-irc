@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:46:13 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/20 13:03:31 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,14 +100,20 @@ void	User::addPrivMsg(int userSocket)
 
 void	User::removeChannel(std::string channelName)
 {
-	std::set<std::string>::iterator it = this->_channels.begin();
-	std::set<std::string>::iterator end = this->_channels.end();
-	while (it != end)
-	{
-		if ((*it).compare(channelName) == 0)
-			this->_channels.erase(it);
-		it++;
-	}
+
+	// std::set<std::string>::iterator it = this->_channels.begin();
+	// std::set<std::string>::iterator end = this->_channels.end();
+	// while (it != end)
+	// {
+	// 	if ((*it).compare(channelName) == 0)
+	// 	{
+			
+			this->_channels.erase(channelName);
+	// 	}
+	// 	std::cout << "ICI" << std::endl;
+	// 	it++;
+	// 	std::cout << "LA" << std::endl;
+	// }
 }
 
 void	User::removePrivMsg(int userSocket)
@@ -117,7 +123,7 @@ void	User::removePrivMsg(int userSocket)
 	while (it != end)
 	{
 		if ((*it) == userSocket)
-			this->_privMsg.erase(it);
+			this->_privMsg.erase(userSocket);
 		it++;
 	}
 }

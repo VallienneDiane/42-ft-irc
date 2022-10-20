@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/18 10:58:00 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/20 10:31:51 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, C
 	chan.delUser(toKick.getSocket());
 	if (chan.isInOperSet(toKick.getSocket()).first)
 		chan.delOper(toKick.getSocket());
-	toKick.removeChannel(chan.getName());
+	toKick.removeChannel(chan.getName()); /////////// SEGFAULT ICI
 }
 
 void	kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
