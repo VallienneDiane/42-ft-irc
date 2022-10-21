@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:24:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 16:32:12 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 10:40:34 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 		buffer = buffer + (*it) + " ";
 	if(channelMap.find(channel) != channelMap.end())
 	{
-		if(channel.front() == '#') //IF CHANNEL BEGIN WITH #
+		if(channel[0] == '#') //IF CHANNEL BEGIN WITH #
 		{
 			if(channelMap.find(channel)->second.isInUserSet(socketClient).first == false) //IF USER NOT IN CHANNEL
 			{

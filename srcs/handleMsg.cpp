@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 16:38:03 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 10:52:43 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,11 +139,11 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 17:
 			std::cout << "privmsg " << std::endl;
-			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap);
+			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, "privmsg");
 			break;
 		case 18:
 			std::cout << "notice " << std::endl;
-			notice(socketClient, clientInfos, writeSockets, userMap, channelMap);
+			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, "notice");
 			break;
 		default:
 			break;
