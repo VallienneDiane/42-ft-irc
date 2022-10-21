@@ -85,7 +85,7 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
         {
             current.setNickname(nickname);
 			if (fullyRegistered(current))
-            	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
+            	numericReply(RPL_WELCOME, socketClient, userMap, NULL);
         }
         else
         {
@@ -123,7 +123,7 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 
 	if (!current.getUsername().empty())
 	{
-		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, nullptr);
+		numericReply(ERR_ALREADYREGISTERED, socketClient, userMap, NULL);
 		return (0);
 	}
 	if (username.size() < 5)
@@ -139,6 +139,6 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 		username[4].assign("Gordon Freeman");
 	current.setRealname(username[4]);
 	if (fullyRegistered(current))
-	numericReply(RPL_WELCOME, socketClient, userMap, nullptr);
+	numericReply(RPL_WELCOME, socketClient, userMap, NULL);
 	return (0);
 }

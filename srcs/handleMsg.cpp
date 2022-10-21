@@ -67,7 +67,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 	}
 	if (!user.getPass() && i > 2)
 	{
-		numericReply(ERR_PASSWDMISMATCH, socketClient, userMap, nullptr);
+		numericReply(ERR_PASSWDMISMATCH, socketClient, userMap, NULL);
 		return true;
 	}
 	if (!fullyRegistered(user) && i > 5)

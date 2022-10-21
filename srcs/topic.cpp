@@ -22,7 +22,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 		buffer = buffer + (*it) + " ";
 	if(channelMap.find(channel) != channelMap.end())
 	{
-		if(channel.front() == '#') //IF CHANNEL BEGIN WITH #
+		if(channel[0] == '#') //IF CHANNEL BEGIN WITH #
 		{
 			if(channelMap.find(channel)->second.isInUserSet(socketClient).first == false) //IF USER NOT IN CHANNEL
 			{

@@ -175,7 +175,7 @@ int main(int ac, char **av)
 		readSockets = currentSockets;		// because select is destructive, it keeps only the sockets ready for reading/writing but we want to keep tracks of all sockets we are watching
 		writeSockets = currentSockets;
 		
-		if (select(FD_SETSIZE, &readSockets, &writeSockets, nullptr, nullptr) == -1)
+		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, NULL) == -1)
 		{
 			std::cerr << "select() error" << std::endl;
 			return (1);

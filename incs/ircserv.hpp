@@ -51,7 +51,6 @@
 
 class Channel;
 
-#define nullptr 0
 #define SERVER_TALKING ":pouet_irc "
 #define SERVER_NAME "pouet_irc"
 #define SERVER_DESCRIPTION " Welcome to pouet irc "
