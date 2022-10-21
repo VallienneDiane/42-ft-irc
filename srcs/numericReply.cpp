@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 15:33:17 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 11:10:21 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 		// OPER
 		case 464:
 			str += SERVER_TALKING;
-			str += "464 :Incorrect password";
+			str += " 464 ";
+			str += " Password incorrect";
 			sendMsg(socketClient, str);
 			break;
 		case 491:
@@ -128,10 +129,9 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "333 ";
 			str += *context;
 			sendMsg(socketClient, str);
-            break;
 		//INVITE
 		case 443:
-			std::cout << "<client> <nick> <channel> :is already on channel" << std::endl;
+			// std::cout << "<client> <nick> <channel> :is already on channel" << std::endl;
 			break;
 		//KICK
 		case 441:

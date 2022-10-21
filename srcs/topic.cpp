@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 16:24:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/20 15:36:33 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 11:11:09 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 				if(buffer.empty()) //IF EMPTY STRING, CHANNEL TOPIC HAS TO BE CLEARED
 				{
 					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
-					channelMap.find(channel)->second.setTopic(buffer);
+					channelMap.find(channel)->second.setTopic(NULL);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{
