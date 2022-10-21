@@ -15,7 +15,7 @@
 #include "../incs/User.hpp"
 /* 
 	The client-server infrastructure mean a server socket listens for one or more connections from a client socket.
-	Two sockets must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
+	Two sockets (socket client and socket server) must be of the same type and in the same domain (Unix domain or Internet domain) to enable communication btw hosts.
 */
 
 std::pair<int, std::string>	parseEntries(int ac, char **av)
@@ -29,13 +29,15 @@ std::pair<int, std::string>	parseEntries(int ac, char **av)
 
 int serverSetup(int port)
 {
-	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// listening Socket
+	// CREATE SOCKET AND DEFINE SERVER ADDR
+	int socketServer = socket(AF_INET, SOCK_STREAM, 0);		// create the socket (AF_INET : socket family, Sock_STREAM : type of socket)
 	struct sockaddr_in addrServer;							// in : ipv4  in6 : ipv6, contains technique informations of socket
-	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");
+	addrServer.sin_addr.s_addr = inet_addr("127.0.0.1");	// define server address
 	addrServer.sin_family = AF_INET;
 	addrServer.sin_port = htons(port);						// host to network
 	unsigned int	sizeAddr = sizeof (addrServer);
-	// BIND ADDR IP & PORT TO A SOCKET
+	// BIND ADDR IP & PORT TO THE SOCKET
+	// Bind will attach the socket directly to the port and address we defined in the SOCKADDR_IN struct.
 	if (bind(socketServer, (const struct sockaddr *)&addrServer, sizeAddr) == -1)
 	{
 		std::cerr << "Can't bind" << std::endl;
@@ -44,7 +46,8 @@ int serverSetup(int port)
 	}
 	else
 		getsockname(socketServer, (struct sockaddr *) &addrServer, &sizeAddr);
-	// SOCKET WAITING CONNEXIONS, FIX THE WAITING LIST
+	// LISTEN THE PORT ON THE SOCKET, WAITING CONNEXIONS
+	// Listen will listen to the port on the socket. The 2nd parameter is the max number of connections that will be listened to at the same time.
 	if (listen(socketServer, SOMAXCONN) == -1)								
 	{
 		std::cerr << "Can't listen" << std::endl;
@@ -73,8 +76,9 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 	int socketClient;
 	struct sockaddr_in addrClient;
 	socklen_t csize = sizeof(addrClient);
-	// User	newUser;
-	// ACCEPT CONNEXION DEMAND. CREATE NEW SOCKET AND SEND BACK FD FOR THIS SOCKET : DIALOG SOCKET
+
+	// ACCEPT CONNECTION DEMAND 
+	// Accept a connection on a socket and send back fd for this socket = dialog socket
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
 	if (socketClient == -1)
 	{
@@ -103,15 +107,14 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 {
 	std::string buffer;
     std::string sentence;
-	int bytesReceived = receiveMsg(socketClient, buffer);
+	int bytesReceived = receiveMsg(socketClient, buffer); //RECEIVE A CLIENT MSG ON A SOCKET
 
 	std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
-
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
 		close(socketClient);
-		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
+		FD_CLR(socketClient, currentSockets); // remove socket to the set of sockets we are watching
 		return ;
 	}
 	if (bytesReceived == 0)
@@ -119,31 +122,23 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		std::cout << "Client disconnected" << std::endl;
 		userMap.erase(socketClient);
 		close(socketClient);
-		FD_CLR(socketClient, currentSockets);		// remove socket to the set of sockets we are watching
+		FD_CLR(socketClient, currentSockets); // remove socket to the set of sockets we are watching
 		return ;	
 	}
-	else
+	else //RECEIVE CLIENT CMDS AND EXECUTE IN FUNCTION getClientMsg()
 	{
         User &current = userMap.find(socketClient)->second;
         current.appendCommand(buffer);
 		sentence = current.deliverCommand();
 		while (!sentence.empty())
         {
-            if (getInfosClient(socketClient, sentence, writeSockets, userMap, channelMap))
+            if (getClientMsg(socketClient, sentence, writeSockets, userMap, channelMap))
             {
                 FD_CLR(socketClient, currentSockets);
                 return ;
             }
             sentence = current.deliverCommand();
         }
-		//////// Echo msg to all clients
-		(void)writeSockets;
-		/*for (int i = 0; i < FD_SETSIZE; i++)
-		{
-			if (FD_ISSET(i, writeSockets))
-				if (i != socketClient)
-					sendMsg(i, buffer);
-		}*/
 	}
 	return ;
 }
@@ -155,26 +150,25 @@ int main(int ac, char **av)
 	std::map<int, User> userMap;
 	std::map<std::string, Channel> channelMap;
 	
-	int socketServer = serverSetup(entries.first);
+	int socketServer = serverSetup(entries.first); //create socket, bind port & socket, listen port
 	if (socketServer == -1)
 		return (1);
-	setPass(entries.second);
-	std::cout << "SERVER PASSWORD : " << getPass() << std::endl;
+	setPass(entries.second); //set server passwd
 	signalOn(socketServer);	
 
+	// fd struct : stock all fd ready to read/write
 	fd_set currentSockets;
 	fd_set readSockets;
 	fd_set writeSockets;
-
 	// INITIALIZE CURRENT SET
-	FD_ZERO(&currentSockets);				// initialize
+	FD_ZERO(&currentSockets);
 	FD_SET(socketServer, &currentSockets);	// add serverSocket to the set of sockets we are watching
-	
 	while (1)
 	{
-		readSockets = currentSockets;		// because select is destructive, it keeps only the sockets ready for reading/writing but we want to keep tracks of all sockets we are watching
+		readSockets = currentSockets; // because select is destructive, it keeps only the sockets ready for reading/writing but we want to keep tracks of all sockets we are watching
 		writeSockets = currentSockets;
-		
+		//SELECT : NON-BLOCKING FUNCTION - EQUIVALENT TO POLL()
+		//allow a program to monitor multiple fd, waiting for at least one of the fd to become "ready" for some actions like read or write
 		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, NULL) == -1)
 		{
 			std::cerr << "select() error" << std::endl;
@@ -182,26 +176,25 @@ int main(int ac, char **av)
 		}
 		for (int i = 0; i < FD_SETSIZE; i++)
 		{
-			if (FD_ISSET(i, &readSockets))
+			if (FD_ISSET(i, &readSockets)) // if socket is ready to read
 			{
-				if (i == socketServer)
+				if (i == socketServer) // if socket server same that socket client : REQUEST NEW CONNECTION/USER
 				{
-					// this is a new connection
 					std::cout << "New connection requested" << std::endl;
+					// ACCEPT CONNECTION DEMAND
 					int socketClient = acceptConnection(socketServer, userMap);
 					if (socketClient == -1)
 						return (1);
-					FD_SET(socketClient, &currentSockets);			// add a new clientSocket to the set of sockets we are watching
+					FD_SET(socketClient, &currentSockets); // add a new clientSocket to the set of sockets we are watching
 					FD_SET(socketClient, &writeSockets);
 				}
-				else
+				else //Already know user/socket : GET CLIENT CMDS
 				{
-					// std::cout << "something to do with connection " << i << std::endl;
-					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap);		// do what we want to do with this connection
+					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap); // RECEIVE CLIENT CMDS
 				}
 			}
 		}
 	}
-	close(socketServer); // TO DO IN signalHandler
+	close(socketServer);
 	return (0);
 }

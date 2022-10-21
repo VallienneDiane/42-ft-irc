@@ -27,7 +27,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_NAME;
 			str += " Network, ";
 			str += userSource(user);
-			std::cout << "welcome msg : " << str << std::endl;
+			// std::cout << "welcome msg : " << str << std::endl;
 			sendMsg(socketClient, str);
 			break;
 		case 341:

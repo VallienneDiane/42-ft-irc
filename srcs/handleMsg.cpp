@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/21 11:33:28 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:33:07 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,23 @@ std::vector<std::string> splitMsg(std::string content)
 	char *words = new char [content.length()+1]; //to copy string to chat to use strtok
 	std::strcpy(words, content.c_str()); 		//copy all client infos in words (cap, nick, user)
 	char *line = strtok(words, " ");			 //split words into tokens with " "
-	std::vector<std::string> clientInfos;		//create tab with client infos
+	std::vector<std::string> clientMsg;		//create tab with client infos
 	
 	while(line != NULL)
 	{
-		clientInfos.push_back(line);
+		clientMsg.push_back(line);
 		line = strtok(NULL, "\r \n");
 	}
 	delete[] words;
-	return (clientInfos);
+	return (clientMsg);
 }
 
-bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string> clientInfos;
-	clientInfos = splitMsg(content);
+	std::vector<std::string> clientMsg;
+	clientMsg = splitMsg(content);
 	std::cout << content << std::endl;
-	std::vector<std::string>::iterator it = clientInfos.begin();
+	std::vector<std::string>::iterator it = clientMsg.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
 		"CAP",
@@ -56,7 +56,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 		"PRIVMSG",
 		"NOTICE",
 	};
-	std::cout << BGREEN << "CMD name : " << *(clientInfos.begin()) << END << std::endl;
+	std::cout << BGREEN << "CMD name : " << *(clientMsg.begin()) << END << std::endl;
 	
 	int i = 0;
 	int size = sizeof(cmds)/sizeof(std::string);
@@ -86,7 +86,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 2:
 			std::cout << "pass " << std::endl;
-			return (passHandle(user, clientInfos, userMap));
+			return (passHandle(user, clientMsg, userMap));
 			break;
 		case 3:
 			std::cout << "nick " << std::endl;
@@ -94,7 +94,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 4:
 			std::cout << "user " << std::endl;
-			return (userHandle(socketClient, clientInfos, userMap));
+			return (userHandle(socketClient, clientMsg, userMap));
 		case 5:
 			std::cout << "ping " << std::endl;
 			return (pong(socketClient, content));
@@ -117,11 +117,11 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			return (join(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 11:
-			return(part(socketClient, *(++it), clientInfos, userMap, channelMap));
+			return(part(socketClient, *(++it), clientMsg, userMap, channelMap));
 			break;
 		case 12:
 			std::cout << "topic " << std::endl;
-			return(topic(socketClient, *(++it),clientInfos, userMap, channelMap));
+			return(topic(socketClient, *(++it),clientMsg, userMap, channelMap));
 			break;
 		case 13:
 			std::cout << "names " << std::endl;
@@ -132,19 +132,19 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 15:
 			std::cout << "invite " << std::endl;
-			invite(user, clientInfos, userMap, channelMap);
+			invite(user, clientMsg, userMap, channelMap);
 			break;
 		case 16:
 			std::cout << "kick " << std::endl;
-			kick(socketClient, clientInfos, userMap, channelMap);
+			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 17:
 			std::cout << MAGENTA << "privmsg " << std::endl;
-			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, 1);
+			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 1);
 			break;
 		case 18:
 			std::cout << "notice " << std::endl;
-			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, 2);
+			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 2);
 			break;
 		default:
 			break;

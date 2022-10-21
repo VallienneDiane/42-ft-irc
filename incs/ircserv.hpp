@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 17:00:08 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/21 11:26:55 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 17:33:23 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ std::string					getPass();
 int							capMsg(const int socket);
 int							welcomeMsg(const int socket);
 std::vector<std::string>	splitMsg(std::string content);
-bool						getInfosClient(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						getClientMsg(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						nickHandle(int socketClient, std::string &nickname, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool    					containedNickname(const std::string &name, const std::map<int, User> &userMap);
 bool						userHandle(int socketClient, std::vector<std::string> &username, std::map<int, User> &userMap);
