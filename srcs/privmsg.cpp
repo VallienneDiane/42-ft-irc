@@ -6,19 +6,18 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 10:41:24 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/21 11:11:02 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 11:39:50 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/ircserv.hpp"
 
-void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, std::string type)
+void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, int type)
 {
 	std::string buffer;
-	// std::cout << type << std::endl;
-	if (type.compare("privsmg") == 0)
+	if (type == 1)
 		buffer = userSource(userMap[socketClient]) + " PRIVMSG " + channel.getName();
-	else if (type.compare("notice") == 0)
+	else
 		buffer = userSource(userMap[socketClient]) + " NOTICE " + channel.getName();
 	while (msgBegin != msgEnd)
 		buffer = buffer + " " + *msgBegin++;
@@ -32,13 +31,12 @@ void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std:
 	}
 }
 
-void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, std::string type)
+void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, int type)
 {
 	std::string buffer;
-	// std::cout << type << std::endl;
-	if (type.compare("privsmg") == 0)
+	if (type == 1)
 		buffer = userSource(userMap[socketClient]) + " PRIVMSG " + user.getNickname();
-	else if (type.compare("notice") == 0)
+	else if (type == 2)
 		buffer = userSource(userMap[socketClient]) + " NOTICE " + user.getNickname();
 	while (msgBegin != msgEnd)
 		buffer = buffer + " " + *msgBegin++;
@@ -55,7 +53,7 @@ void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
 	userMap[socketUser].addPrivMsg(socketClient);
 }
 
-bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, std::string type)
+bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
 {
 	std::vector<std::string>::iterator it = msg.begin();
 	std::vector<std::string>::iterator msgEnd = msg.end();

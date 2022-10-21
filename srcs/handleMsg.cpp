@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 11:47:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/21 11:07:14 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 11:33:28 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 		"INVITE",
 		"KICK",
 		"PRIVMSG",
-		"NOTICE"
+		"NOTICE",
 	};
 	std::cout << BGREEN << "CMD name : " << *(clientInfos.begin()) << END << std::endl;
 	
@@ -138,12 +138,12 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			kick(socketClient, clientInfos, userMap, channelMap);
 			break;
 		case 17:
-			std::cout << "privmsg " << std::endl;
-			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, "privmsg");
+			std::cout << MAGENTA << "privmsg " << std::endl;
+			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, 1);
 			break;
 		case 18:
 			std::cout << "notice " << std::endl;
-			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, "notice");
+			privmsg(socketClient, clientInfos, writeSockets, userMap, channelMap, 2);
 			break;
 		default:
 			break;
