@@ -32,9 +32,9 @@ In term :
 
 The Direct Client-to-Client Protocol (DCC) has been the primary method of establishing connections directly between IRC clients for a long time now. Once established, DCC connections bypass the IRC network and servers, allowing for all sorts of data to be transferred between clients including files and direct chat sessions.
 
-In irc client : 
-
-  for example send file "/home/foo/bar.txt" to nick "nickname":
+In irc client :
+	
+	for example send file "/home/foo/bar.txt" to nick "nickname":
 		/dcc send nickname /home/foo/bar.txt
 		/dcc send nickname /path/image.jpeg
 
