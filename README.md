@@ -9,30 +9,12 @@ Start program:
 	./ircserv <port> <password>
 
 
-## Steps
+## Steps to do the project
 1. Download client (Weechat pe)
 2. Create socket to make the connection between server and client
 3. Add commands (connection msg, channel operations, sending msg, operator msg etc)
 4. Handle the channel operator and basic users
 
-## User
-- Nickname
-- Username
-- Join or leave channel
-- Send and Receive private messages
-
-## Channel Management
-- Topic
-- Ban and exception
-- Invitation
-- Tracking recently used (channel unavailable if everyone leave)
-
-## Channel operator
-Identified with @ for standard channel operator and % for halfops next to nickname
-- Kick : eject user from channel
-- Mode : change channel's modes
-- Invite : invite user to channel (+i)
-- Topic : change channel topic (+t)
 
 ## Commands to install Weechat and access to the client
 
@@ -58,7 +40,7 @@ In irc client :
 
 ## Sources
 
--Articles :
+- Articles :
 
 Les Sockets C++ : 
 https://c.developpez.com/cours/sockets-c-cpp-demystifies/
@@ -79,7 +61,7 @@ DCC :
 https://modern.ircdocs.horse/dcc.html
 
 
--Videos :
+- Videos :
 
 Weechat : adding a server and connection : 
 https://www.youtube.com/watch?v=v0HoaQIz39w
