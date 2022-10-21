@@ -6,17 +6,17 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/19 13:46:13 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/21 10:54:14 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/User.hpp"
 
 /****************** CANONIC FORM ******************/
-User::User(void) : _socket(0), _pass(false), _id(0)
+User::User(void) : _socket(0), _id(0)
 {}
 
-User::User(const User &src) : _socket(src._socket), _passwd(src._passwd), _nickname(src._nickname), _username(src._username), _realname(src._realname), _pass(src._pass), _id(src._id), _command(src._command), _hostname(src._hostname), _channels(src._channels), _privMsg(src._privMsg)
+User::User(const User &src) : _socket(src._socket), _passwd(src._passwd), _nickname(src._nickname), _username(src._username), _realname(src._realname), _id(src._id), _command(src._command), _hostname(src._hostname), _channels(src._channels), _privMsg(src._privMsg)
 {}
 
 User & User::operator=(const User &src)
@@ -26,7 +26,6 @@ User & User::operator=(const User &src)
 	this->_nickname = src._nickname;
 	this->_username = src._username;
 	this->_realname = src._realname;
-	this->_pass = src._pass;
     this->_id = src._id;
     this->_command = src._command;
 	this->_hostname = src._hostname;
@@ -103,14 +102,20 @@ void	User::addPrivMsg(int userSocket)
 
 void	User::removeChannel(std::string channelName)
 {
-	std::set<std::string>::iterator it = this->_channels.begin();
-	std::set<std::string>::iterator end = this->_channels.end();
-	while (it != end)
-	{
-		if ((*it).compare(channelName) == 0)
-			this->_channels.erase(it);
-		it++;
-	}
+
+	// std::set<std::string>::iterator it = this->_channels.begin();
+	// std::set<std::string>::iterator end = this->_channels.end();
+	// while (it != end)
+	// {
+	// 	if ((*it).compare(channelName) == 0)
+	// 	{
+			
+			this->_channels.erase(channelName);
+	// 	}
+	// 	std::cout << "ICI" << std::endl;
+	// 	it++;
+	// 	std::cout << "LA" << std::endl;
+	// }
 }
 
 void	User::removePrivMsg(int userSocket)
@@ -120,7 +125,7 @@ void	User::removePrivMsg(int userSocket)
 	while (it != end)
 	{
 		if ((*it) == userSocket)
-			this->_privMsg.erase(it);
+			this->_privMsg.erase(userSocket);
 		it++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/13 12:28:26 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/19 13:45:05 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/21 10:43:10 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 	std::vector<std::string>::iterator end = chanNames.end();
 	while (name != end)
 	{
-		if ((*name)[0] != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
+		if (name->front() != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
 			name->insert(0, 1, '#');
 		//////////// NEW CHANNEL
 		if (channelMap.find(*name) == channelMap.end())
