@@ -135,6 +135,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "333 ";
 			str += *context;
 			sendMsg(socketClient, str);
+			break;
 		//INVITE
 		case 443:
 			// std::cout << "<client> <nick> <channel> :is already on channel" << std::endl;
