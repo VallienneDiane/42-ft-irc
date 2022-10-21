@@ -32,6 +32,7 @@ LST_SRCS		=	main.cpp 			\
 					numericReply.cpp	\
 					privmsg.cpp			\
 					part.cpp			\
+					invite.cpp			\
 					names.cpp			\
 					topic.cpp			\
 					quit.cpp			\
