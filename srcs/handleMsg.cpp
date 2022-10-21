@@ -132,6 +132,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 15:
 			std::cout << "invite " << std::endl;
+            invite(user, clientInfos, userMap, channelMap);
 			break;
 		case 16:
 			std::cout << "kick " << std::endl;

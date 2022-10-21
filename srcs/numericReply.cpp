@@ -30,6 +30,12 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			std::cout << "welcome msg : " << str << std::endl;
 			sendMsg(socketClient, str);
 			break;
+		case 341:
+			str += SERVER_TALKING;
+			str += "341 ";
+			str += *context;
+			sendMsg(socketClient, str);
+			break;
 		// NICKNAME
 		case 431:
 			str += SERVER_TALKING;

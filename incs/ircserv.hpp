@@ -82,6 +82,7 @@ bool						join(int socketClient, std::string &channelNames, std::map<int, User> 
 bool						privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
 void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						invite(User &user, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 std::vector<std::string> 	splitNames(std::string &names);
 bool						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						topic(int socketClient, std::string channel, std::vector<std::string> topic, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);

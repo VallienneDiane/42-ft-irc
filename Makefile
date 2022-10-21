@@ -29,6 +29,7 @@ LST_SRCS		=	main.cpp 			\
 					loginMsg.cpp		\
 					pingPong.cpp		\
 					join.cpp			\
+					invite.cpp			\
 					numericReply.cpp	\
 					privmsg.cpp			\
 					part.cpp			\
