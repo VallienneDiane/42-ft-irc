@@ -1,6 +1,6 @@
 #include "../incs/ircserv.hpp"
 
-void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &userMap) {
+void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap) {
 	std::string	message = userSource(user) + " INVITE " + invited.getNickname() + " " + chan.getName();
 	std::string	reply = user.getNickname() + " " + invited.getNickname() + " " + chan.getName();
 	chan.addUser(invited);
@@ -9,6 +9,7 @@ void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &
 	chan.sendToUsers(message, user.getSocket());
 	message.assign(":" + invited.getNickname() + " JOIN " + chan.getName());
 	chan.sendToUsers(message, 0);
+	names(invited.getSocket(), chan.getName(), userMap, channelMap);
 }
 
 void    invite(User &user, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap) {
@@ -35,5 +36,5 @@ void    invite(User &user, std::vector<std::string> &command, std::map<int, User
 		numericReply(ERR_USERONCHANNEL, user.getSocket(), userMap, &context);
 		return ;
 	}
-	doTheInvite(user, userIt->second, chanIt->second, userMap);
+	doTheInvite(user, userIt->second, chanIt->second, userMap, channelMap);
 }

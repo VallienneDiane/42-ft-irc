@@ -142,6 +142,7 @@ bool	User::isInPrivMsg(int userSocket)
 		it++;
 	}
 	return (false);
+	//return (_privMsg.find(userSocket) != _privMsg.end());
 }
 
 /****************** STREAM OVERLOAD ******************/
