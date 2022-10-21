@@ -8,6 +8,7 @@ Start program:
 
 	./ircserv <port> <password>
 
+
 ## Steps
 1. Download client (Weechat pe)
 2. Create socket to make the connection between server and client
@@ -45,25 +46,47 @@ In term :
 
 	/disconnect
 
+## Send files using DCC
+
+The Direct Client-to-Client Protocol (DCC) has been the primary method of establishing connections directly between IRC clients for a long time now. Once established, DCC connections bypass the IRC network and servers, allowing for all sorts of data to be transferred between clients including files and direct chat sessions.
+
+In irc client : 
+
+  for example send file "/home/foo/bar.txt" to nick "nickname":
+		/dcc send nickname /home/foo/bar.txt
+		/dcc send nickname /path/image.jpeg
+
 ## Sources
 
-###Articles :
+-Articles :
 
-Les Sockets C++ : https://c.developpez.com/cours/sockets-c-cpp-demystifies/
+Les Sockets C++ : 
+https://c.developpez.com/cours/sockets-c-cpp-demystifies/
 
-Internet Relay Chat: Channel Management : https://datatracker.ietf.org/doc/html/rfc2811#section-4.2.6
+Internet Relay Chat: Channel Management : 
+https://datatracker.ietf.org/doc/html/rfc2811#section-4.2.6
 
-Modern IRC Client protocol : https://modern.ircdocs.horse/\
+Modern IRC Client protocol : 
+https://modern.ircdocs.horse/\
 
-Programmation sockets : http://tvaira.free.fr/bts-sn/reseaux/cours/cours-programmation-sockets.pdf
+Programmation sockets : 
+http://tvaira.free.fr/bts-sn/reseaux/cours/cours-programmation-sockets.pdf
 
-Logging into an irc server : http://chi.cs.uchicago.edu/chirc/irc_examples.html
+Logging into an irc server : 
+http://chi.cs.uchicago.edu/chirc/irc_examples.html
 
-###Videos :
+DCC : 
+https://modern.ircdocs.horse/dcc.html
 
-Weechat : adding a server and connection : https://www.youtube.com/watch?v=v0HoaQIz39w
 
-Creating a TCP server in C++ : https://www.youtube.com/watch?v=WDn-htpBlnU
+-Videos :
 
-How one thread listens to many sockets with select : https://www.youtube.com/watch?v=Y6pFtgRdUts
+Weechat : adding a server and connection : 
+https://www.youtube.com/watch?v=v0HoaQIz39w
+
+Creating a TCP server in C++ : 
+https://www.youtube.com/watch?v=WDn-htpBlnU
+
+How one thread listens to many sockets with select : 
+https://www.youtube.com/watch?v=Y6pFtgRdUts
 

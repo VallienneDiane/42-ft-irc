@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/12 14:55:24 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/21 11:10:21 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/10/21 11:50:31 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 464 ";
 			str += " Password incorrect";
 			sendMsg(socketClient, str);
-			break;
-		case 491:
-			std::cout << "<client> :No O-lines for your host" << std::endl;
 			break;
 		// JOIN
 		case 403:
