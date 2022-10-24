@@ -18,6 +18,8 @@ PATH_SRCS		=	srcs
 PATH_DEP		=	dep
 PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
+PATH_BOT		=	bot
+PATH_BOT_SRC	=	bot/srcs
 
 LST_SRCS		=	main.cpp 			\
 					passHandler.cpp		\
@@ -39,12 +41,17 @@ LST_SRCS		=	main.cpp 			\
 					kick.cpp			\
 					mode.cpp			\
 
+LST_BOTS_SRCS	=	fumier.cpp			\
+					chanman.cpp
+
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
+LST_BOT			=	${LST_BOTS_SRCS:.cpp=.bot}
 
 SRC =		$(addprefix ${PATH_SRCS}/,${LST_SRCS})
 DEP =		$(addprefix ${PATH_DEP}/,${LST_DEP})
 OBJS =		$(addprefix ${PATH_OBJS}/,${LST_OBJS})
+BOT_SRC =	$(addprefix)
 
 all :				${NAME} Makefile
 
@@ -63,6 +70,8 @@ ${PATH_DEP}:
 
 ${PATH_OBJS}:
 					mkdir obj
+
+${PATH_BOT}/%.exe:
 
 clean :
 					rm -rf obj dep

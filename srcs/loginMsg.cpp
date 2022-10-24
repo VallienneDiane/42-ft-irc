@@ -62,7 +62,6 @@ void	changeNickname(User &user, std::string &nickname, std::map<std::string, Cha
 	nickAnswer += " NICK ";
 	nickAnswer += nickname;
 	sendMsg(user.getSocket(), nickAnswer);
-	std::cout << "chansize = " << user.getChannels().size() << std::endl;
 	std::set<std::string>::iterator	itChanEnd = user.getChannels().end();
 	for (std::set<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; it++) {
 		std::map<std::string, Channel>::iterator	found = channelMap.find(*it);
@@ -132,6 +131,7 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 	if (username.size() < 5)
 	{
 		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &username[0]);
+		userMap.erase(socketClient);
 		return (1);
 	}
 	if (!identServer(username[1]))
