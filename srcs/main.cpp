@@ -105,7 +105,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
     std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer);
 
-	std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
+	// std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
 
 	if (bytesReceived == -1)
 	{
@@ -187,7 +187,7 @@ int main(int ac, char **av)
 				if (i == socketServer)
 				{
 					// this is a new connection
-					std::cout << "New connection requested" << std::endl;
+					// std::cout << "New connection requested" << std::endl;
 					int socketClient = acceptConnection(socketServer, userMap);
 					if (socketClient == -1)
 						return (1);

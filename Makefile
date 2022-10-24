@@ -36,6 +36,7 @@ LST_SRCS		=	main.cpp 			\
 					topic.cpp			\
 					quit.cpp			\
 					kick.cpp			\
+					mode.cpp			\
 					notice.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}

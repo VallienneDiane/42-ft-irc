@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:33:29 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/21 10:43:45 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:31:22 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, s
 	// 	*channel++;
 	// 	std::cout << BRED << "PAR LA" << std::endl;
 	// }
-	std::cout << BRED << "SORTIE" << std::endl;
+	// std::cout << BRED << "SORTIE" << std::endl;
 	// informAllUsers(user.getPrivMsg(), msg);
 	
 	return (0);

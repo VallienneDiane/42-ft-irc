@@ -27,7 +27,7 @@ void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std:
 	}
 }
 
-void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd)
+void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, bool firstMsg)
 {
 	std::string buffer = userSource(userMap[socketClient]) + " PRIVMSG " + user.getNickname();
 	while (msgBegin != msgEnd)
@@ -35,7 +35,8 @@ void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int,
 	////////// CHECK IF USER SOCKET IS READY FOR WRITING
 	if (FD_ISSET(user.getSocket(), writeSockets) && user.getSocket() != socketClient)
 		sendMsg(user.getSocket(), buffer);
-	sendMsg(socketClient, buffer);
+	if (firstMsg)
+		sendMsg(socketClient, buffer);
 	
 }
 
@@ -74,8 +75,12 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 			{
 				//////////// ADD USER IN CONTACT LIST IF NOT ALLREADY IN IT
 				if (userMap[socketClient].isInPrivMsg(user->second.getSocket()) == false)
+				{
 					linkUsers(socketClient, user->second.getSocket(), userMap);
-				msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd);
+					msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd, true);
+				}
+				else
+					msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd, false);
 				return (0);
 			}
 		}

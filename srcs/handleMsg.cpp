@@ -32,7 +32,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 {
 	std::vector<std::string> clientInfos;
 	clientInfos = splitMsg(content);
-	std::cout << content << std::endl;
+	// std::cout << content << std::endl;
 	std::vector<std::string>::iterator it = clientInfos.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
@@ -54,9 +54,10 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 		"INVITE",
 		"KICK",
 		"PRIVMSG",
-		"NOTICE"
+		"NOTICE",
+		"MODE"
 	};
-	std::cout << BGREEN << "CMD name : " << *(clientInfos.begin()) << END << std::endl;
+	// std::cout << BGREEN << "CMD name : " << *(clientInfos.begin()) << END << std::endl;
 	
 	int i = 0;
 	int size = sizeof(cmds)/sizeof(std::string);
@@ -96,7 +97,7 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			std::cout << "user " << std::endl;
 			return (userHandle(socketClient, clientInfos, userMap));
 		case 5:
-			std::cout << "ping " << std::endl;
+			// std::cout << "ping " << std::endl;
 			return (pong(socketClient, content));
 		case 6:
 			std::cout << "pong " << std::endl;
@@ -106,25 +107,25 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			std::cout << "oper " << std::endl;
 			break;
 		case 8:
-			std::cout << "quit " << std::endl;
+			// std::cout << "quit " << std::endl;
 			return (quit(socketClient, content, userMap, channelMap));
 			break;
 		case 9:
 			std::cout << "error " << std::endl;
 			break;
 		case 10:
-			std::cout << "join " << std::endl;
+			// std::cout << "join " << std::endl;
 			return (join(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 11:
 			return(part(socketClient, *(++it), clientInfos, userMap, channelMap));
 			break;
 		case 12:
-			std::cout << "topic " << std::endl;
+			// std::cout << "topic " << std::endl;
 			return(topic(socketClient, *(++it),clientInfos, userMap, channelMap));
 			break;
 		case 13:
-			std::cout << "names " << std::endl;
+			// std::cout << "names " << std::endl;
 			return (names(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 14:
@@ -143,6 +144,10 @@ bool	getInfosClient(int socketClient, std::string content, fd_set *writeSockets,
 			break;
 		case 18:
 			std::cout << "notice " << std::endl;
+			break;
+		case 19:
+			// std::cout << "mode " << std::endl;
+			mode(socketClient, clientInfos, userMap, channelMap);
 			break;
 		default:
 			break;
