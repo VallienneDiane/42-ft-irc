@@ -20,12 +20,11 @@ int assignReadValue(int &a, const int b)
 
 int receiveMsg(const int socket, std::string &buffer)
 {
-    //std::cout << "waiting for client response : \n";
     buffer.clear();
     char    lineRead[4096];
     memset(lineRead, 0, 4096);
     int     rd;
-    while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1)
+    while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1) // recv() = read()
     {
         buffer += lineRead;
         if (lineRead[rd] == '\0' || isCrlf(buffer))
@@ -38,7 +37,7 @@ int receiveMsg(const int socket, std::string &buffer)
 int sendMsg(const int socket, std::string str)
 {
     str += "\r\n";
-    return (send(socket, str.data(), str.size(), 0));
+    return (send(socket, str.data(), str.size(), 0)); // send() = write()
 }
 
 int sendMsg(const int socket, const char * str)
