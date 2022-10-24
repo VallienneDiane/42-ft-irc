@@ -55,7 +55,6 @@ void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std
 
 void	changeNickname(User &user, std::string &nickname, std::map<std::string, Channel> &channelMap)
 {
-	std::set<std::string>::iterator	itChanEnd = user.getChannels().end();
 	std::set<int>::iterator			itPrivateEnd = user.getPrivMsg().end();
 	std::string	nickAnswer;
 	nickAnswer += userSource(user);
@@ -63,8 +62,12 @@ void	changeNickname(User &user, std::string &nickname, std::map<std::string, Cha
 	nickAnswer += " NICK ";
 	nickAnswer += nickname;
 	sendMsg(user.getSocket(), nickAnswer);
-	for (std::set<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; ++it) {
-		channelMap.find(*it)->second.sendToUsers(nickAnswer, user.getSocket());
+	std::cout << "chansize = " << user.getChannels().size() << std::endl;
+	std::set<std::string>::iterator	itChanEnd = user.getChannels().end();
+	for (std::set<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; it++) {
+		std::map<std::string, Channel>::iterator	found = channelMap.find(*it);
+		if (found != channelMap.end())
+			found->second.sendToUsers(nickAnswer, user.getSocket());
 	}
 	for (std::set<int>::iterator it = user.getPrivMsg().begin(); it != itPrivateEnd; ++it) {
 		sendMsg(*it, nickAnswer);

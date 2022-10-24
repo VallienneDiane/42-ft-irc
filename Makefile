@@ -36,7 +36,8 @@ LST_SRCS		=	main.cpp 			\
 					names.cpp			\
 					topic.cpp			\
 					quit.cpp			\
-					kick.cpp
+					kick.cpp			\
+					mode.cpp			\
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}

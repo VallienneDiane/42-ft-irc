@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/21 10:54:14 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/24 13:54:02 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,8 @@ std::string 				User::getRealname(void) const {return (this->_realname);}
 bool						User::getPass(void) const {return (this->_pass);}
 unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
-std::set<std::string>	 	User::getChannels(void) const {return (this->_channels);}
-std::set<int> 				User::getPrivMsg(void) const {return (this->_privMsg);}
+std::set<std::string>	 	&User::getChannels(void) {return (this->_channels);}
+std::set<int> 				&User::getPrivMsg(void) {return (this->_privMsg);}
 
 /****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
@@ -121,14 +121,15 @@ void	User::removeChannel(std::string channelName)
 
 void	User::removePrivMsg(int userSocket)
 {
-	std::set<int>::iterator it = this->_privMsg.begin();
+	/*std::set<int>::iterator it = this->_privMsg.begin();
 	std::set<int>::iterator end = this->_privMsg.end();
 	while (it != end)
 	{
 		if ((*it) == userSocket)
 			this->_privMsg.erase(userSocket);
 		it++;
-	}
+	}*/
+	_privMsg.erase(userSocket);
 }
 
 bool	User::isInPrivMsg(int userSocket)
