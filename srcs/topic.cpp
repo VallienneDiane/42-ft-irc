@@ -19,7 +19,13 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 	std::vector<std::string>::iterator	it;
 	
 	for(it = topic.begin() + 2; it != topic.end(); it++) //GET THE TOPIC
-		buffer = buffer + (*it) + " ";
+	{
+		if(it == topic.end() - 1)
+			buffer = buffer + (*it);
+		else
+			buffer = buffer + (*it)+ " ";
+	}	
+		
 	if(channelMap.find(channel) != channelMap.end())
 	{
 		if(channel[0] == '#') //IF CHANNEL BEGIN WITH #
@@ -33,7 +39,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 				if(buffer.empty()) //IF EMPTY STRING, CHANNEL TOPIC HAS TO BE CLEARED
 				{
 					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
-					channelMap.find(channel)->second.setTopic(NULL);
+					channelMap.find(channel)->second.setTopic(buffer);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{
@@ -43,7 +49,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 					std::string msg = userSource(current) + " TOPIC " + channel + " " + buffer;
 					channelMap.find(channel)->second.setTopic(buffer);
 					informAllUsers(channelMap.find(channel)->second.getUserSet(), msg);
-					std::string str =  channel + " " + userMap[socketClient].getNickname() + " " + channel + " " ;
+					std::string str = " " + userMap[socketClient].getNickname() + " " + channel + " ";
 					str += timestamp.str();
 					numericReply(RPL_TOPICWHOTIME, socketClient, userMap, &str);
 				}

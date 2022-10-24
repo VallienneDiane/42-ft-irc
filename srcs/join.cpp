@@ -66,16 +66,14 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 			//////////// CLIENT NOT IN THIS CHANNEL
 			else
 			{
-				std::cout << RED << "ICI set topic" << std::endl;
 				channelMap.find(*name)->second.addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
 				userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				informAllUsers(channelMap.find(*name)->second.getUserSet(), msg);
 				names(socketClient, *name, userMap, channelMap);
-				User	&current = userMap[socketClient];
-				std::string topic = userSource(current) + " TOPIC " + *name + " " + channelMap.find(*name)->second.getTopic();
-				std::cout << "TOPIC "<< topic << std::endl;
-				numericReply(RPL_TOPIC, socketClient, userMap, &topic);
+				std::string topic = *name + " " + *name + " " + channelMap.find(*name)->second.getTopic();
+				if (channelMap.find(*name)->second.getIsTopicSet() == true)
+					numericReply(RPL_TOPIC, socketClient, userMap, &topic);
 			}
 		}
 		name++;	

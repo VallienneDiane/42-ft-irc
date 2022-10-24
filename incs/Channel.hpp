@@ -23,6 +23,7 @@ class Channel
 		// Channel(void);
 		std::string			_name;
 		std::string			_topic;
+		bool				_isTopicSet;
 		std::set<int>		_operSet;
 		std::string			_mode;
 		std::set<int>		_userSet;
@@ -36,6 +37,7 @@ class Channel
 		Channel(std::string name, User & oper);
 		void				setTopic(std::string topic);
 		std::string 		getTopic(void) const;
+		bool		 		getIsTopicSet(void) const;
 		void				setName(std::string name);
 		void				setOperSet(std::set<int> operSet);
 		std::string 		getName(void) const;

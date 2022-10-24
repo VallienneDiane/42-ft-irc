@@ -13,7 +13,7 @@
 #include "../incs/Channel.hpp"
 
 /****************** CANONIC FORM ******************/
-Channel::Channel(const Channel &src) : _name(src._name), _topic(src._topic), _operSet(src._operSet), _userSet(src._userSet)
+Channel::Channel(const Channel &src) : _name(src._name), _topic(src._topic), _isTopicSet(src._isTopicSet),_operSet(src._operSet), _userSet(src._userSet)
 {}
 
 // Channel::Channel(void)
@@ -23,6 +23,7 @@ Channel & Channel::operator=(const Channel &src)
 {
 	this->_name = src._name;
 	this->_topic = src._topic;
+	this->_isTopicSet = src._isTopicSet;
 	this->_operSet = src._operSet;
 	this->_userSet = src._userSet;
 	return (*this);
@@ -35,6 +36,7 @@ Channel::~Channel(void)
 Channel::Channel(std::string name, User &oper) : _name(name)
 {
 	this->_operSet.insert(oper.getSocket());
+	this->_isTopicSet = false;
 }
 
 /****************** SETTERS ******************/
@@ -46,6 +48,7 @@ void	Channel::setName(std::string name)
 void	Channel::setTopic(std::string topic)
 {
 	this->_topic = topic;
+	this->_isTopicSet = true;
 }
 
 void	Channel::setOperSet(std::set<int> operSet)
@@ -62,6 +65,11 @@ std::string Channel::getName(void) const
 std::string Channel::getTopic(void) const
 {
 	return (this->_topic);
+}
+
+bool	Channel::getIsTopicSet(void) const
+{
+	return (this->_isTopicSet);
 }
 
 std::set<int> &Channel::getOperSet(void)
