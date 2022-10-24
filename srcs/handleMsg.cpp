@@ -79,72 +79,76 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	switch (i)
 	{
 		case 0:
-			std::cout << "cap " << std::endl;
+			// std::cout << "cap " << std::endl;
 			break;
 		case 1:
-			std::cout << "authenticate " << std::endl;
+			// std::cout << "authenticate " << std::endl;
 			break;
 		case 2:
-			std::cout << "pass " << std::endl;
+			// std::cout << "pass " << std::endl;
 			return (passHandle(user, clientMsg, userMap));
 			break;
 		case 3:
-			std::cout << "nick " << std::endl;
+			// std::cout << "nick " << std::endl;
 			return (nickHandle(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 4:
-			std::cout << "user " << std::endl;
+			// std::cout << "user " << std::endl;
 			return (userHandle(socketClient, clientMsg, userMap));
 		case 5:
-			std::cout << "ping " << std::endl;
+			// std::cout << "ping " << std::endl;
 			return (pong(socketClient, content));
 		case 6:
-			std::cout << "pong " << std::endl;
+			// std::cout << "pong " << std::endl;
 			//return (pong(socketClient, content));
 			break;
 		case 7:
-			std::cout << "oper " << std::endl;
+			// std::cout << "oper " << std::endl;
 			break;
 		case 8:
-			std::cout << "quit " << std::endl;
+			// std::cout << "quit " << std::endl;
 			return (quit(socketClient, content, userMap, channelMap));
 			break;
 		case 9:
-			std::cout << "error " << std::endl;
+			// std::cout << "error " << std::endl;
 			break;
 		case 10:
-			std::cout << "join " << std::endl;
+			// std::cout << "join " << std::endl;
 			return (join(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 11:
 			return(part(socketClient, *(++it), clientMsg, userMap, channelMap));
 			break;
 		case 12:
-			std::cout << "topic " << std::endl;
+			// std::cout << "topic " << std::endl;
 			return(topic(socketClient, *(++it),clientMsg, userMap, channelMap));
 			break;
 		case 13:
-			std::cout << "names " << std::endl;
+			// std::cout << "names " << std::endl;
 			return (names(socketClient, *(++it), userMap, channelMap));
 			break;
 		case 14:
-			std::cout << "list " << std::endl;
+			// std::cout << "list " << std::endl;
 			break;
 		case 15:
-			std::cout << "invite " << std::endl;
+			// std::cout << "invite " << std::endl;
 			invite(user, clientMsg, userMap, channelMap);
 			break;
 		case 16:
-			std::cout << "kick " << std::endl;
+			// std::cout << "kick " << std::endl;
 			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 17:
-			std::cout << MAGENTA << "privmsg " << std::endl;
+			// std::cout << MAGENTA << "privmsg " << std::endl;
 			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 1);
 			break;
 		case 18:
-			std::cout << "notice " << std::endl;
+			// std::cout << "notice " << std::endl;
 			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 2);
+			break;
+		case 19:
+			// std::cout << "mode " << std::endl;
+			mode(socketClient, clientMsg, userMap, channelMap);
 			break;
 		default:
 			break;

@@ -109,7 +109,8 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
     std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer); //RECEIVE A CLIENT MSG ON A SOCKET
 
-	std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
+	// std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
+
 	if (bytesReceived == -1)
 	{
 		std::cerr << "Error in recv(), Quitting" << std::endl;
@@ -180,8 +181,8 @@ int main(int ac, char **av)
 			{
 				if (i == socketServer) // if socket server same that socket client : REQUEST NEW CONNECTION/USER
 				{
-					std::cout << "New connection requested" << std::endl;
-					// ACCEPT CONNECTION DEMAND
+					// this is a new connection
+					// std::cout << "New connection requested" << std::endl;
 					int socketClient = acceptConnection(socketServer, userMap);
 					if (socketClient == -1)
 						return (1);
