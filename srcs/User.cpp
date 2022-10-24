@@ -121,14 +121,15 @@ void	User::removeChannel(std::string channelName)
 
 void	User::removePrivMsg(int userSocket)
 {
-	std::set<int>::iterator it = this->_privMsg.begin();
+	/*std::set<int>::iterator it = this->_privMsg.begin();
 	std::set<int>::iterator end = this->_privMsg.end();
 	while (it != end)
 	{
 		if ((*it) == userSocket)
 			this->_privMsg.erase(userSocket);
 		it++;
-	}
+	}*/
+	_privMsg.erase(userSocket);
 }
 
 bool	User::isInPrivMsg(int userSocket)
