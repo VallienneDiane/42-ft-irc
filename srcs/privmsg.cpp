@@ -15,6 +15,7 @@
 void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, int type)
 {
 	std::string buffer;
+	std::cerr << "chan name = " << channel.getName() << std::endl;
 	if (type == 1)
 		buffer = userSource(userMap[socketClient]) + " PRIVMSG " + channel.getName();
 	else
@@ -62,12 +63,13 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 	/////////// SEND MSG TO CHANNEL
 	if ((*it)[0] == '#')
 	{
+		std::map<std::string, Channel>::iterator chanIt = channelMap.find(*it);
 		/////////// CHECK IF CHANNEL EXIST
-		if (channelMap.find(*it) != channelMap.end())
+		if (chanIt != channelMap.end())
 		{
 			/////////// CHECK IF USER IS IN CHANNEL
-			if (channelMap.find(*it)->second.isInUserSet(socketClient).first)
-				msgToChannel(socketClient, channelMap.find(*it)->second, writeSockets, userMap, ++it, msgEnd, type);
+			if (chanIt->second.isInUserSet(socketClient).first)
+				msgToChannel(socketClient, chanIt->second, writeSockets, userMap, ++it, msgEnd, type);
 		}
 		else
 			numericReply(403, socketClient, userMap, &(*it));
