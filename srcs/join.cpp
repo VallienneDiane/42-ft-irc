@@ -57,12 +57,8 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 		else
 		{
 			//////////// CLIENT ALREADY IN THIS CHANNEL
-			// if (channelMap.find(*name)->second.getUserList().find(socketClient) != channelMap.find(*name)->second.getUserList().end())
-			// if (channelMap.find(*name)->second.getUserSet().find(socketClient) != channelMap.find(*name)->second.getUserSet().end())
 			if (channelMap.find(*name)->second.isInUserSet(socketClient).first)
-			{
-				
-			}
+			{}
 			//////////// CLIENT NOT IN THIS CHANNEL
 			else
 			{
