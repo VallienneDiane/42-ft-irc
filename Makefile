@@ -18,8 +18,8 @@ PATH_SRCS		=	srcs
 PATH_DEP		=	dep
 PATH_OBJS		=	obj
 PATH_INCLUDES	=	incs
-PATH_BOT		=	bot
-PATH_BOT_SRC	=	bot/srcs
+PATH_BOTS		=	bots/bin
+PATH_BOTS_SRCS	=	bots/srcs
 
 LST_SRCS		=	main.cpp 			\
 					passHandler.cpp		\
@@ -46,14 +46,17 @@ LST_BOTS_SRCS	=	fumier.cpp			\
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
-LST_BOT			=	${LST_BOTS_SRCS:.cpp=.bot}
+LST_BOTS		=	${LST_BOTS_SRCS:.cpp=.bot}
 
 SRC =		$(addprefix ${PATH_SRCS}/,${LST_SRCS})
 DEP =		$(addprefix ${PATH_DEP}/,${LST_DEP})
 OBJS =		$(addprefix ${PATH_OBJS}/,${LST_OBJS})
-BOT_SRC =	$(addprefix)
+BOTS_SRC =	$(addprefix ${PATH_BOT_SRCS}/,${LST_BOTS_SRCS})
+BOTS	=	$(addprefix ${PATH_BOTS}/,${LST_BOTS})
 
 all :				${NAME} Makefile
+
+bot :				${BOTS}
 
 ${NAME} :			${OBJS}
 					${CC} ${FLAGS} ${OBJS} -o $@
@@ -71,12 +74,19 @@ ${PATH_DEP}:
 ${PATH_OBJS}:
 					mkdir obj
 
-${PATH_BOT}/%.exe:
+${PATH_BOTS}/%.bot:	${PATH_BOTS_SRCS}/%.cpp Makefile | ${PATH_BOTS}
+					${CC} ${FLAGS} $< -o $@
+
+${PATH_BOTS}:
+					mkdir bots/bin
 
 clean :
 					rm -rf obj dep
 
-fclean :			clean
+bclean :
+					rm -rf ${PATH_BOTS}
+
+fclean :			clean bclean
 					rm -f ${NAME}
 
 re :				fclean all
