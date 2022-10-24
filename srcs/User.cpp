@@ -65,8 +65,8 @@ std::string 				User::getRealname(void) const {return (this->_realname);}
 bool						User::getPass(void) const {return (this->_pass);}
 unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
-std::set<std::string>	 	User::getChannels(void) const {return (this->_channels);}
-std::set<int> 				User::getPrivMsg(void) const {return (this->_privMsg);}
+std::set<std::string>	 	&User::getChannels(void) {return (this->_channels);}
+std::set<int> 				&User::getPrivMsg(void) {return (this->_privMsg);}
 
 /****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)

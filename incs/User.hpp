@@ -55,8 +55,8 @@ class User
 		bool						getPass() const;
 		unsigned int				getId(void) const;
 		std::string					getHostname(void) const;
-		std::set<std::string>		getChannels(void) const;
-		std::set<int>				getPrivMsg(void) const;
+		std::set<std::string>		&getChannels(void);
+		std::set<int>				&getPrivMsg(void);
 		
 		///////// [MEMBER FUNCTIONS]
         void            			appendCommand(const std::string &str);
