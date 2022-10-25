@@ -25,7 +25,8 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 		else
 			buffer = buffer + (*it)+ " ";
 	}	
-		
+	buffer.erase(0,1);
+	std::cout << buffer << std::endl;
 	if(channelMap.find(channel) != channelMap.end())
 	{
 		if(channel[0] == '#') //IF CHANNEL BEGIN WITH #
@@ -46,7 +47,7 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 					unsigned long int sec= time(NULL);
 					std::stringstream timestamp;
 					timestamp << sec;
-					std::string msg = userSource(current) + " TOPIC " + channel + " " + buffer;
+					std::string msg = userSource(current) + " TOPIC " + channel + " :" + buffer;
 					channelMap.find(channel)->second.setTopic(buffer);
 					informAllUsers(channelMap.find(channel)->second.getUserSet(), msg);
 					std::string str = " " + userMap[socketClient].getNickname() + " " + channel + " ";
