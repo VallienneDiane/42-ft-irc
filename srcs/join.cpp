@@ -67,7 +67,7 @@ bool	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 				informAllUsers(channelMap.find(*name)->second.getUserSet(), msg);
 				names(socketClient, *name, userMap, channelMap);
-				std::string topic = *name + " " + *name + " " + channelMap.find(*name)->second.getTopic();
+				std::string topic = " " + *name + " " + channelMap.find(*name)->second.getTopic(); //*name + 
 				if (channelMap.find(*name)->second.getIsTopicSet() == true)
 					numericReply(RPL_TOPIC, socketClient, userMap, &topic);
 			}

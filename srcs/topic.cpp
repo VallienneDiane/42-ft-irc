@@ -25,7 +25,8 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 		else
 			buffer = buffer + (*it)+ " ";
 	}	
-	buffer.erase(0,1);
+	if (buffer[0] == ':')
+		buffer.erase(0,1);
 	std::cout << buffer << std::endl;
 	if(channelMap.find(channel) != channelMap.end())
 	{

@@ -22,6 +22,8 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 	
 	for( it = reason.begin() + 2; it != reason.end(); it++) //GET REASON FOR LEAVING CHAN
 		buffer = buffer + (*it) + " ";
+	if (buffer.empty())
+		buffer = "no reason given";
 	while(nameChannel != tabChannels.end())
 	{
 		if((*nameChannel)[0] == '#') //IF FIRST LETTER OF CHAN IS #
