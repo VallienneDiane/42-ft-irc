@@ -55,6 +55,7 @@ class Channel
 		std::pair<bool, std::set<int>::iterator>	isInUserSet(int userSocket);
 		std::pair<bool, std::set<int>::iterator>	isInOperSet(User &user);
 		std::pair<bool, std::set<int>::iterator>	isInOperSet(int userSocket);
+		std::string			userCount(void);
 		void	sendToUsers(const std::string &content, int socketException) const;
 };
 

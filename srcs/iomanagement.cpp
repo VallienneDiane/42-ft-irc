@@ -37,7 +37,8 @@ int receiveMsg(const int socket, std::string &buffer)
 int sendMsg(const int socket, std::string str)
 {
     str += "\r\n";
-    return (send(socket, str.data(), str.size(), 0)); // send() = write()
+    std::cout << "msg send  : " << str;
+    return (send(socket, str.data(), str.size(), 0));
 }
 
 int sendMsg(const int socket, const char * str)

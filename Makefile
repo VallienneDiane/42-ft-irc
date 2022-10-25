@@ -40,6 +40,7 @@ LST_SRCS		=	main.cpp 			\
 					quit.cpp			\
 					kick.cpp			\
 					mode.cpp			\
+					list.cpp			\
 
 LST_BOTS_SRCS	=	fumier.cpp			\
 					chanman.cpp

@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:27:15 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/24 13:48:18 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/24 15:43:04 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	changeOperStatus(User &user, Channel &channel, char sign)
 
 void	mode(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	
 	if (commands.size() == 4)
 	{
 		std::vector<std::string>::iterator it = commands.begin();

@@ -138,6 +138,11 @@ std::pair<bool, std::set<int>::iterator>	Channel::isInOperSet(int userSocket) {
 	return (std::make_pair(false, found));
 }
 
+std::string	Channel::userCount()
+{
+	return (std::to_string(this->_userSet.size()));
+}
+
 /****************** Communications member functions ***********************/
 
 void	Channel::sendToUsers(const std::string &content, int socketException) const {

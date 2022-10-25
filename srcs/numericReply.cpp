@@ -30,6 +30,17 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			// std::cout << "welcome msg : " << str << std::endl;
 			sendMsg(socketClient, str);
 			break;
+		case 322:
+			str += SERVER_TALKING;
+			str += "322 ";
+			str += *context;
+			sendMsg(socketClient, str);
+			break;
+		case 323:
+			str += SERVER_TALKING;
+			str += "323 = :End of /LIST";
+			sendMsg(socketClient, str);
+			break;
 		case 341:
 			str += SERVER_TALKING;
 			str += "341 ";
