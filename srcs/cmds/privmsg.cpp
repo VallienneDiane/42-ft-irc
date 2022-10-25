@@ -46,7 +46,6 @@ void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int,
 		sendMsg(user.getSocket(), buffer);
 	if (firstMsg)
 		sendMsg(socketClient, buffer);
-	
 }
 
 void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
@@ -73,7 +72,7 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 				msgToChannel(socketClient, chanIt->second, writeSockets, userMap, ++it, msgEnd, type);
 		}
 		else
-			numericReply(403, socketClient, userMap, &(*it));
+			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*it));
 	}
 	/////////// SEND MSG TO USER
 	else
@@ -95,7 +94,7 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 			}
 		}
 		/////////// IF USER DOES NOT EXIST
-		numericReply(401, socketClient, userMap, &(*it));
+		numericReply(ERR_NOSUCHNICK, socketClient, userMap, &(*it));
 	}
 	return (0);
 }
