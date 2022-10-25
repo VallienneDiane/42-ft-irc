@@ -4,10 +4,20 @@ IRC is a text-based chat protocol. It is well-suited to running on many machines
 
 The aim here is to create a server which communicate with an irc client, doing different actions via commands.
 
-Start program:
+Start irc server:
 
 	./ircserv <port> <password>
 
+Start irc client:
+
+	Weechat : /connect <server_name> -password=
+	or
+	in Term : nc -c <host> <port> (nc -c 127.0.0.1 6667)
+				PASS password
+				NICK nickname
+				USER username 0 * realName
+
+The Netcat (nc) command is a command-line utility for reading and writing data between two computer networks. 
 
 ## Steps to do the project
 1. Download client (Weechat pe)
@@ -59,6 +69,9 @@ http://chi.cs.uchicago.edu/chirc/irc_examples.html
 
 DCC : 
 https://modern.ircdocs.horse/dcc.html
+
+Nc cmds :
+https://phoenixnap.com/kb/nc-command
 
 
 - Videos :
