@@ -1,4 +1,4 @@
-#include "../incs/ircserv.hpp"
+#include "../../incs/ircserv.hpp"
 
 std::string	getSetPassUser(std::string passSet) {
 	static std::string	pass;

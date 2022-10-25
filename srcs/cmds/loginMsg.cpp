@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/ircserv.hpp"
+#include "../../incs/ircserv.hpp"
 
 bool	isNotAlNumOrUnderscore(char c)
 {

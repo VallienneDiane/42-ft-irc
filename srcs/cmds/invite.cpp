@@ -1,4 +1,4 @@
-#include "../incs/ircserv.hpp"
+#include "../../incs/ircserv.hpp"
 
 void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap) {
 	std::string	message = userSource(user) + " INVITE " + invited.getNickname() + " " + chan.getName();

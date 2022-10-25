@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/ircserv.hpp"
+#include "../../incs/ircserv.hpp"
 
 std::vector<std::string> splitMsg(std::string content)
 {

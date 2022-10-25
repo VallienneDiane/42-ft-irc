@@ -21,26 +21,26 @@ PATH_INCLUDES	=	incs
 PATH_BOTS		=	bots/bin
 PATH_BOTS_SRCS	=	bots/srcs
 
-LST_SRCS		=	main.cpp 			\
-					passHandler.cpp		\
-					iomanagement.cpp 	\
-					Channel.cpp 		\
-					User.cpp 			\
-					signalManager.cpp 	\
-					handleMsg.cpp 		\
-					loginMsg.cpp		\
-					pingPong.cpp		\
-					join.cpp			\
-					numericReply.cpp	\
-					privmsg.cpp			\
-					part.cpp			\
-					invite.cpp			\
-					names.cpp			\
-					topic.cpp			\
-					quit.cpp			\
-					kick.cpp			\
-					mode.cpp			\
-					list.cpp			\
+LST_SRCS		=	main.cpp 				\
+					iomanagement.cpp 		\
+					Channel.cpp 			\
+					User.cpp 				\
+					signalManager.cpp 		\
+					numericReply.cpp		\
+					cmds/passHandler.cpp	\
+					cmds/handleMsg.cpp 		\
+					cmds/loginMsg.cpp		\
+					cmds/pingPong.cpp		\
+					cmds/join.cpp			\
+					cmds/privmsg.cpp		\
+					cmds/part.cpp			\
+					cmds/invite.cpp			\
+					cmds/names.cpp			\
+					cmds/topic.cpp			\
+					cmds/quit.cpp			\
+					cmds/kick.cpp			\
+					cmds/mode.cpp			\
+					cmds/list.cpp			\
 
 LST_BOTS_SRCS	=	fumier.cpp			\
 					chanman.cpp
@@ -48,6 +48,8 @@ LST_BOTS_SRCS	=	fumier.cpp			\
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 LST_BOTS		=	${LST_BOTS_SRCS:.cpp=.bot}
+
+SUB_DIR	:= cmds	\
 
 SRC =		$(addprefix ${PATH_SRCS}/,${LST_SRCS})
 DEP =		$(addprefix ${PATH_DEP}/,${LST_DEP})
@@ -62,18 +64,14 @@ bot :				${BOTS}
 ${NAME} :			${OBJS}
 					${CC} ${FLAGS} ${OBJS} -o $@
 
-${PATH_DEP}/%.d :	${PATH_SRCS}/%.cpp Makefile | ${PATH_DEP}
+${PATH_DEP}/%.d :	${PATH_SRCS}/%.cpp Makefile
+					mkdir -p $(PATH_DEP) $(addprefix $(PATH_DEP)/, $(SUB_DIR))
 					${CC} ${FLAGS} -MM -MF $@ -MT "${PATH_OBJS}/$*.o $@" $<
 
 
-${PATH_OBJS}/%.o:	${PATH_SRCS}/%.cpp Makefile | ${PATH_OBJS}
+${PATH_OBJS}/%.o:	${PATH_SRCS}/%.cpp Makefile
+					mkdir -p $(PATH_OBJS) $(addprefix $(PATH_OBJS)/, $(SUB_DIR))
 					${CC} ${FLAGS} -c $< -o $@ -I ${PATH_INCLUDES}
-
-${PATH_DEP}:
-					mkdir dep
-
-${PATH_OBJS}:
-					mkdir obj
 
 ${PATH_BOTS}/%.bot:	${PATH_BOTS_SRCS}/%.cpp Makefile | ${PATH_BOTS}
 					${CC} ${FLAGS} $< -o $@
