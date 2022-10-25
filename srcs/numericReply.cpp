@@ -27,7 +27,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_NAME;
 			str += " Network, ";
 			str += userSource(user);
-			// std::cout << "welcome msg : " << str << std::endl;
 			sendMsg(socketClient, str);
 			break;
 		case 322:
@@ -103,9 +102,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " Password incorrect";
 			sendMsg(socketClient, str);
 			break;
-		case 491:
-			std::cout << "<client> :No O-lines for your host" << std::endl;
-			break;
 		// JOIN
 		case 403:
 			str += SERVER_TALKING;
@@ -113,18 +109,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += *context;
 			str += " :No such channel";
 			sendMsg(socketClient, str);
-			break;
-		case 471:
-			std::cout << "<client> <channel> :Cannot join channel (+l)" << std::endl;
-			break;
-		case 473:
-			std::cout << "<client> <channel> :Cannot join channel (+i)" << std::endl;
-			break;
-		case 474:
-			std::cout << "<client> <channel> :Cannot join channel (+b)" << std::endl;
-			break;
-		case 475:
-			std::cout << "<client> <channel> :Cannot join channel (+k)" << std::endl;
 			break;
 		//TOPIC
 		case 331:
@@ -147,10 +131,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += *context;
 			sendMsg(socketClient, str);
 			break;
-		//INVITE
-		case 443:
-			// std::cout << "<client> <nick> <channel> :is already on channel" << std::endl;
-			break;
 		//KICK
 		case 441:
 			str += SERVER_TALKING;
@@ -171,7 +151,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			break;
 		//PRIVMSG
 		case 401:
-			// std::cout << "<client> <nickname> :No such nick/channel" << std::endl;
 			str = SERVER_TALKING;
 			str += " 401 ";
 			str += *context;

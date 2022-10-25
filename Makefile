@@ -49,7 +49,7 @@ LST_OBJS		=	${LST_SRCS:.cpp=.o}
 LST_DEP			=	${LST_SRCS:.cpp=.d}
 LST_BOTS		=	${LST_BOTS_SRCS:.cpp=.bot}
 
-SUB_DIR	:= cmds	\
+SUB_DIR	:= 	cmds	\
 
 SRC =		$(addprefix ${PATH_SRCS}/,${LST_SRCS})
 DEP =		$(addprefix ${PATH_DEP}/,${LST_DEP})
