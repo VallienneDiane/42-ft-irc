@@ -56,7 +56,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		"PRIVMSG",
 		"NOTICE",
 	};
-	std::cout << BGREEN << "CMD name : " << *(clientMsg.begin()) << END << std::endl;
+	// std::cout << BGREEN << "CMD name : " << *(clientMsg.begin()) << END << std::endl;
 	
 	int i = 0;
 	int size = sizeof(cmds)/sizeof(std::string);
@@ -121,7 +121,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			break;
 		case 12:
 			// std::cout << "topic " << std::endl;
-			return(topic(socketClient, *(++it),clientMsg, userMap, channelMap));
+			return(topic(socketClient, *(++it), clientMsg, userMap, channelMap));
 			break;
 		case 13:
 			// std::cout << "names " << std::endl;
@@ -129,6 +129,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			break;
 		case 14:
 			// std::cout << "list " << std::endl;
+			list(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 15:
 			// std::cout << "invite " << std::endl;
