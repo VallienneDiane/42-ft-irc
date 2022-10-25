@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:39:50 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/25 14:38:00 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:58:41 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	channelInfo(int socketClient, Channel &channel, std::map<int, User> &userMa
 {
 	std::cout << "Topic is : " << channel.getTopic() << std::endl;
 	std::string buffer = " = " + channel.getName() + " " + channel.userCount() + " :" + channel.getTopic();
-	numericReply(322, socketClient, userMap, &buffer);
+	numericReply(RPL_LIST, socketClient, userMap, &buffer);
 }
 
 void	list(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
@@ -32,9 +32,9 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 			if (channel != channelMap.end())
 				channelInfo(socketClient, channel->second, userMap);
 			else
-				numericReply(403, socketClient, userMap, &(*name));
+				numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*name));
 		}
-		numericReply(323, socketClient, userMap, nullptr);
+		numericReply(RPL_LISTEND, socketClient, userMap, nullptr);
 	}
 	else if (commands.size() == 1)
 	{
@@ -43,6 +43,6 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 		{
 			channelInfo(socketClient, channel->second, userMap);
 		}
-		numericReply(323, socketClient, userMap, nullptr);
+		numericReply(RPL_LISTEND, socketClient, userMap, nullptr);
 	}
 }
