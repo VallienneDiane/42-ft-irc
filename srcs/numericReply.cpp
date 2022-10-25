@@ -71,9 +71,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " :this nickname is already in use, try another nickname.";
 			sendMsg(socketClient, str);
 			break;
-		case 436:
-			std::cout << "<client> " << userMap[socketClient].getNickname() << " <channel> :They aren't on that channel" << std::endl;
-			break;
 		//PART
 		case 442:
 			str += SERVER_TALKING;
@@ -156,9 +153,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += *context;
 			str += " :No such nick";
 			sendMsg(socketClient, str);
-			break;
-		case 404:
-			std::cout << "<client> <channel> :Cannot send to channel" << std::endl;
 			break;
 		//OTHER ERRORS
 		case 451:
