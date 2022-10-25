@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:39:50 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/25 14:30:50 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/10/25 14:38:00 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	channelInfo(int socketClient, Channel &channel, std::map<int, User> &userMap)
 {
 	std::cout << "Topic is : " << channel.getTopic() << std::endl;
-	std::string buffer = " = " + channel.getName() + " " + channel.userCount() + channel.getTopic();
+	std::string buffer = " = " + channel.getName() + " " + channel.userCount() + " :" + channel.getTopic();
 	numericReply(322, socketClient, userMap, &buffer);
 }
 
@@ -34,6 +34,7 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 			else
 				numericReply(403, socketClient, userMap, &(*name));
 		}
+		numericReply(323, socketClient, userMap, nullptr);
 	}
 	else if (commands.size() == 1)
 	{
@@ -42,6 +43,6 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 		{
 			channelInfo(socketClient, channel->second, userMap);
 		}
+		numericReply(323, socketClient, userMap, nullptr);
 	}
-	numericReply(323, socketClient, userMap, nullptr);
 }
