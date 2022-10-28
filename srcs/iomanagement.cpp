@@ -1,5 +1,24 @@
 #include "../incs/ircserv.hpp"
 
+void	fillString(std::string &str, size_t s)
+{
+	if ((s / 10) > 0)
+	{
+		fillString(str, s / 10);
+		fillString(str, s % 10);
+	}
+	if ((s / 10) == 0)
+		str += s + '0';
+}
+
+std::string	size_tToString(size_t s)
+{
+	std::string	str;
+
+	fillString(str, s);
+	return (str);
+}
+
 void	delColon(std::string &str)
 {
 	if (!str.empty() && str[0] == ':')

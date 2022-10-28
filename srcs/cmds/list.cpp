@@ -34,7 +34,7 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 			else
 				numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*name));
 		}
-		numericReply(RPL_LISTEND, socketClient, userMap, nullptr);
+		numericReply(RPL_LISTEND, socketClient, userMap, NULL);
 	}
 	else if (commands.size() == 1)
 	{
@@ -43,6 +43,6 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 		{
 			channelInfo(socketClient, channel->second, userMap);
 		}
-		numericReply(RPL_LISTEND, socketClient, userMap, nullptr);
+		numericReply(RPL_LISTEND, socketClient, userMap, NULL);
 	}
 }

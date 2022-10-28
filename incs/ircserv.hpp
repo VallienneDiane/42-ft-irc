@@ -64,6 +64,7 @@ int							sendMsg(const int socket, std::string str);
 int							sendMsg(const int socket, const char * str);
 std::string 				delTilde(const std::string &str);
 void						delColon(std::string &str);
+std::string					size_tToString(size_t s);
 std::string 				userSource(const User &user);
 void						setPass(std::string pass);
 std::string					getPass();
