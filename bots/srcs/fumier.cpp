@@ -9,12 +9,62 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <csignal>
+#include <vector>
 #include <algorithm>
 
+bool    isCrlf(std::string str)
+{
+	std::string::size_type size = str.size();
+	return (size >= 2 && str[size - 2] == '\r' && str[size - 1] == '\n');
+}
+
+int assignReadValue(int &a, const int b)
+{
+	a = b;
+	return b;
+}
+
+int receiveMsg(const int socket, std::string &buffer)
+{
+	buffer.clear();
+	char    lineRead[4096];
+	memset(lineRead, 0, 4096);
+	int     rd;
+	while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1) // recv() = read()
+	{
+		buffer += lineRead;
+		if (lineRead[rd] == '\0' || isCrlf(buffer))
+			return (buffer.size());
+		memset(lineRead, 0, 4096);
+	}
+	return rd;
+}
+
+std::string takeCommand(std::string &command)
+{
+	std::string commandDelivered;
+	size_t found = command.find("\r\n");
+	if (found != std::string::npos)
+	{
+		commandDelivered.assign(command, 0, found);
+		command.erase(0, found + 2);
+	}
+	return (commandDelivered);
+}
 
 int sendMsg(const int socket, std::string str)
 {
+	str += "\r\n";
+	std::cout << "msg send  : " << str;
 	return (send(socket, str.data(), str.size(), 0));
+}
+
+std::string	parseChan(std::string &str)
+{
+	std::string::size_type	found = str.find('#');
+	std::string::size_type	spaceFound = str.find(' ', found);
+	std::string	parsed = str.substr(found, spaceFound - found);
+	return (parsed);
 }
 
 int	connection(char **av)
@@ -48,6 +98,93 @@ int	connection(char **av)
 	return connectSocket;
 }
 
+bool	getIn(int servSocket, int ac, char **av)
+{
+	std::string	nick = "NICK fumierBot";
+	std::string user = "USER fumierBot 0 * :";
+	if (ac > 3) {
+		std::string pass = "PASS ";
+		pass += av[3];
+		sendMsg(servSocket, pass);
+	}
+	sendMsg(servSocket, nick);
+	sendMsg(servSocket, user);
+	std::cout << "connection data send\n";
+	receiveMsg(servSocket, nick);
+	if (nick.find("001") != std::string::npos) {
+		std::cout << "we are welcomed\n";
+		return false;
+	}
+	return true;
+}
+
+bool	spamLoop(int servSocket, std::vector<std::string> &chanTab)
+{
+	int	i;
+	std::string fumier = " :FUMIEEEEEERRRRRR!!!!!!";
+	std::vector<std::string>::iterator	end = chanTab.end();
+	for (std::vector<std::string>::iterator begin = chanTab.begin(); begin != end; ++begin) {
+		i = 0;
+		std::string	cmd = "PRIVMSG ";
+		cmd += *begin;
+		cmd += fumier;
+		while (i++ < 42) {
+			if (sendMsg(servSocket, cmd) == -1)
+				return true;
+		}
+	}
+	sleep(5);
+	return false;
+}
+
+bool	joinChan(int servSocket, std::vector<std::string> &tab)
+{
+	std::vector<std::string>::iterator end = tab.end();
+	for (std::vector<std::string>::iterator begin = tab.begin(); begin != end; ++begin) {
+		std::string cmd = "JOIN ";
+		cmd += *begin;
+		if (sendMsg(servSocket, cmd) == -1)
+			return true;
+	}
+	return false;
+}
+
+int	routineFumier(int servSocket)
+{
+	while (1) {
+		std::string buffer = "LIST";
+		std::string	sentence;
+		std::vector<std::string> chanTab;
+		int rd;
+		sendMsg(servSocket, buffer);
+		rd = receiveMsg(servSocket, buffer);
+		if (!rd || rd == -1) {
+			std::cout << "end of communication : " << rd << std::endl;
+			return 0;
+		}
+		sentence = takeCommand(buffer);
+		while (!sentence.empty()) {
+			std::cout << "COMMAND = " << sentence << std::endl;
+			if (sentence.find('#') != std::string::npos)
+			{
+				std::string newChan = parseChan(sentence);
+				std::cout << "newChan = " << newChan << std::endl;
+				chanTab.push_back(newChan);
+			}
+			sentence = takeCommand(buffer);
+		}
+		if (chanTab.empty()) {
+			sleep(5);
+		}
+		else {
+			if (joinChan(servSocket, chanTab))
+				return 0;
+			if (spamLoop(servSocket, chanTab))
+				return 0;
+		}
+	}
+}
+
 int main(int ac, char **av) {
 	if (ac < 3)
 	{
@@ -62,17 +199,7 @@ int main(int ac, char **av) {
 		return 1;
 	}
 	std::cout << "connected\n";
-	std::string	nick = "NICK fumierBot\r\n";
-	std::string user = "USER fumierBot 0 * :\r\n";
-	if (ac > 3) {
-		std::string pass = "PASS ";
-		pass += av[3];
-		pass += "\r\n";
-		sendMsg(connectSocket, pass);
-	}
-	sendMsg(connectSocket, nick);
-	sendMsg(connectSocket, user);
-	std::cout << "data send\n";
-	sleep(20);
-	return 0;
+	if (getIn(connectSocket, ac, av))
+		return 1;
+	return (routineFumier(connectSocket));
 }
