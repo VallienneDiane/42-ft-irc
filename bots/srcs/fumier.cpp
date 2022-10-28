@@ -164,11 +164,9 @@ int	routineFumier(int servSocket)
 		}
 		sentence = takeCommand(buffer);
 		while (!sentence.empty()) {
-			std::cout << "COMMAND = " << sentence << std::endl;
 			if (sentence.find('#') != std::string::npos)
 			{
 				std::string newChan = parseChan(sentence);
-				std::cout << "newChan = " << newChan << std::endl;
 				chanTab.push_back(newChan);
 			}
 			sentence = takeCommand(buffer);
