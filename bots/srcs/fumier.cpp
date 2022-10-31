@@ -9,8 +9,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <csignal>
-#include <vector>
-#include <algorithm>
+#include <set>
 
 bool    isCrlf(std::string str)
 {
@@ -30,7 +29,7 @@ int receiveMsg(const int socket, std::string &buffer)
 	char    lineRead[4096];
 	memset(lineRead, 0, 4096);
 	int     rd;
-	while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1) // recv() = read()
+	while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1)
 	{
 		buffer += lineRead;
 		if (lineRead[rd] == '\0' || isCrlf(buffer))
@@ -118,12 +117,12 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-bool	spamLoop(int servSocket, std::vector<std::string> &chanTab)
+bool	spamLoop(int servSocket, std::set<std::string> &chanTab)
 {
 	int	i;
 	std::string fumier = " :FUMIEEEEEERRRRRR!!!!!!";
-	std::vector<std::string>::iterator	end = chanTab.end();
-	for (std::vector<std::string>::iterator begin = chanTab.begin(); begin != end; ++begin) {
+	std::set<std::string>::iterator	end = chanTab.end();
+	for (std::set<std::string>::iterator begin = chanTab.begin(); begin != end; ++begin) {
 		i = 0;
 		std::string	cmd = "PRIVMSG ";
 		cmd += *begin;
@@ -137,10 +136,10 @@ bool	spamLoop(int servSocket, std::vector<std::string> &chanTab)
 	return false;
 }
 
-bool	joinChan(int servSocket, std::vector<std::string> &tab)
+bool	joinChan(int servSocket, std::set<std::string> &tab)
 {
-	std::vector<std::string>::iterator end = tab.end();
-	for (std::vector<std::string>::iterator begin = tab.begin(); begin != end; ++begin) {
+	std::set<std::string>::iterator end = tab.end();
+	for (std::set<std::string>::iterator begin = tab.begin(); begin != end; ++begin) {
 		std::string cmd = "JOIN ";
 		cmd += *begin;
 		if (sendMsg(servSocket, cmd) == -1)
@@ -149,12 +148,12 @@ bool	joinChan(int servSocket, std::vector<std::string> &tab)
 	return false;
 }
 
-int	routineFumier(int servSocket)
+bool	routineFumier(int servSocket)
 {
 	while (1) {
 		std::string buffer = "LIST";
 		std::string	sentence;
-		std::vector<std::string> chanTab;
+		std::set<std::string> chanTab;
 		int rd;
 		sendMsg(servSocket, buffer);
 		rd = receiveMsg(servSocket, buffer);
@@ -167,7 +166,7 @@ int	routineFumier(int servSocket)
 			if (sentence.find('#') != std::string::npos)
 			{
 				std::string newChan = parseChan(sentence);
-				chanTab.push_back(newChan);
+				chanTab.insert(newChan);
 			}
 			sentence = takeCommand(buffer);
 		}
@@ -183,7 +182,7 @@ int	routineFumier(int servSocket)
 	}
 }
 
-int main(int ac, char **av) {
+int	main(int ac, char **av) {
 	if (ac < 3)
 	{
 		std::cerr << "I need IP + port as arguments (+ pass if needed)\n";

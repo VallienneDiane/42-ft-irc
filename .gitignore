@@ -2,6 +2,7 @@
 ircserv
 obj
 dep
+bots/bin
 weechat1
 weechat2
 weechat3
