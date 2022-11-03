@@ -70,6 +70,8 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 			/////////// CHECK IF USER IS IN CHANNEL
 			if (chanIt->second.isInUserSet(socketClient).first)
 				msgToChannel(socketClient, chanIt->second, writeSockets, userMap, ++it, msgEnd, type);
+			else
+				numericReply(ERR_CANNOTSENDTOCHAN, socketClient, userMap, &(*it));
 		}
 		else
 			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*it));
