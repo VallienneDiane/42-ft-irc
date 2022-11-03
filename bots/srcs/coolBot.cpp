@@ -58,14 +58,6 @@ int sendMsg(const int socket, std::string str)
 	return (send(socket, str.data(), str.size(), 0));
 }
 
-std::string	parseChan(std::string &str)
-{
-	std::string::size_type	found = str.find('#');
-	std::string::size_type	spaceFound = str.find(' ', found);
-	std::string	parsed = str.substr(found, spaceFound - found);
-	return (parsed);
-}
-
 int	connection(char **av)
 {
 	struct addrinfo	hints;
@@ -99,11 +91,11 @@ int	connection(char **av)
 
 bool	getIn(int servSocket, int ac, char **av)
 {
-	std::string	nick = "NICK fumierBot";
-	std::string user = "USER fumierBot 0 * :";
-	if (ac > 3) {
+	std::string	nick = "NICK coolBot";
+	std::string user = "USER coolBot 0 * :Gerard CoolBotMan";
+	if (ac > 5) {
 		std::string pass = "PASS ";
-		pass += av[3];
+		pass += av[5];
 		sendMsg(servSocket, pass);
 	}
 	sendMsg(servSocket, nick);
@@ -117,79 +109,18 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-bool	spamLoop(int servSocket, std::set<std::string> &chanTab)
-{
-	int	i;
-	std::string fumier = " :FUMIEEEEEERRRRRR!!!!!!";
-	std::set<std::string>::iterator	end = chanTab.end();
-	for (std::set<std::string>::iterator begin = chanTab.begin(); begin != end; ++begin) {
-		i = 0;
-		std::string	cmd = "PRIVMSG ";
-		cmd += *begin;
-		cmd += fumier;
-		while (i++ < 42) {
-			if (sendMsg(servSocket, cmd) == -1)
-				return true;
-		}
-	}
-	sleep(5);
-	return false;
-}
+bool	routineCoolBot(int connectSocket) {
 
-bool	joinChan(int servSocket, std::set<std::string> &tab)
-{
-	std::set<std::string>::iterator end = tab.end();
-	for (std::set<std::string>::iterator begin = tab.begin(); begin != end; ++begin) {
-		std::string cmd = "JOIN ";
-		cmd += *begin;
-		if (sendMsg(servSocket, cmd) == -1)
-			return true;
-	}
-	return false;
-}
-
-bool	routineFumier(int servSocket)
-{
-	while (1) {
-		std::string buffer = "LIST";
-		std::string	sentence;
-		std::set<std::string> chanTab;
-		int rd;
-		sendMsg(servSocket, buffer);
-		rd = receiveMsg(servSocket, buffer);
-		if (!rd || rd == -1) {
-			std::cout << "end of communication : " << rd << std::endl;
-			return 0;
-		}
-		sentence = takeCommand(buffer);
-		while (!sentence.empty()) {
-			if (sentence.find('#') != std::string::npos)
-			{
-				std::string newChan = parseChan(sentence);
-				chanTab.insert(newChan);
-			}
-			sentence = takeCommand(buffer);
-		}
-		if (chanTab.empty()) {
-			sleep(5);
-		}
-		else {
-			if (joinChan(servSocket, chanTab))
-				return 1;
-			if (spamLoop(servSocket, chanTab))
-				return 1;
-		}
-	}
 }
 
 int	main(int ac, char **av) {
-	if (ac < 3)
+	if (ac < 5)
 	{
-		std::cerr << "I need IP + port as arguments (+ pass if needed)\n";
+		std::cerr << "I need IP + port + \"sentence to awake me\" + \"sentence I answer\" as arguments (+ pass if needed)\n";
 		return 1;
 	}
 
-	int	connectSocket = connection(av);
+	int connectSocket = connection(av);
 	if (connectSocket == -1)
 	{
 		std::cerr << "connection failed\n";
@@ -198,5 +129,5 @@ int	main(int ac, char **av) {
 	std::cout << "connected\n";
 	if (getIn(connectSocket, ac, av))
 		return 1;
-	return (routineFumier(connectSocket));
+	return (routineCoolBot(connectSocket));
 }
