@@ -107,6 +107,13 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " :No such channel";
 			sendMsg(socketClient, str);
 			break;
+		case 404:
+			str += SERVER_TALKING;
+			str += " 404 ";
+			str += *context;
+			str += " :Cannot send to channel";
+			sendMsg(socketClient, str);
+			break;
 		//TOPIC
 		case 331:
 			str += SERVER_TALKING;
