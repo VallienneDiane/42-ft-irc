@@ -54,12 +54,9 @@ void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
 	userMap[socketUser].addPrivMsg(socketClient);
 }
 
-bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
+bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
 {
-	std::vector<std::string>::iterator it = msg.begin();
-	std::vector<std::string>::iterator msgEnd = msg.end();
-	it++;
-	
+	if (split.size() < )
 	/////////// SEND MSG TO CHANNEL
 	if ((*it)[0] == '#')
 	{

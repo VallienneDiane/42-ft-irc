@@ -141,11 +141,11 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			break;
 		case 17:
 			// std::cout << MAGENTA << "privmsg " << std::endl;
-			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 1);
+			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 1);
 			break;
 		case 18:
 			// std::cout << "notice " << std::endl;
-			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 2);
+			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 2);
 			break;
 		case 19:
 			// std::cout << "mode " << std::endl;
