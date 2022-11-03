@@ -12,43 +12,24 @@
 
 #include "../../incs/ircserv.hpp"
 
-void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, int type)
+void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::string msg)
 {
-	std::string buffer;
-	std::cerr << "chan name = " << channel.getName() << std::endl;
-	if (type == 1)
-		buffer = userSource(userMap[socketClient]) + " PRIVMSG " + channel.getName();
-	else
-		buffer = userSource(userMap[socketClient]) + " NOTICE " + channel.getName();
-	while (msgBegin != msgEnd)
-		buffer = buffer + " " + *msgBegin++;
-
 	///////// FOR EACH USER IN THE CHANNEL
 	for (std::set<int>::iterator channelUser = channel.getUserSet().begin(); channelUser != channel.getUserSet().end(); channelUser++)
 	{
 		////////// CHECK IF USER SOCKET IS READY FOR WRITING
 		if (FD_ISSET(*channelUser, writeSockets) && *channelUser != socketClient)
-			sendMsg(*channelUser, buffer);
+			sendMsg(*channelUser, msg);
 	}
 }
 
-void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int, User> &userMap, std::vector<std::string>::iterator msgBegin, std::vector<std::string>::iterator msgEnd, int type, bool firstMsg)
+void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::string msg, bool firstMsg)
 {
-	std::string buffer;
-	if (type == 1)
-		buffer = userSource(userMap[socketClient]) + " PRIVMSG " + user.getNickname();
-	else if (type == 2)
-		buffer = userSource(userMap[socketClient]) + " NOTICE " + user.getNickname();
-	while (msgBegin != msgEnd)
-	{
-		buffer = buffer + " " + *msgBegin++;
-		std::cout << GREEN << buffer << std::endl;
-	}
 	////////// CHECK IF USER SOCKET IS READY FOR WRITING
 	if (FD_ISSET(user.getSocket(), writeSockets) && user.getSocket() != socketClient)
-		sendMsg(user.getSocket(), buffer);
+		sendMsg(user.getSocket(), msg);
 	if (firstMsg)
-		sendMsg(socketClient, buffer);
+		sendMsg(socketClient, msg);
 }
 
 void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
@@ -57,25 +38,46 @@ void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
 	userMap[socketUser].addPrivMsg(socketClient);
 }
 
-bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
+std::string privMsgParseData(std::string &data, std::map<int, User> &userMap, int socketClient, int type)
 {
-	std::vector<std::string>::iterator it = msg.begin();
-	std::vector<std::string>::iterator msgEnd = msg.end();
-	it++;
-	
-	/////////// SEND MSG TO CHANNEL
-	if ((*it)[0] == '#')
+	std::string	msg = userSource(userMap[socketClient]);
+	std::string::size_type	space;
+
+	if (type == 1)
+		msg += " PRIVMSG ";
+	else
+		msg += " NOTICE ";
+	for (char i = 0; i < 2; i++) {
+		space = data.find(' ');
+		space = data.find_first_not_of(' ', space);
+	}
+	msg.append(data, space, std::string::npos);
+	return (msg);
+}
+
+bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
+{
+	if (split.size() < 3)
 	{
-		std::map<std::string, Channel>::iterator chanIt = channelMap.find(*it);
+		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &rawData);
+		return false;
+	}
+	std::string	dest = split[1];
+	/////////// SEND MSG TO CHANNEL
+	if (dest[0] == '#')
+	{
+		std::map<std::string, Channel>::iterator chanIt = channelMap.find(dest);
 		/////////// CHECK IF CHANNEL EXIST
 		if (chanIt != channelMap.end())
 		{
 			/////////// CHECK IF USER IS IN CHANNEL
-			if (chanIt->second.isInUserSet(socketClient).first)
-				msgToChannel(socketClient, chanIt->second, writeSockets, userMap, ++it, msgEnd, type);
+			if (chanIt->second.isInUserSet(socketClient).first) {
+				std::string	msg = privMsgParseData(rawData, userMap, socketClient, type);
+				msgToChannel(socketClient, chanIt->second, writeSockets, msg);
+			}
 		}
 		else
-			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*it));
+			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &dest);
 	}
 	/////////// SEND MSG TO USER
 	else
@@ -83,21 +85,22 @@ bool	privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSocket
 		/////////// CHECK IF USER EXIST
 		for (std::map<int, User>::iterator user = userMap.begin(); user != userMap.end(); user++)
 		{
-			if (user->second.getNickname() == *it)
+			if (user->second.getNickname() == dest)
 			{
+				std::string	msg = privMsgParseData(rawData, userMap, socketClient, type);
 				//////////// ADD USER IN CONTACT LIST IF NOT ALLREADY IN IT
 				if (userMap[socketClient].isInPrivMsg(user->second.getSocket()) == false)
 				{
 					linkUsers(socketClient, user->second.getSocket(), userMap);
-					msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd, type, true);
+					msgToUser(socketClient, user->second, writeSockets, msg, true);
 				}
 				else
-					msgToUser(socketClient, user->second, writeSockets, userMap, ++it, msgEnd, type, false);
+					msgToUser(socketClient, user->second, writeSockets, msg, false);
 				return (0);
 			}
 		}
 		/////////// IF USER DOES NOT EXIST
-		numericReply(ERR_NOSUCHNICK, socketClient, userMap, &(*it));
+		numericReply(ERR_NOSUCHNICK, socketClient, userMap, &dest);
 	}
 	return (0);
 }

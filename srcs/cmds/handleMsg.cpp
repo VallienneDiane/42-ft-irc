@@ -105,10 +105,10 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 12:
-			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 1);
+			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 1);
 			break;
 		case 13:
-			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 2);
+			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 2);
 			break;
 		case 14:
 			mode(socketClient, clientMsg, userMap, channelMap);
