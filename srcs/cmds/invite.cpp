@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   invite.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/11/03 10:13:03 by dvallien          #+#    #+#             */
+/*   Updated: 2022/11/03 10:13:03 by dvallien         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../incs/ircserv.hpp"
 
 void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap) {

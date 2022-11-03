@@ -12,7 +12,7 @@
 
 #include "../../incs/ircserv.hpp"
 
-bool	names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	if (channelMap.find(channelName) != channelMap.end())
 	{
@@ -28,5 +28,4 @@ bool	names(int socketClient, std::string channelName, std::map<int, User> &userM
 		std::string msg = ":127.0.0.1 366 = " + channelName + " :End of /NAMES list";
 		sendMsg(socketClient, msg);
 	}
-	return (0);
 }

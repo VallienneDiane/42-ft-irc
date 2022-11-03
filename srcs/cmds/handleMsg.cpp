@@ -16,8 +16,8 @@ std::vector<std::string> splitMsg(std::string content)
 {
 	char *words = new char [content.length()+1]; //to copy string to chat to use strtok
 	std::strcpy(words, content.c_str()); 		//copy all client infos in words (cap, nick, user)
-	char *line = strtok(words, " ");			 //split words into tokens with " "
-	std::vector<std::string> clientMsg;		//create tab with client infos
+	char *line = strtok(words, " ");			//split words into tokens with " "
+	std::vector<std::string> clientMsg;			//create tab with client infos
 	
 	while(line != NULL)
 	{
@@ -36,16 +36,11 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	std::vector<std::string>::iterator it = clientMsg.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
-		"CAP",
-		"AUTHENTICATE",
 		"PASS",
 		"NICK",
 		"USER",
 		"PING",
-		"PONG",
-		"OPER",
 		"QUIT",
-		"ERROR",
 		"JOIN",
 		"PART",
 		"TOPIC",
@@ -55,9 +50,8 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		"KICK",
 		"PRIVMSG",
 		"NOTICE",
+		"MODE",
 	};
-	// std::cout << BGREEN << "CMD name : " << *(clientMsg.begin()) << END << std::endl;
-	
 	int i = 0;
 	int size = sizeof(cmds)/sizeof(std::string);
 	for(i = 0; i < size; i++)
@@ -79,76 +73,45 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	switch (i)
 	{
 		case 0:
-			// std::cout << "cap " << std::endl;
-			break;
-		case 1:
-			// std::cout << "authenticate " << std::endl;
-			break;
-		case 2:
-			// std::cout << "pass " << std::endl;
 			return (passHandle(user, clientMsg, userMap));
-			break;
-		case 3:
-			// std::cout << "nick " << std::endl;
+		case 1:
 			return (nickHandle(socketClient, *(++it), userMap, channelMap));
-			break;
-		case 4:
-			// std::cout << "user " << std::endl;
+		case 2:
 			return (userHandle(socketClient, clientMsg, userMap));
-		case 5:
-			// std::cout << "ping " << std::endl;
+		case 3:
 			return (pong(socketClient, content));
+		case 4:
+			quit(socketClient, content, userMap, channelMap);
+			return (1);
+			break;
+		case 5:
+			join(socketClient, *(++it), userMap, channelMap);
+			break;
 		case 6:
-			// std::cout << "pong " << std::endl;
-			//return (pong(socketClient, content));
+			part(socketClient, *(++it), clientMsg, userMap, channelMap);
 			break;
 		case 7:
-			// std::cout << "oper " << std::endl;
+			topic(socketClient, *(++it), clientMsg, userMap, channelMap);
 			break;
 		case 8:
-			// std::cout << "quit " << std::endl;
-			return (quit(socketClient, content, userMap, channelMap));
+			names(socketClient, *(++it), userMap, channelMap);
 			break;
 		case 9:
-			// std::cout << "error " << std::endl;
-			break;
-		case 10:
-			// std::cout << "join " << std::endl;
-			return (join(socketClient, clientMsg, userMap, channelMap));
-			break;
-		case 11:
-			return(part(socketClient, *(++it), clientMsg, userMap, channelMap));
-			break;
-		case 12:
-			// std::cout << "topic " << std::endl;
-			return(topic(socketClient, *(++it), clientMsg, userMap, channelMap));
-			break;
-		case 13:
-			// std::cout << "names " << std::endl;
-			return (names(socketClient, *(++it), userMap, channelMap));
-			break;
-		case 14:
-			// std::cout << "list " << std::endl;
 			list(socketClient, clientMsg, userMap, channelMap);
 			break;
-		case 15:
-			// std::cout << "invite " << std::endl;
+		case 10:
 			invite(user, clientMsg, userMap, channelMap);
 			break;
-		case 16:
-			// std::cout << "kick " << std::endl;
+		case 11:
 			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
-		case 17:
-			// std::cout << MAGENTA << "privmsg " << std::endl;
+		case 12:
 			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 1);
 			break;
-		case 18:
-			// std::cout << "notice " << std::endl;
+		case 13:
 			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 2);
 			break;
-		case 19:
-			// std::cout << "mode " << std::endl;
+		case 14:
 			mode(socketClient, clientMsg, userMap, channelMap);
 			break;
 		default:

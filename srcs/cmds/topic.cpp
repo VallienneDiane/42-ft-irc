@@ -12,7 +12,7 @@
 
 #include "../../incs/ircserv.hpp"
 
-bool	topic(int socketClient, std::string channel, std::vector<std::string> topic,std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	topic(int socketClient, std::string channel, std::vector<std::string> topic,std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	User								&current = userMap[socketClient];
 	std::string							buffer;
@@ -60,5 +60,4 @@ bool	topic(int socketClient, std::string channel, std::vector<std::string> topic
 	}
 	else
 		numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, &(channel));
-	return(0);
 }

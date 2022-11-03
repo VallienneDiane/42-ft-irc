@@ -74,5 +74,4 @@ bool	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		}
 		name++;	
 	}
-	return (0);
 }
