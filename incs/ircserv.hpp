@@ -80,16 +80,16 @@ void						numericReply(int error, int socketClient, std::map<int, User> &userMap
 int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient, std::string &ping);
-bool						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						privmsg(int socketClient, std::vector<std::string> msg, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type);
-bool						part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
+void						part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
 void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 void    					invite(User &user, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 std::vector<std::string> 	splitNames(std::string &names);
-bool						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
-bool						topic(int socketClient, std::string channel, std::vector<std::string> topic, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						topic(int socketClient, std::string channel, std::vector<std::string> topic, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 void						mode(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 void						list(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
-bool						quit(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+void						quit(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 void						informAllUsers(std::set<int> userSet, std::string msg);
 #endif

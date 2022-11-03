@@ -12,7 +12,7 @@
 
 #include "../../incs/ircserv.hpp"
 
-bool	part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	User								&current = userMap[socketClient];
 	std::vector<std::string>			tabChannels = splitNames(channels);
@@ -48,5 +48,4 @@ bool	part(int socketClient, std::string channels, std::vector<std::string> reaso
 		}
 		nameChannel++;
 	}
-	return (0);
 }

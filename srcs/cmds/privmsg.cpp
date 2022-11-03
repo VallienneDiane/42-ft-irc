@@ -40,7 +40,10 @@ void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::map<int,
 	else if (type == 2)
 		buffer = userSource(userMap[socketClient]) + " NOTICE " + user.getNickname();
 	while (msgBegin != msgEnd)
+	{
 		buffer = buffer + " " + *msgBegin++;
+		std::cout << GREEN << buffer << std::endl;
+	}
 	////////// CHECK IF USER SOCKET IS READY FOR WRITING
 	if (FD_ISSET(user.getSocket(), writeSockets) && user.getSocket() != socketClient)
 		sendMsg(user.getSocket(), buffer);

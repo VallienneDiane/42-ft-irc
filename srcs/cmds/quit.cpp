@@ -6,13 +6,13 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:33:29 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/25 16:42:45 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/11/03 11:51:45 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/ircserv.hpp"
 
-bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	User user = userMap[socketClient];
 	std::cout << BRED << reason << END << std::endl;
@@ -40,5 +40,4 @@ bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, s
 		userMap[*friendBegin].removePrivMsg(socketClient);
 		++friendBegin;
 	}
-	return (1);
 }

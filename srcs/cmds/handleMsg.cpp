@@ -36,16 +36,11 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	std::vector<std::string>::iterator it = clientMsg.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
-		"CAP",
-		"AUTHENTICATE",
 		"PASS",
 		"NICK",
 		"USER",
 		"PING",
-		"PONG",
-		"OPER",
 		"QUIT",
-		"ERROR",
 		"JOIN",
 		"PART",
 		"TOPIC",
@@ -55,8 +50,8 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		"KICK",
 		"PRIVMSG",
 		"NOTICE",
+		"MODE",
 	};
-	// std::cout << BGREEN << "CMD name : " << *(clientMsg.begin()) << END << std::endl;
 	int i = 0;
 	int size = sizeof(cmds)/sizeof(std::string);
 	for(i = 0; i < size; i++)
@@ -78,60 +73,44 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	switch (i)
 	{
 		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
 			return (passHandle(user, clientMsg, userMap));
-			break;
-		case 3:
+		case 1:
 			return (nickHandle(socketClient, *(++it), userMap, channelMap));
-			break;
-		case 4:
+		case 2:
 			return (userHandle(socketClient, clientMsg, userMap));
-		case 5:
+		case 3:
 			return (pong(socketClient, content));
+		case 4:
+			quit(socketClient, content, userMap, channelMap);
+			break;
+		case 5:
+			join(socketClient, *(++it), userMap, channelMap);
+			break;
 		case 6:
-			// std::cout << "pong " << std::endl;
-			//return (pong(socketClient, content));
+			part(socketClient, *(++it), clientMsg, userMap, channelMap);
 			break;
 		case 7:
-			// std::cout << "oper " << std::endl;
+			topic(socketClient, *(++it), clientMsg, userMap, channelMap);
 			break;
 		case 8:
-			return (quit(socketClient, content, userMap, channelMap));
+			names(socketClient, *(++it), userMap, channelMap);
 			break;
 		case 9:
-			// std::cout << "error " << std::endl;
-			break;
-		case 10:
-			return (join(socketClient, *(++it), userMap, channelMap));
-			break;
-		case 11:
-			return(part(socketClient, *(++it), clientMsg, userMap, channelMap));
-			break;
-		case 12:
-			return(topic(socketClient, *(++it), clientMsg, userMap, channelMap));
-			break;
-		case 13:
-			return (names(socketClient, *(++it), userMap, channelMap));
-			break;
-		case 14:
 			list(socketClient, clientMsg, userMap, channelMap);
 			break;
-		case 15:
+		case 10:
 			invite(user, clientMsg, userMap, channelMap);
 			break;
-		case 16:
+		case 11:
 			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
-		case 17:
+		case 12:
 			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 1);
 			break;
-		case 18:
+		case 13:
 			privmsg(socketClient, clientMsg, writeSockets, userMap, channelMap, 2);
 			break;
-		case 19:
+		case 14:
 			mode(socketClient, clientMsg, userMap, channelMap);
 			break;
 		default:
