@@ -89,7 +89,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			part(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 7:
-			topic(socketClient, *(++it), clientMsg, userMap, channelMap);
+			topic(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 8:
 			names(socketClient, *(++it), userMap, channelMap);

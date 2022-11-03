@@ -12,14 +12,21 @@
 
 #include "../../incs/ircserv.hpp"
 
-void	topic(int socketClient, std::string channel, std::vector<std::string> topic,std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	topic(int socketClient, std::vector<std::string> commands,std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	User										&current = userMap[socketClient];
 	std::string									buffer;
 	std::vector<std::string>::iterator			it;
+	std::string channel = commands[1];
+	std::vector<std::string> topic = commands;
 	std::vector<std::string>::iterator			topicEnd = topic.end();
 	std::map<std::string, Channel>::iterator	channelEnd = channelMap.end();
 
+	if (commands.size() < 2) 
+	{
+        numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &commands[0]);
+		return ;
+    }
 	for(it = topic.begin() + 2; it != topicEnd; it++) //GET THE TOPIC
 	{
 		if(it == topicEnd - 1)
@@ -43,6 +50,8 @@ void	topic(int socketClient, std::string channel, std::vector<std::string> topic
 				{
 					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
 					channelMap.find(channel)->second.setTopic(buffer);
+					std::string msg = userSource(current) + " TOPIC " + channel + " :" + buffer;
+					informAllUsers(channelMap.find(channel)->second.getUserSet(), msg);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{
