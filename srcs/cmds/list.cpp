@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   list.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 15:39:50 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/25 16:53:10 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/11/03 15:05:00 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,17 @@ void	channelInfo(int socketClient, Channel &channel, std::map<int, User> &userMa
 
 void	list(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
+	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
 	if (commands.size() == 2)
 	{
 		std::vector<std::string> channelNames = splitNames(*(commands.begin() + 1));
 		std::vector<std::string>::iterator channelNamesEnd = channelNames.end();
+		
 		for (std::vector<std::string>::iterator name = channelNames.begin(); name != channelNamesEnd; name++)
 		{
 			std::map<std::string, Channel>::iterator channel = channelMap.find(*name);
 			////// CHECK IF CHANNEL EXISTS
-			if (channel != channelMap.end())
+			if (channel != channelEnd)
 				channelInfo(socketClient, channel->second, userMap);
 			else
 				numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &(*name));
@@ -38,7 +40,6 @@ void	list(int socketClient, std::vector<std::string> commands, std::map<int, Use
 	}
 	else if (commands.size() == 1)
 	{
-		std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
 		for (std::map<std::string, Channel>::iterator channel = channelMap.begin(); channel != channelEnd; channel++)
 		{
 			channelInfo(socketClient, channel->second, userMap);

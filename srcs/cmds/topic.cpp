@@ -14,21 +14,22 @@
 
 void	topic(int socketClient, std::string channel, std::vector<std::string> topic,std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	User								&current = userMap[socketClient];
-	std::string							buffer;
-	std::vector<std::string>::iterator	it;
-	
-	for(it = topic.begin() + 2; it != topic.end(); it++) //GET THE TOPIC
+	User										&current = userMap[socketClient];
+	std::string									buffer;
+	std::vector<std::string>::iterator			it;
+	std::vector<std::string>::iterator			topicEnd = topic.end();
+	std::map<std::string, Channel>::iterator	channelEnd = channelMap.end();
+
+	for(it = topic.begin() + 2; it != topicEnd; it++) //GET THE TOPIC
 	{
-		if(it == topic.end() - 1)
+		if(it == topicEnd - 1)
 			buffer = buffer + (*it);
 		else
 			buffer = buffer + (*it)+ " ";
 	}	
 	if (buffer[0] == ':')
 		buffer.erase(0,1);
-	std::cout << buffer << std::endl;
-	if(channelMap.find(channel) != channelMap.end())
+	if(channelMap.find(channel) != channelEnd)
 	{
 		if(channel[0] == '#') //IF CHANNEL BEGIN WITH #
 		{

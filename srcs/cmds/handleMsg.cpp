@@ -32,7 +32,6 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 {
 	std::vector<std::string> clientMsg;
 	clientMsg = splitMsg(content);
-	std::cout << content << std::endl;
 	std::vector<std::string>::iterator it = clientMsg.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
@@ -83,12 +82,11 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		case 4:
 			quit(socketClient, content, userMap, channelMap);
 			return (1);
-			break;
 		case 5:
 			join(socketClient, *(++it), userMap, channelMap);
 			break;
 		case 6:
-			part(socketClient, *(++it), clientMsg, userMap, channelMap);
+			part(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 7:
 			topic(socketClient, *(++it), clientMsg, userMap, channelMap);

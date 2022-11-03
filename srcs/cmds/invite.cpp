@@ -26,7 +26,7 @@ void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &
 
 void    invite(User &user, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap) {
     if (command.size() < 3) {
-        numericReply(ERR_NEEDMOREPARAMS, user.getSocket(), userMap, NULL);
+        numericReply(ERR_NEEDMOREPARAMS, user.getSocket(), userMap, &(command[0]));
 		return ;
     }
 	std::map<int, User>::iterator	userIt = findUserByNickName(command[1], userMap);

@@ -14,7 +14,9 @@
 
 void	names(int socketClient, std::string channelName, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	if (channelMap.find(channelName) != channelMap.end())
+	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
+
+	if (channelMap.find(channelName) != channelEnd)
 	{
 		std::string buffer = ":127.0.0.1 353 = " + channelName + " :";
 		std::set<int>::iterator user = channelMap.find(channelName)->second.getUserSet().begin();

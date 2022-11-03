@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/10/24 13:54:02 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:35:23 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,47 +103,26 @@ void	User::addPrivMsg(int userSocket)
 
 void	User::removeChannel(std::string channelName)
 {
-
-	// std::set<std::string>::iterator it = this->_channels.begin();
-	// std::set<std::string>::iterator end = this->_channels.end();
-	// while (it != end)
-	// {
-	// 	if ((*it).compare(channelName) == 0)
-	// 	{
-			
-			this->_channels.erase(channelName);
-	// 	}
-	// 	std::cout << "ICI" << std::endl;
-	// 	it++;
-	// 	std::cout << "LA" << std::endl;
-	// }
+	this->_channels.erase(channelName);
 }
 
 void	User::removePrivMsg(int userSocket)
 {
-	/*std::set<int>::iterator it = this->_privMsg.begin();
-	std::set<int>::iterator end = this->_privMsg.end();
-	while (it != end)
-	{
-		if ((*it) == userSocket)
-			this->_privMsg.erase(userSocket);
-		it++;
-	}*/
 	_privMsg.erase(userSocket);
 }
 
 bool	User::isInPrivMsg(int userSocket)
 {
-	std::set<int>::iterator it = this->_privMsg.begin();
-	std::set<int>::iterator end = this->_privMsg.end();
-	while (it != end)
-	{
-		if ((*it) == userSocket)
-			return (true);
-		it++;
-	}
-	return (false);
-	//return (_privMsg.find(userSocket) != _privMsg.end());
+	// std::set<int>::iterator it = this->_privMsg.begin();
+	// std::set<int>::iterator end = this->_privMsg.end();
+	// while (it != end)
+	// {
+	// 	if ((*it) == userSocket)
+	// 		return (true);
+	// 	it++;
+	// }
+	// return (false);
+	return (_privMsg.find(userSocket) != _privMsg.end());
 }
 
 /****************** STREAM OVERLOAD ******************/

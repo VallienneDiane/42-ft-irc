@@ -57,6 +57,8 @@ std::string privMsgParseData(std::string &data, std::map<int, User> &userMap, in
 
 bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
 {
+	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
+
 	if (split.size() < 3)
 	{
 		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &rawData);
@@ -68,7 +70,7 @@ bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &raw
 	{
 		std::map<std::string, Channel>::iterator chanIt = channelMap.find(dest);
 		/////////// CHECK IF CHANNEL EXIST
-		if (chanIt != channelMap.end())
+		if (chanIt != channelEnd)
 		{
 			/////////// CHECK IF USER IS IN CHANNEL
 			if (chanIt->second.isInUserSet(socketClient).first) {

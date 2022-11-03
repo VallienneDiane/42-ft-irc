@@ -6,7 +6,7 @@
 /*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:27:15 by amarchal          #+#    #+#             */
-/*   Updated: 2022/10/25 16:42:45 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/11/03 14:53:50 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@ void	mode(int socketClient, std::vector<std::string> commands, std::map<int, Use
 	{
 		std::vector<std::string>::iterator it = commands.begin();
 		std::string channelName = *(++it);
+		std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
+		std::map<int, User>::iterator userEnd = userMap.end();
 		std::string mode = *(++it);
 		std::string target = *(++it);
 
 		/////// CHECK IF CHANNEL EXIST
-		if (channelMap.find(channelName) != channelMap.end())
+		if (channelMap.find(channelName) != channelEnd)
 		{
 			Channel *channel = &(channelMap.find(channelName)->second);
 			/////// CHECK IF USER IS IN CHANNEL AND IS OPER
@@ -55,7 +57,7 @@ void	mode(int socketClient, std::vector<std::string> commands, std::map<int, Use
 				if (checkMode(mode) == true)	
 				{
 					//////// CHECK IF TARGET EXIST
-					for (std::map<int, User>::iterator user = userMap.begin(); user != userMap.end(); user++)
+					for (std::map<int, User>::iterator user = userMap.begin(); user != userEnd; user++)
 					{
 						if (user->second.getNickname().compare(target) == 0)
 						{

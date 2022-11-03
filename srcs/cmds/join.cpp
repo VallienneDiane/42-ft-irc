@@ -38,12 +38,13 @@ void	join(int socketClient, std::string &channelNames, std::map<int, User> &user
 	std::vector<std::string> chanNames = splitNames(channelNames);
 	std::vector<std::string>::iterator name = chanNames.begin();
 	std::vector<std::string>::iterator end = chanNames.end();
+	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
 	while (name != end)
 	{
 		if ((*name)[0] != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
 			name->insert(0, 1, '#');
 		//////////// NEW CHANNEL
-		if (channelMap.find(*name) == channelMap.end())
+		if (channelMap.find(*name) == channelEnd)
 		{
 			Channel newChannel(*name, userMap[socketClient]);								///////// CREATE NEW CHANNEL WITH ITS NAME AND OPERATOR
 			channelMap.insert(std::pair<std::string, Channel>(*name, newChannel));			///////// INSERT NEW CHANNEL INTO CHANNELMAP

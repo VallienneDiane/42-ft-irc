@@ -12,23 +12,33 @@
 
 #include "../../incs/ircserv.hpp"
 
-void	part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	part(int socketClient, std::vector<std::string> commands, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	User								&current = userMap[socketClient];
-	std::vector<std::string>			tabChannels = splitNames(channels);
-	std::vector<std::string>::iterator	nameChannel = tabChannels.begin();
-	std::vector<std::string>::iterator	it;
-	std::string 						buffer;
+	User										&current = userMap[socketClient];
+	std::string channels = commands[1];
+	std::vector<std::string> reason = commands;
+	std::vector<std::string>					tabChannels = splitNames(channels);
+	std::vector<std::string>::iterator			nameChannel = tabChannels.begin();
+	std::string 								buffer;
+	std::vector<std::string>::iterator			it;
+	std::vector<std::string>::iterator 			reasonEnd = reason.end();
+	std::map<std::string, Channel>::iterator 	channelEnd = channelMap.end();
+	std::vector<std::string>::iterator			tabChannelsEnd = tabChannels.end();
 	
-	for( it = reason.begin() + 2; it != reason.end(); it++) //GET REASON FOR LEAVING CHAN
+	if (commands.size() < 2) 
+	{
+        numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &commands[0]);
+		return ;
+    }
+	for(it = reason.begin() + 2; it != reasonEnd; it++) //GET REASON FOR LEAVING CHAN
 		buffer = buffer + (*it) + " ";
 	if (buffer.empty())
 		buffer = "no reason given";
-	while(nameChannel != tabChannels.end())
+	while(nameChannel != tabChannelsEnd)
 	{
 		if((*nameChannel)[0] == '#') //IF FIRST LETTER OF CHAN IS #
 		{
-			if(channelMap.find(*nameChannel) == channelMap.end())//IF CHANNEL DOESN'T EXIST
+			if(channelMap.find(*nameChannel) == channelEnd)//IF CHANNEL DOESN'T EXIST
 				numericReply(ERR_NOSUCHCHANNEL,socketClient, userMap, &(*nameChannel)); //err 403
 			else //IF CHANNEL EXIST
 			{
