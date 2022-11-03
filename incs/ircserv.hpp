@@ -80,7 +80,7 @@ void						numericReply(int error, int socketClient, std::map<int, User> &userMap
 int 						checkNickname(const std::string &name);
 bool						ping(int socketClient);
 bool						pong(int socketClient, std::string &ping);
-bool						join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
+bool						join(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type);
 bool						part(int socketClient, std::string channels, std::vector<std::string> reason, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);
 void						kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);

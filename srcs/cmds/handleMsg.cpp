@@ -114,7 +114,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			break;
 		case 10:
 			// std::cout << "join " << std::endl;
-			return (join(socketClient, *(++it), userMap, channelMap));
+			return (join(socketClient, clientMsg, userMap, channelMap));
 			break;
 		case 11:
 			return(part(socketClient, *(++it), clientMsg, userMap, channelMap));

@@ -33,7 +33,7 @@ void	informAllUsers(std::set<int> userSet, std::string msg)
 	}
 }
 
-bool	join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+bool	join(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::vector<std::string> chanNames = splitNames(channelNames);
 	std::vector<std::string>::iterator name = chanNames.begin();
