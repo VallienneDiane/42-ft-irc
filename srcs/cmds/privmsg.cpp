@@ -74,10 +74,13 @@ bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &raw
 		if (chanIt != channelEnd)
 		{
 			/////////// CHECK IF USER IS IN CHANNEL
-			if (chanIt->second.isInUserSet(socketClient).first) {
+			if (chanIt->second.isInUserSet(socketClient).first) 
+			{
 				std::string	msg = privMsgParseData(rawData, userMap, socketClient, type);
 				msgToChannel(socketClient, chanIt->second, writeSockets, msg, type);
 			}
+			else
+				numericReply(ERR_CANNOTSENDTOCHAN, socketClient, userMap, &dest);
 		}
 		else if (type == 1)
 			numericReply(ERR_NOSUCHCHANNEL, socketClient, userMap, &dest);

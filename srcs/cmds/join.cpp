@@ -33,9 +33,15 @@ void	informAllUsers(std::set<int> userSet, std::string msg)
 	}
 }
 
-void	join(int socketClient, std::string &channelNames, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	join(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
-	std::vector<std::string> chanNames = splitNames(channelNames);
+	if (command.size() < 2)
+	{
+		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &command[0]);
+		return ;
+	}
+	std::vector<std::string>	chanNames = splitNames(command[1]);
+	std::vector<std::string>	chanPass =
 	std::vector<std::string>::iterator name = chanNames.begin();
 	std::vector<std::string>::iterator end = chanNames.end();
 	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
