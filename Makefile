@@ -12,7 +12,7 @@
 
 NAME = ircserv
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
+FLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
 
 PATH_SRCS		=	srcs
 PATH_DEP		=	dep
