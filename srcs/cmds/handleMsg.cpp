@@ -35,8 +35,6 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	std::vector<std::string>::iterator it = clientMsg.begin();
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
-			"CAP",
-			"AUTHENTICATE",
 		"PASS",
 		"NICK",
 		"USER",
@@ -60,12 +58,14 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		if (cmds[i] == *it)
 			break;
 	}
-	if (!user.getPass() && i > 2)
+	if (i > 14)
+		i = -1;
+	if (!user.getPass() && i > 0)
 	{
 		numericReply(ERR_PASSWDMISMATCH, socketClient, userMap, NULL);
 		return true;
 	}
-	if (!fullyRegistered(user) && i > 5)
+	if (!fullyRegistered(user) && i > 3)
 	{
 		std::string	notReg = "You have not registered";
 		numericReply(ERR_NOTREGISTERED, socketClient, userMap, &notReg);
@@ -85,7 +85,7 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			quit(socketClient, content, userMap, channelMap);
 			return (1);
 		case 5:
-			join(socketClient, *(++it), userMap, channelMap);
+			//join(socketClient, *(++it), userMap, channelMap);
 			break;
 		case 6:
 			part(socketClient, clientMsg, userMap, channelMap);

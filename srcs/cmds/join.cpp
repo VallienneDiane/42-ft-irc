@@ -41,7 +41,7 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		return ;
 	}
 	std::vector<std::string>	chanNames = splitNames(command[1]);
-	std::vector<std::string>	chanPass =
+	//std::vector<std::string>	chanPass =
 	std::vector<std::string>::iterator name = chanNames.begin();
 	std::vector<std::string>::iterator end = chanNames.end();
 	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();

@@ -19,7 +19,7 @@ int	compareTime(timeval &t1, timeval &t2)
 	int	tempsSec;
 
 	gettimeofday(&t2, 0);
-	std::cout << "compare = " << t1.tv_sec << " et current = " << t2.tv_sec << std::endl;
+	//std::cout << "compare = " << t1.tv_sec << " et current = " << t2.tv_sec << std::endl;
 	tempsSec = (t2.tv_sec - t1.tv_sec);
 	if (tempsSec >= 5) {
 		gettimeofday(&t1, 0);
@@ -127,22 +127,24 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-bool	askListAndJoin(int connectSocket, std::set<std::string> &chan) {
+/*bool	askListAndJoin(int connectSocket, std::set<std::string> &chan) {
 	
-}
+}*/
 
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
+	(void) str;
+	(void) answer;
 	std::set<std::string>	chan;
 	struct timeval	compare;
 	struct timeval	current;
 	struct timeval	selectTimeOut;
-	selectTimeOut.tv_sec = 0;
-	selectTimeOut.tv_usec = 50000;
 	fd_set	currentSockets;
 	fd_set	readSockets;
 	fd_set	writeSockets;
+	selectTimeOut.tv_sec = 0;
+	selectTimeOut.tv_usec = 50000;
 	FD_ZERO(&currentSockets);
-	FD_SET(socketServer, &currentSocket);
+	FD_SET(connectSocket, &currentSockets);
 	gettimeofday(&compare, 0);
 	while (true) {
 		readSockets = currentSockets;
@@ -158,13 +160,13 @@ bool	routineCoolBot(int connectSocket, char *str, char *answer) {
 				return (errno);
 			else if (err == 0)
 				return (0);
-			else if (parseCmd(connectSocket, msg, str,
+			/*else if (parseCmd(connectSocket, msg, str,
 							  answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
-				return (errno);
-			if (compareTime(compare, current)) {
-				if (askListAndJoin(connectSocket, chan))
-					return (errno);
+				return (errno);*/
 			}
+		if (compareTime(compare, current)) {
+			//if (askListAndJoin(connectSocket, chan))
+			//	return (errno);
 		}
 	}
 }
