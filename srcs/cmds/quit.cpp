@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:33:29 by amarchal          #+#    #+#             */
-/*   Updated: 2022/11/03 16:45:45 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:35:45 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	quitAllChannels(int socketClient, std::map<std::string, Channel> &channelMap)
 {
+	bool emptyChan = false;
+	std::string chanToDel;
 	std::map<std::string, Channel>::iterator channel = channelMap.begin();
 	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
 	while (channel != channelEnd)
@@ -23,10 +25,18 @@ void	quitAllChannels(int socketClient, std::map<std::string, Channel> &channelMa
 		if (channel->second.isInUserSet(socketClient).first)
 		{
 			channel->second.delUser(socketClient);
-			// if (channel->second.getUserSet().empty())
-			// 	channelMap.erase(channel->second.getName());
+			if (channel->second.getUserSet().empty())
+			{
+				emptyChan = true;
+				chanToDel = channel->second.getName();
+			}
 		}
 		channel++;
+		if (emptyChan)
+		{
+			channelMap.erase(chanToDel);
+			emptyChan = false;
+		}
 	}
 }
 

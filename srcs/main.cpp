@@ -113,9 +113,11 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 	if (bytesReceived == -1)
 	{
-		std::cerr << "Error in recv(), Quitting" << std::endl;
-		userMap.erase(socketClient);
-		close(socketClient);
+		// std::cerr << "Error in recv(), Quitting" << std::endl;
+		std::string reason = "QUIT :Client crashed !!";
+		quit(socketClient, reason, userMap, channelMap);
+		// userMap.erase(socketClient);
+		// close(socketClient);
 		FD_CLR(socketClient, currentSockets); // remove socket to the set of sockets we are watching
 		return ;
 	}
