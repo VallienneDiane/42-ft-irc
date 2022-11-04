@@ -100,7 +100,6 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
     userMap[socketClient];
 	userMap[socketClient].setSocket(socketClient);
 	return (socketClient);
-	(void)userMap;	
 }
 
 void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)

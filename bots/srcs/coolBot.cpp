@@ -150,17 +150,18 @@ bool	getIn(int servSocket, int ac, char **av)
 
 bool	parseList(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
 	std::set<std::string>::iterator end = chan.end();
-	if (chan.find(lst[2]) == end) {
+	if (chan.find(lst[3]) == end) {
 		std::string msg = "JOIN ";
-		msg += lst[2];
+		msg += lst[3];
 		return (sendMsg(socket, msg) == -1);
 	}
 	return false;
 }
 
 bool	parseNames(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
-	if (chan.insert(lst[3]).second)
+	if (chan.insert(lst[3]).second) {
 		return false;
+	}
 	else if (lst.size() == 6) {
 		std::string	msg = "PART ";
 		msg += lst[3];
@@ -195,7 +196,7 @@ bool	parsePrivmsg(int connectSocket, std::vector<std::string> words, std::string
 	return (0);
 }
 
-bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char *botAnswer, std::set<std::string> chan)
+bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char *botAnswer, std::set<std::string> &chan)
 {
 	std::string buffer;
 
@@ -222,8 +223,6 @@ bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char
 }
 
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
-	(void) str;
-	(void) answer;
 	std::set<std::string>	chan;
 	struct timeval	compare;
 	struct timeval	current;
