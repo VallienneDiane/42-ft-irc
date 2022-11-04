@@ -45,6 +45,7 @@ bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, s
 	std::cout << BRED << reason << END << std::endl;
 	std::string msg = userSource(userMap[socketClient]) + " " + reason;
 
+	userMap.erase(socketClient);
 	std::map<int, User>::iterator user = userMap.begin();
 	std::map<int, User>::iterator userEnd = userMap.end();
 	while (user != userEnd)
@@ -53,7 +54,6 @@ bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, s
 		user++;
 	}
 	quitAllChannels(socketClient, channelMap);
-	userMap.erase(socketClient);
 	close(socketClient);
 	return (1);
 }
