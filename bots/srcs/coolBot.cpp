@@ -150,7 +150,6 @@ bool	getIn(int servSocket, int ac, char **av)
 
 bool	parseList(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
 	std::set<std::string>::iterator end = chan.end();
-
 	if (chan.find(lst[3]) == end) {
 		std::string msg = "JOIN ";
 		msg += lst[3];
