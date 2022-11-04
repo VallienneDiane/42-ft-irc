@@ -10,6 +10,24 @@
 #include <netdb.h>
 #include <csignal>
 #include <set>
+#include <cerrno>
+#include <time.h>
+#include <sys/time.h>
+
+int	compareTime(timeval &t1, timeval &t2)
+{
+	int	tempsSec;
+
+	gettimeofday(&t2, 0);
+	std::cout << "compare = " << t1.tv_sec << " et current = " << t2.tv_sec << std::endl;
+	tempsSec = (t2.tv_sec - t1.tv_sec);
+	if (tempsSec >= 5) {
+		gettimeofday(&t1, 0);
+		std::cout << "after reset of compare, compare = " << t1.tv_sec << std::endl;
+		return (1);
+	}
+	return (0);
+}
 
 bool    isCrlf(std::string str)
 {
@@ -29,7 +47,7 @@ int receiveMsg(const int socket, std::string &buffer)
 	char    lineRead[4096];
 	memset(lineRead, 0, 4096);
 	int     rd;
-	while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1)
+	while (assignReadValue(rd, recv(socket, lineRead, 4096, MSG_DONTWAIT)) && rd != -1)
 	{
 		buffer += lineRead;
 		if (lineRead[rd] == '\0' || isCrlf(buffer))
@@ -109,8 +127,25 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-bool	routineCoolBot(int connectSocket) {
-
+bool	routineCoolBot(int connectSocket, char *str, char *answer) {
+	std::set<std::string>	chan;
+	struct timeval	compare;
+	struct timeval	current;
+	gettimeofday(&compare, 0);
+	while (true) {
+		std::string msg;
+		int err = receiveMsg(connectSocket, msg);
+		if (err == -1 && errno != EAGAIN)
+			return (errno);
+		else if (err == 0)
+			return (0);
+		else if (parseCmd(connectSocket, msg, str, answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
+			return (errno);
+		if (compareTime(compare, current)) {
+			if (askListAndJoin(connectSocket, chan))
+				return (errno);
+		}
+	}
 }
 
 int	main(int ac, char **av) {
@@ -129,5 +164,5 @@ int	main(int ac, char **av) {
 	std::cout << "connected\n";
 	if (getIn(connectSocket, ac, av))
 		return 1;
-	return (routineCoolBot(connectSocket));
+	return (routineCoolBot(connectSocket, av[3], av[4]));
 }
