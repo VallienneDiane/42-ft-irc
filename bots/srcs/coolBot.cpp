@@ -19,11 +19,9 @@ int	compareTime(timeval &t1, timeval &t2)
 	int	tempsSec;
 
 	gettimeofday(&t2, 0);
-	//std::cout << "compare = " << t1.tv_sec << " et current = " << t2.tv_sec << std::endl;
 	tempsSec = (t2.tv_sec - t1.tv_sec);
 	if (tempsSec >= 5) {
 		gettimeofday(&t1, 0);
-		std::cout << "after reset of compare, compare = " << t1.tv_sec << std::endl;
 		return (1);
 	}
 	return (0);
@@ -74,6 +72,12 @@ int sendMsg(const int socket, std::string str)
 	str += "\r\n";
 	std::cout << "msg send  : " << str;
 	return (send(socket, str.data(), str.size(), 0));
+}
+
+int sendMsg(const int socket, const char * str)
+{
+	std::cout << "msg send  : " << str;
+	return (send(socket, str, strlen(str), 0));
 }
 
 int	connection(char **av)
@@ -127,9 +131,18 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-/*bool	askListAndJoin(int connectSocket, std::set<std::string> &chan) {
-	
-}*/
+void
+
+bool	askNames(int socket, std::set<std::string> &chan) {
+	std::set<std::string>::iterator	end = chan.end();
+	for (std::set<std::string>::iterator it = chan.begin(); it != end; ++it) {
+		std::string msg = "NAMES ";
+		msg += *it;
+		if (sendMsg(socket, msg) == -1)
+			return true;
+	}
+	return false;
+}
 
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
 	(void) str;
@@ -165,8 +178,9 @@ bool	routineCoolBot(int connectSocket, char *str, char *answer) {
 				return (errno);*/
 			}
 		if (compareTime(compare, current)) {
-			//if (askListAndJoin(connectSocket, chan))
-			//	return (errno);
+			if ((sendMsg(connectSocket, "LIST\r\n") == -1) ||
+			askNames(connectSocket, chan))
+				return (errno);
 		}
 	}
 }
