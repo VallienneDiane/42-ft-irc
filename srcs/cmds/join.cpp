@@ -41,11 +41,19 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		return ;
 	}
 	std::vector<std::string>	chanNames = splitNames(command[1]);
-	std::vector<std::string>	chanPass =
+	std::vector<std::string>::iterator pass;
+	std::vector<std::string>::iterator passEnd;
+	std::vector<std::string> chanPass;
+	if (command.size() >= 3)
+	{
+		chanPass = splitNames(command[2]);
+		pass = chanPass.begin();
+		passEnd = chanPass.end();
+	}
 	std::vector<std::string>::iterator name = chanNames.begin();
-	std::vector<std::string>::iterator end = chanNames.end();
+	std::vector<std::string>::iterator nameEnd = chanNames.end();
 	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
-	while (name != end)
+	while (name != nameEnd)
 	{
 		if ((*name)[0] != '#')			////////// ADD # IN FRONT OF CHANNEL NAME IF NOT PRESENT
 			name->insert(0, 1, '#');
@@ -55,6 +63,8 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 			Channel newChannel(*name, userMap[socketClient]);								///////// CREATE NEW CHANNEL WITH ITS NAME AND OPERATOR
 			channelMap.insert(std::pair<std::string, Channel>(*name, newChannel));			///////// INSERT NEW CHANNEL INTO CHANNELMAP
 			channelMap.find(*name)->second.addUser(socketClient);				 			///////// ADD USER SOCKET IN CHANNEL'S USERSET
+			if (command.size() >= 3 && pass != passEnd)
+				channelMap.find(*name)->second.setKey(*pass);
 			userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 			std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 			informAllUsers(channelMap.find(*name)->second.getUserSet(), msg);
@@ -63,22 +73,27 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		//////////// EXISTING CHANNEL
 		else
 		{
-			//////////// CLIENT ALREADY IN THIS CHANNEL
-			if (channelMap.find(*name)->second.isInUserSet(socketClient).first)
-			{}
+			Channel *currentChan = &channelMap.find(*name)->second;
 			//////////// CLIENT NOT IN THIS CHANNEL
-			else
-			{
-				channelMap.find(*name)->second.addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
-				userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
-				std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
-				informAllUsers(channelMap.find(*name)->second.getUserSet(), msg);
-				names(socketClient, *name, userMap, channelMap);
-				std::string topic = " " + *name + " " + channelMap.find(*name)->second.getTopic(); //*name + 
-				if (channelMap.find(*name)->second.getIsTopicSet() == true)
-					numericReply(RPL_TOPIC, socketClient, userMap, &topic);
+			if (currentChan->isInUserSet(socketClient).first == false)
+			{	
+				if ((currentChan->hasKey() && command.size() >= 3 && pass != passEnd && currentChan->getKey().compare(*pass) == 0) || currentChan->hasKey() == false)
+				{
+					currentChan->addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
+					userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
+					std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
+					informAllUsers(currentChan->getUserSet(), msg);
+					names(socketClient, *name, userMap, channelMap);
+					std::string topic = " " + *name + " " + currentChan->getTopic(); //*name + 
+					if (currentChan->getIsTopicSet() == true)
+						numericReply(RPL_TOPIC, socketClient, userMap, &topic);
+				}
+				else
+					numericReply(ERR_BADCHANNELKEY, socketClient, userMap, &(*name));
 			}
 		}
+		if (command.size() >= 3 && pass != passEnd)
+			pass++;
 		name++;	
 	}
 }
