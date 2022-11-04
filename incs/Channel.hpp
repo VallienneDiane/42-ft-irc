@@ -22,6 +22,8 @@ class Channel
 	private:
 		// Channel(void);
 		std::string			_name;
+		std::string			_key;
+		bool				_hasKey;
 		std::string			_topic;
 		bool				_isTopicSet;
 		std::set<int>		_operSet;
@@ -39,8 +41,11 @@ class Channel
 		std::string 		getTopic(void) const;
 		bool		 		getIsTopicSet(void) const;
 		void				setName(std::string name);
+		void				setKey(std::string key);
+		bool				hasKey(void) const;
 		void				setOperSet(std::set<int> operSet);
 		std::string 		getName(void) const;
+		std::string 		getKey(void) const;
 		std::set<int>		&getOperSet(void);
 		std::set<int>		&getUserSet(void);
 		void				addUser(User &user);

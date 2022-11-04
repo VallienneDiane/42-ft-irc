@@ -114,6 +114,13 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " :Cannot send to channel";
 			sendMsg(socketClient, str);
 			break;
+		case 475:
+			str += SERVER_TALKING;
+			str += " 475 ";
+			str += *context;
+			str += " :Cannot join the channel";
+			sendMsg(socketClient, str);
+			break;
 		//TOPIC
 		case 331:
 			str += SERVER_TALKING;

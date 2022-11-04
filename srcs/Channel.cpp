@@ -36,6 +36,7 @@ Channel::~Channel(void)
 Channel::Channel(std::string name, User &oper) : _name(name)
 {
 	this->_operSet.insert(oper.getSocket());
+	this->_hasKey = false;
 	this->_isTopicSet = false;
 }
 
@@ -43,6 +44,12 @@ Channel::Channel(std::string name, User &oper) : _name(name)
 void	Channel::setName(std::string name)
 {
 	this->_name = name;
+}
+
+void	Channel::setKey(std::string key)
+{
+	this->_key = key;
+	this->_hasKey = true;
 }
 
 void	Channel::setTopic(std::string topic)
@@ -60,6 +67,16 @@ void	Channel::setOperSet(std::set<int> operSet)
 std::string Channel::getName(void) const
 {
 	return (this->_name);
+}
+
+std::string Channel::getKey(void) const
+{
+	return (this->_key);
+}
+
+bool	Channel::hasKey(void) const
+{
+	return (this->_hasKey);
 }
 
 std::string Channel::getTopic(void) const
