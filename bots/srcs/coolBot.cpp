@@ -212,7 +212,7 @@ bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char
 			if (parseList(connectSocket, words, chan))
 				return (1);
 		}
-		else if (word[1] == "353") {
+		else if (words[1] == "353") {
 			if (parseNames(connectSocket, words, chan))
 				return (1);
 		}

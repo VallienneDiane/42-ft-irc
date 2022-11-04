@@ -22,7 +22,7 @@ void	topic(int socketClient, std::vector<std::string> commands,std::map<int, Use
 	std::vector<std::string>::iterator			topicEnd = topic.end();
 	std::map<std::string, Channel>::iterator	channelEnd = channelMap.end();
 
-	if (commands.size() < 2) 
+	if (commands.size() == 1) 
 	{
         numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &commands[0]);
 		return ;
@@ -48,10 +48,10 @@ void	topic(int socketClient, std::vector<std::string> commands,std::map<int, Use
 			{
 				if(buffer.empty()) //IF EMPTY STRING, CHANNEL TOPIC HAS TO BE CLEARED
 				{
-					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
-					channelMap.find(channel)->second.setTopic(NULL);
+					channelMap.find(channel)->second.setTopic(buffer);
 					std::string emptyTopic = userSource(current) + " TOPIC " + channel + " :" + buffer;
 					informAllUsers(channelMap.find(channel)->second.getUserSet(), emptyTopic);
+					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{

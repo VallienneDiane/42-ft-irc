@@ -126,8 +126,6 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_TALKING;
 			str += " 331 ";
 			str += *context;
-			str += " :";
-			str += *context;
 			sendMsg(socketClient, str);
 			break;
 		case 332:
