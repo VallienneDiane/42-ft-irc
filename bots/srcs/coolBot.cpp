@@ -47,7 +47,7 @@ int receiveMsg(const int socket, std::string &buffer)
 	char    lineRead[4096];
 	memset(lineRead, 0, 4096);
 	int     rd;
-	while (assignReadValue(rd, recv(socket, lineRead, 4096, MSG_DONTWAIT)) && rd != -1)
+	while (assignReadValue(rd, recv(socket, lineRead, 4096, 0)) && rd != -1)
 	{
 		buffer += lineRead;
 		if (lineRead[rd] == '\0' || isCrlf(buffer))
@@ -127,23 +127,44 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
+bool	askListAndJoin(int connectSocket, std::set<std::string> &chan) {
+	
+}
+
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
 	std::set<std::string>	chan;
 	struct timeval	compare;
 	struct timeval	current;
+	struct timeval	selectTimeOut;
+	selectTimeOut.tv_sec = 0;
+	selectTimeOut.tv_usec = 50000;
+	fd_set	currentSockets;
+	fd_set	readSockets;
+	fd_set	writeSockets;
+	FD_ZERO(&currentSockets);
+	FD_SET(socketServer, &currentSocket);
 	gettimeofday(&compare, 0);
 	while (true) {
-		std::string msg;
-		int err = receiveMsg(connectSocket, msg);
-		if (err == -1 && errno != EAGAIN)
+		readSockets = currentSockets;
+		writeSockets = currentSockets;
+		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, &selectTimeOut) == -1) {
+			std::cerr << "select() error\n";
 			return (errno);
-		else if (err == 0)
-			return (0);
-		else if (parseCmd(connectSocket, msg, str, answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
-			return (errno);
-		if (compareTime(compare, current)) {
-			if (askListAndJoin(connectSocket, chan))
+		}
+		if (FD_ISSET(0, &readSockets)) {
+			std::string msg;
+			int err = receiveMsg(connectSocket, msg);
+			if (err == -1 && errno != EAGAIN)
 				return (errno);
+			else if (err == 0)
+				return (0);
+			else if (parseCmd(connectSocket, msg, str,
+							  answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
+				return (errno);
+			if (compareTime(compare, current)) {
+				if (askListAndJoin(connectSocket, chan))
+					return (errno);
+			}
 		}
 	}
 }
