@@ -82,10 +82,9 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		case 3:
 			return (pong(socketClient, content));
 		case 4:
-			quit(socketClient, content, userMap, channelMap);
-			return (1);
+			return(quit(socketClient, content, userMap, channelMap));
 		case 5:
-			join(socketClient, *(++it), userMap, channelMap);
+			join(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 6:
 			part(socketClient, clientMsg, userMap, channelMap);
