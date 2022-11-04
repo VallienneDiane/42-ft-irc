@@ -42,11 +42,7 @@ LST_SRCS		=	main.cpp 				\
 					cmds/mode.cpp			\
 					cmds/list.cpp			\
 
-<<<<<<< HEAD
-LST_BOTS_SRCS	=	fumier.cpp				\
-=======
 LST_BOTS_SRCS	=	fumier.cpp	\
->>>>>>> 4602228e1e3ef69e5cd6c54e60ff60030266a606
 					coolBot.cpp
 
 LST_OBJS		=	${LST_SRCS:.cpp=.o}
