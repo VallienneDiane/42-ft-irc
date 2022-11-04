@@ -36,7 +36,6 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	User	&user = userMap.find(socketClient)->second;
 	std::string cmds[] = {
 		"PASS",
-		// "AUTHENTICATE",
 		"NICK",
 		"USER",
 		"PING",
