@@ -175,9 +175,9 @@ bool	routineFumier(int servSocket)
 		}
 		else {
 			if (joinChan(servSocket, chanTab))
-				return 0;
+				return 1;
 			if (spamLoop(servSocket, chanTab))
-				return 0;
+				return 1;
 		}
 	}
 }

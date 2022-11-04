@@ -61,12 +61,12 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 	}
 	if (i > 14)
 		i = -1;
-	if (!user.getPass() && i > 2)
+	if (!user.getPass() && i > 0)
 	{
 		numericReply(ERR_PASSWDMISMATCH, socketClient, userMap, NULL);
 		return true;
 	}
-	if (!fullyRegistered(user) && i > 4)
+	if (!fullyRegistered(user) && i > 3)
 	{
 		std::string	notReg = "You have not registered";
 		numericReply(ERR_NOTREGISTERED, socketClient, userMap, &notReg);

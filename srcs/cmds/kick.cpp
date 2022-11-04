@@ -59,7 +59,7 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 {
 	if (command.size() < 3)
 	{
-		numericReply(ERR_NEEDMOREPARAMS , socketClient, userMap, &command[0]);
+		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &command[0]);
 		return ;
 	}
 	std::map<std::string, Channel>::iterator	end = channelMap.end();
