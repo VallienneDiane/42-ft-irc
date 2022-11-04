@@ -13,6 +13,7 @@
 #include <cerrno>
 #include <time.h>
 #include <sys/time.h>
+#include <vector>
 
 int	compareTime(timeval &t1, timeval &t2)
 {
@@ -25,6 +26,22 @@ int	compareTime(timeval &t1, timeval &t2)
 		return (1);
 	}
 	return (0);
+}
+
+std::vector<std::string> splitMsg(std::string content)
+{
+	char *words = new char [content.length()+1]; //to copy string to chat to use strtok
+	std::strcpy(words, content.c_str()); 		//copy all client infos in words (cap, nick, user)
+	char *line = strtok(words, " ");			//split words into tokens with " "
+	std::vector<std::string> clientMsg;			//create tab with client infos
+	
+	while(line != NULL)
+	{
+		clientMsg.push_back(line);
+		line = strtok(NULL, "\r \n");
+	}
+	delete[] words;
+	return (clientMsg);
 }
 
 bool    isCrlf(std::string str)
@@ -123,7 +140,7 @@ bool	getIn(int servSocket, int ac, char **av)
 	sendMsg(servSocket, nick);
 	sendMsg(servSocket, user);
 	std::cout << "connection data send\n";
-	receiveMsg(servSocket, nick);ssalut
+	receiveMsg(servSocket, nick);
 	if (nick.find("001") != std::string::npos) {
 		std::cout << "we are welcomed\n";
 		return false;
@@ -142,7 +159,7 @@ bool	parseList(int socket, std::vector<std::string> &lst, std::set<std::string> 
 }
 
 bool	parseNames(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
-	if (chan.insert(lst[3]).second)ccccccccooooooouuuuuuccccoooouuu
+	if (chan.insert(lst[3]).second)
 		return false;
 	else if (lst.size() == 6) {
 		std::string	msg = "PART ";
@@ -162,6 +179,46 @@ bool	askNames(int socket, std::set<std::string> &chan) {
 			return true;
 	}
 	return false;
+}
+
+bool	parsePrivmsg(int connectSocket, std::vector<std::string> words, std::string buffer, char *strToReplace, char *botAnswer)
+{
+	if (buffer.find(strToReplace) != std::string::npos)
+	{
+		std::string msg = "PRIVMSG ";
+		msg += words[2];
+		msg += " ";
+		msg += botAnswer;
+		if (sendMsg(connectSocket, msg) == -1)
+			return (1);
+	}
+	return (0);
+}
+
+bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char *botAnswer, std::set<std::string> chan)
+{
+	std::string buffer;
+
+	buffer = takeCommand(clientMsg);
+	while (!buffer.empty())
+	{
+		std::vector<std::string> words = splitMsg(buffer);
+
+		if (words[1] == "PRIVMSG") {
+			if (parsePrivmsg(connectSocket, words, buffer, strToReplace, botAnswer))
+				return (1);
+		}
+		else if (words[1] == "322") {
+			if (parseList(connectSocket, words, chan))
+				return (1);
+		}
+		else if (word[1] == "353") {
+			if (parseNames(connectSocket, words, chan))
+				return (1);
+		}
+		buffer = takeCommand(clientMsg);
+	}
+	return (0);
 }
 
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
@@ -186,16 +243,15 @@ bool	routineCoolBot(int connectSocket, char *str, char *answer) {
 			std::cerr << "select() error\n";
 			return (errno);
 		}
-		if (FD_ISSET(0, &readSockets)) {
+		if (FD_ISSET(connectSocket, &readSockets)) {
 			std::string msg;
 			int err = receiveMsg(connectSocket, msg);
 			if (err == -1 && errno != EAGAIN)
 				return (errno);
 			else if (err == 0)
 				return (0);
-			/*else if (parseCmd(connectSocket, msg, str,
-							  answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
-				return (errno);*/
+			else if (parseCmd(connectSocket, msg, str, answer, chan))
+				return (errno);
 			}
 		if (compareTime(compare, current)) {
 			if ((sendMsg(connectSocket, "LIST\r\n") == -1) ||
