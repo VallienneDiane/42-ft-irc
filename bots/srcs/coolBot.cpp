@@ -13,20 +13,35 @@
 #include <cerrno>
 #include <time.h>
 #include <sys/time.h>
+#include <vector>
 
 int	compareTime(timeval &t1, timeval &t2)
 {
 	int	tempsSec;
 
 	gettimeofday(&t2, 0);
-	std::cout << "compare = " << t1.tv_sec << " et current = " << t2.tv_sec << std::endl;
 	tempsSec = (t2.tv_sec - t1.tv_sec);
 	if (tempsSec >= 5) {
 		gettimeofday(&t1, 0);
-		std::cout << "after reset of compare, compare = " << t1.tv_sec << std::endl;
 		return (1);
 	}
 	return (0);
+}
+
+std::vector<std::string> splitMsg(std::string content)
+{
+	char *words = new char [content.length()+1]; //to copy string to chat to use strtok
+	std::strcpy(words, content.c_str()); 		//copy all client infos in words (cap, nick, user)
+	char *line = strtok(words, " ");			//split words into tokens with " "
+	std::vector<std::string> clientMsg;			//create tab with client infos
+	
+	while(line != NULL)
+	{
+		clientMsg.push_back(line);
+		line = strtok(NULL, "\r \n");
+	}
+	delete[] words;
+	return (clientMsg);
 }
 
 bool    isCrlf(std::string str)
@@ -74,6 +89,12 @@ int sendMsg(const int socket, std::string str)
 	str += "\r\n";
 	std::cout << "msg send  : " << str;
 	return (send(socket, str.data(), str.size(), 0));
+}
+
+int sendMsg(const int socket, const char * str)
+{
+	std::cout << "msg send  : " << str;
+	return (send(socket, str, strlen(str), 0));
 }
 
 int	connection(char **av)
@@ -127,48 +148,88 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-int	parseCmd(int connectSocket, std::string msg, char *str, char *answer)
-{
-	(void)connectSocket;
-	(void)msg;
-	(void)str;
-	(void)answer;
+bool	askNames(int socket, std::set<std::string> &chan) {
+	std::set<std::string>::iterator	end = chan.end();
+	for (std::set<std::string>::iterator it = chan.begin(); it != end; ++it) {
+		std::string msg = "NAMES ";
+		msg += *it;
+		if (sendMsg(socket, msg) == -1)
+			return true;
+	}
+	return false;
+}
 
+bool	parsePrivmsg(int connectSocket, std::vector<std::string> words, std::string buffer, char *strToReplace, char *botAnswer)
+{
+	if (buffer.find(strToReplace) != std::string::npos)
+	{
+		std::string msg = "PRIVMSG ";
+		msg += words[2];
+		msg += " ";
+		msg += botAnswer;
+		if (sendMsg(connectSocket, msg) == -1)
+			return (1);
+	}
+	return (0);
+}
+
+bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char *botAnswer, std::set<std::string> chan)
+{
 	std::string buffer;
 
-	//msg split
-	buffer = takeCommand(str);
+	buffer = takeCommand(clientMsg);
 	while (!buffer.empty())
 	{
-		if(buffer.find(""))
+		std::vector<std::string> words = splitMsg(buffer);
+
+		if (words[1] == "PRIVMSG")
+			if (parsePrivmsg(connectSocket, words, buffer, strToReplace, botAnswer))
+				return (1);
+		else if (words[1] == "322")
+			parseList(connectSocket, words, chan);
+		else if (word[1] == "353")
+			parseNames(connectSocket, words, chan);
+		buffer = takeCommand(clientMsg);
 	}
-	// privmsg
-	//list
-	//names
-	//le reste osef
-	std::cout << "The MSG is = " << msg << std::endl;
 	return (0);
 }
 
 bool	routineCoolBot(int connectSocket, char *str, char *answer) {
+	(void) str;
+	(void) answer;
 	std::set<std::string>	chan;
 	struct timeval	compare;
 	struct timeval	current;
-	// (void)current;
-
+	struct timeval	selectTimeOut;
+	fd_set	currentSockets;
+	fd_set	readSockets;
+	fd_set	writeSockets;
+	selectTimeOut.tv_sec = 0;
+	selectTimeOut.tv_usec = 50000;
+	FD_ZERO(&currentSockets);
+	FD_SET(connectSocket, &currentSockets);
 	gettimeofday(&compare, 0);
 	while (true) {
-		std::string msg;
-		int err = receiveMsg(connectSocket, msg);
-		if (err == -1 && errno != EAGAIN)
+		readSockets = currentSockets;
+		writeSockets = currentSockets;
+		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, &selectTimeOut) == -1) {
+			std::cerr << "select() error\n";
 			return (errno);
-		else if (err == 0)
-			return (0);
-		else if (parseCmd(connectSocket, msg, str, answer)) // ICI Localiser les privmsg et repondre si c'est le code voulu
-			return (errno);
+		}
+		if (FD_ISSET(connectSocket, &readSockets)) {
+			std::string msg;
+			int err = receiveMsg(connectSocket, msg);
+			if (err == -1 && errno != EAGAIN)
+				return (errno);
+			else if (err == 0)
+				return (0);
+			else if (parseCmd(connectSocket, msg, str, answer, chan))
+				return (errno);
+			}
 		if (compareTime(compare, current)) {
-			// if (askListAndJoin(connectSocket, chan))
-				// return (errno);
+			if ((sendMsg(connectSocket, "LIST\r\n") == -1) ||
+			askNames(connectSocket, chan))
+				return (errno);
 		}
 	}
 }
