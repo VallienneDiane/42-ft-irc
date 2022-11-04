@@ -123,7 +123,7 @@ bool	getIn(int servSocket, int ac, char **av)
 	sendMsg(servSocket, nick);
 	sendMsg(servSocket, user);
 	std::cout << "connection data send\n";
-	receiveMsg(servSocket, nick);
+	receiveMsg(servSocket, nick);ssalut
 	if (nick.find("001") != std::string::npos) {
 		std::cout << "we are welcomed\n";
 		return false;
@@ -131,7 +131,27 @@ bool	getIn(int servSocket, int ac, char **av)
 	return true;
 }
 
-void
+bool	parseList(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
+	std::set<std::string>::iterator end = chan.end();
+	if (chan.find(lst[2]) == end) {
+		std::string msg = "JOIN ";
+		msg += lst[2];
+		return (sendMsg(socket, msg) == -1);
+	}
+	return false;
+}
+
+bool	parseNames(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
+	if (chan.insert(lst[3]).second)ccccccccooooooouuuuuuccccoooouuu
+		return false;
+	else if (lst.size() == 6) {
+		std::string	msg = "PART ";
+		msg += lst[3];
+		chan.erase(lst[3]);
+		return (sendMsg(socket, msg) == -1);
+	}
+	return false;
+}
 
 bool	askNames(int socket, std::set<std::string> &chan) {
 	std::set<std::string>::iterator	end = chan.end();
