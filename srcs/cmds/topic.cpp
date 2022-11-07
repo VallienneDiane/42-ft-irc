@@ -48,10 +48,9 @@ void	topic(int socketClient, std::vector<std::string> commands,std::map<int, Use
 			{
 				if(buffer.empty()) //IF EMPTY STRING, CHANNEL TOPIC HAS TO BE CLEARED
 				{
-					channelMap.find(channel)->second.setTopic(buffer);
+					channelMap.find(channel)->second.setTopic("");
 					std::string emptyTopic = userSource(current) + " TOPIC " + channel + " :" + buffer;
 					informAllUsers(channelMap.find(channel)->second.getUserSet(), emptyTopic);
-					numericReply(RPL_NOTOPIC, socketClient, userMap, &channel);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{

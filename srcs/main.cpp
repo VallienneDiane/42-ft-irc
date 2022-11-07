@@ -76,7 +76,6 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 	int socketClient;
 	struct sockaddr_in addrClient;
 	socklen_t csize = sizeof(addrClient);
-
 	// ACCEPT CONNECTION DEMAND 
 	// Accept a connection on a socket and send back fd for this socket = dialog socket
 	socketClient = accept(socketServer, (struct sockaddr *)&addrClient, &csize);
@@ -112,11 +111,8 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 
 	if (bytesReceived == -1)
 	{
-		// std::cerr << "Error in recv(), Quitting" << std::endl;
 		std::string reason = "QUIT :Client crashed !!";
 		quit(socketClient, reason, userMap, channelMap);
-		// userMap.erase(socketClient);
-		// close(socketClient);
 		FD_CLR(socketClient, currentSockets); // remove socket to the set of sockets we are watching
 		return ;
 	}
@@ -124,9 +120,6 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	{
 		std::string reason = "QUIT :Client closed";
 		quit(socketClient, reason, userMap, channelMap);
-		// std::cout << "Client disconnected" << std::endl;
-		// userMap.erase(socketClient);
-		// close(socketClient);
 		FD_CLR(socketClient, currentSockets); // remove socket to the set of sockets we are watching
 		return ;	
 	}
@@ -151,10 +144,12 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 int main(int ac, char **av)
 {
 	std::pair<int, std::string>	entries = parseEntries(ac, av);
-
+	struct timeval tv;
 	std::map<int, User> userMap;
 	std::map<std::string, Channel> channelMap;
 	
+	tv.tv_sec = 2;
+	tv.tv_usec = 0;
 	int socketServer = serverSetup(entries.first); //create socket, bind port & socket, listen port
 	if (socketServer == -1)
 		return (1);
@@ -174,7 +169,7 @@ int main(int ac, char **av)
 		writeSockets = currentSockets;
 		//SELECT : NON-BLOCKING FUNCTION - EQUIVALENT TO POLL()
 		//allow a program to monitor multiple fd, waiting for at least one of the fd to become "ready" for some actions like read or write
-		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, NULL) == -1)
+		if (select(FD_SETSIZE, &readSockets, &writeSockets, NULL, &tv) == -1)
 		{
 			std::cerr << "select() error" << std::endl;
 			return (1);
@@ -185,8 +180,6 @@ int main(int ac, char **av)
 			{
 				if (i == socketServer) // if socket server same that socket client : REQUEST NEW CONNECTION/USER
 				{
-					// this is a new connection
-					// std::cout << "New connection requested" << std::endl;
 					int socketClient = acceptConnection(socketServer, userMap);
 					if (socketClient == -1)
 						return (1);

@@ -16,7 +16,8 @@
 # include <csignal>
 # include <sys/socket.h>
 # include <unistd.h>
-
+ #include <sys/select.h>
+ 
 void    signalOn(int servSocket);
 void    signalHandler(int sig, siginfo_t *siginfo, void *ucontext);
 int     setGiveSocket(int valSocket);

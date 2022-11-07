@@ -84,9 +84,12 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 					std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
 					informAllUsers(currentChan->getUserSet(), msg);
 					names(socketClient, *name, userMap, channelMap);
-					std::string topic = " " + *name + " " + currentChan->getTopic(); //*name + 
+					std::string topic = *name + " " + *name + " " + currentChan->getTopic() ;
 					if (currentChan->getIsTopicSet() == true)
+					{
+						std::cout << GREEN << "YES " << std::endl;
 						numericReply(RPL_TOPIC, socketClient, userMap, &topic);
+					}
 				}
 				else
 					numericReply(ERR_BADCHANNELKEY, socketClient, userMap, &(*name));
