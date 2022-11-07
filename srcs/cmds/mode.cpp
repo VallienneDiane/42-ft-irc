@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:27:15 by amarchal          #+#    #+#             */
-/*   Updated: 2022/11/03 14:53:50 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/11/07 12:59:17 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	mode(int socketClient, std::vector<std::string> commands, std::map<int, Use
 					numericReply(401, socketClient, userMap, &target);
 				}
 			}
+			else
+				numericReply(ERR_CHANOPRIVSNEEDED, socketClient, userMap, &channelName);
 		}
 		else
 			numericReply(403, socketClient, userMap, &channelName);
