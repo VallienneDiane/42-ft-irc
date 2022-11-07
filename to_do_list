@@ -1,6 +1,0 @@
--   When a client crash unexpectedly (= when recv return us 0 or -1),
-    we must inform all related channels and users, then erase him from all sets/maps.
-
--   A privmsg should print all the successive spaces.
-
--   Do a non blocking value of select timeout
