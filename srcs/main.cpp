@@ -106,8 +106,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 	std::string buffer;
     std::string sentence;
 	int bytesReceived = receiveMsg(socketClient, buffer); //RECEIVE A CLIENT MSG ON A SOCKET
-
-	std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
+	// std::cout << CYAN << "Enter command : " << buffer << END << std::endl;
 
 	if (bytesReceived == -1)
 	{

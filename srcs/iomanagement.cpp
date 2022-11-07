@@ -68,7 +68,7 @@ int receiveMsg(const int socket, std::string &buffer)
 int sendMsg(const int socket, std::string str)
 {
     str += "\r\n";
-    std::cout << "msg send  : " << str;
+    // std::cout << "msg send  : " << str;
     return (send(socket, str.data(), str.size(), 0));
 }
 

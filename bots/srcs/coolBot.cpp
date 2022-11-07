@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   coolBot.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/07 13:21:15 by njaros            #+#    #+#             */
-/*   Updated: 2022/11/07 13:21:17 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/11/07 15:07:07 by dvallien         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ std::string takeCommand(std::string &command)
 int sendMsg(const int socket, std::string str)
 {
 	str += "\r\n";
-	std::cout << "msg send  : " << str;
+	// std::cout << "msg send  : " << str;
 	return (send(socket, str.data(), str.size(), 0));
 }
 
 int sendMsg(const int socket, const char * str)
 {
-	std::cout << "msg send  : " << str;
+	// std::cout << "msg send  : " << str;
 	return (send(socket, str, strlen(str), 0));
 }
 
