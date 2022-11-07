@@ -52,7 +52,7 @@ void	part(int socketClient, std::vector<std::string> commands, std::map<int, Use
 					if(channelMap.find(*nameChannel)->second.isInOperSet(socketClient).first)
 						channelMap.find(*nameChannel)->second.delOper(socketClient);
 					if(channelMap.find(*nameChannel)->second.getUserSet().empty()) //IF NO USER LEFT, DELETE CHAN
-						channelMap.erase(channelMap.find(*nameChannel));
+						channelMap.erase(*nameChannel);
 				}
 			} 
 		}

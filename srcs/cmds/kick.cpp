@@ -87,6 +87,8 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 		else
 			kickOneByOne(userMap.find(socketClient)->second, toKick->second, reason, channel->second);
 	}
+	if (channel->second.getUserSet().empty())
+		channelMap.erase(channel);
 	if (!notOnList.empty())
 		notHereUser(socketClient, userMap, notOnList, command[1]);
 }
