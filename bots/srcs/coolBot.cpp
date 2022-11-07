@@ -158,6 +158,10 @@ bool	parseList(int socket, std::vector<std::string> &lst, std::set<std::string> 
 	return false;
 }
 
+void	parseInvite(std::vector<std::string> &lst, std::set<std::string> &chan) {
+	chan.insert(lst[3]);
+}
+
 bool	parseNames(int socket, std::vector<std::string> &lst, std::set<std::string> &chan) {
 	if (chan.insert(lst[3]).second) {
 		return false;
@@ -217,6 +221,8 @@ bool	parseCmd(int connectSocket, std::string clientMsg, char *strToReplace, char
 			if (parseNames(connectSocket, words, chan))
 				return (1);
 		}
+		else if (words[1] == "INVITE")
+			parseInvite(words, chan);
 		buffer = takeCommand(clientMsg);
 	}
 	return (0);
