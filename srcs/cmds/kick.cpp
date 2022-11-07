@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/11/03 14:24:42 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/11/07 13:25:30 by njaros           ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, C
 	chan.delUser(toKick.getSocket());
 	if (chan.isInOperSet(toKick.getSocket()).first)
 		chan.delOper(toKick.getSocket());
-	toKick.removeChannel(chan.getName()); /////////// SEGFAULT ICI
+	toKick.removeChannel(chan.getName());
 }
 
 void	kick(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
