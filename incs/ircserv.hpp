@@ -51,12 +51,11 @@
 
 class Channel;
 
-// #define nullptr NULL
-#define SERVER_TALKING ":pouet_irc "
-#define SERVER_NAME "pouet_irc"
-#define SERVER_DESCRIPTION " Welcome to pouet irc "
+#define SERVER_TALKING ":irc "
+#define SERVER_NAME "irc"
+#define SERVER_DESCRIPTION " Welcome to irc "
 #define SERVER_ID "97K"
-#define SERVER_NETWORK "pouet.irc.fr"
+#define SERVER_NETWORK "irc.fr"
 
 int							receiveMsg(const int socket, std::string &buffer);
 int							assignReadValue(int &a, const int b);
