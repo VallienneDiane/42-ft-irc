@@ -26,7 +26,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " :Welcome to the ";
 			str += SERVER_NAME;
 			str += " Network, ";
-			str += userSource(user);
+			str += user.getNickname();
 			sendMsg(socketClient, str);
 			break;
 		case 322:
@@ -158,6 +158,14 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 401 ";
 			str += *context;
 			str += " :No such nick";
+			sendMsg(socketClient, str);
+			break;
+		//MDOE
+		case 501:
+			str += SERVER_TALKING;
+			str += "501 ";
+			str += *context;
+			str += " :Unknown MODE flag";
 			sendMsg(socketClient, str);
 			break;
 		//OTHER ERRORS
