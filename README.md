@@ -1,10 +1,10 @@
-### IRC : Internet Relay Chat
+## IRC : Internet Relay Chat
 
 IRC is a text-based chat protocol. It is well-suited to running on many machines in a distributed fashion. A typical setup involves multiple servers connected in a distributed network. Messages are delivered through this network and state is maintained across it for the connected clients and active channels.
 
 The aim here is to create a server which communicate with an irc client, doing different actions via commands.
 
-## Commands to install Weechat and access to the client
+### Commands to install Weechat and access to the client
 
 In term :
 
@@ -16,11 +16,11 @@ In term :
 
 	/disconnect
 
-## Start irc server:
+### Start irc server:
 
 	./ircserv <port> <password>
 
-## Start irc client:
+### Start irc client:
 
 	Weechat : /connect <server_name> -password=
 	or
@@ -31,7 +31,7 @@ In term :
 
 The Netcat (nc) command is a command-line utility for reading and writing data between two computer networks. 
 
-## Handle strange situations in networking :
+### Handle strange situations in networking :
 
 Suspend a client :
 	Suspended a client with ^Z
@@ -44,9 +44,9 @@ Send a partial command :
 	Server should understand
 	Quit properly if ^C
 
-### Bonus 
+## Bonus 
 
-## Bots
+### Bots
 Join all channels without a password and has to be invite in others channels.
 
 -> Fumier is a spam bot.
@@ -58,7 +58,7 @@ Start Bot(s) :
 		./bots/bin/coolBot <IP> <port> <password> <sentence to awake the bot> <sentence answered by the bot> 
 		./bots/bin/fumierBot <IP> <port> <password> 
 
-## Send files using DCC
+### Send files using DCC
 
 The Direct Client-to-Client Protocol (DCC) has been the primary method of establishing connections directly between IRC clients for a long time now. Once established, DCC connections bypass the IRC network and servers, allowing for all sorts of data to be transferred between clients including files and direct chat sessions.
 
@@ -68,14 +68,14 @@ In irc client :
 		/dcc send nickname /home/foo/bar.txt
 		/dcc send nickname /path/image.jpeg
 
-## Steps to do the project
+### Steps to do the project
 1. Download client (Weechat pe)
 2. Create sockets to make the connection between server and client
 3. Handle users and channels with maps, vector, set.
 4. Add commands (connection msg, channel operations, sending msg, operator msg etc)
 5. Handle the channel operator and basic users
 
-## Sources
+### Sources
 
 - Articles :
 
