@@ -148,8 +148,8 @@ int main(int ac, char **av)
 	std::map<int, User> userMap;
 	std::map<std::string, Channel> channelMap;
 	
-	tv.tv_sec = 2;
-	tv.tv_usec = 0;
+	tv.tv_sec = 0;
+	tv.tv_usec = 5;
 	int socketServer = serverSetup(entries.first); //create socket, bind port & socket, listen port
 	if (socketServer == -1)
 		return (1);
