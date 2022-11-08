@@ -34,12 +34,14 @@ The Netcat (nc) command is a command-line utility for reading and writing data b
 ### Handle strange situations in networking :
 
 Suspend a client :
+
 	Suspended a client with ^Z
 	Others client wrote messages
 	Do fg to continued client who was suspended
 	When client is live again, he should receive all messages send during his suspension
 
 Send a partial command :
+
 	Send partial command and ^D and continue the command
 	Server should understand
 	Quit properly if ^C
@@ -50,6 +52,7 @@ Send a partial command :
 Join all channels without a password and has to be invite in others channels.
 
 -> Fumier is a spam bot.
+
 -> CoolBot answer a word or sentence if receive one specific word or sentence.
 
 Start Bot(s) :
@@ -75,9 +78,9 @@ In irc client :
 4. Add commands (connection msg, channel operations, sending msg, operator msg etc)
 5. Handle the channel operator and basic users
 
-### Sources
+## Sources
 
-- Articles :
+### Articles
 
 Les Sockets C++ : 
 https://c.developpez.com/cours/sockets-c-cpp-demystifies/
@@ -101,7 +104,7 @@ Nc cmds :
 https://phoenixnap.com/kb/nc-command
 
 
-- Videos :
+### Videos
 
 Weechat : adding a server and connection : 
 https://www.youtube.com/watch?v=v0HoaQIz39w
