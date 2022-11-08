@@ -6,13 +6,13 @@
 #    By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/04 16:27:56 by dvallien          #+#    #+#              #
-#    Updated: 2022/10/21 11:11:17 by dvallien         ###   ########.fr        #
+#    Updated: 2022/11/08 13:49:44 by dvallien         ###   ########lyon.fr    #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = ircserv
 CC = c++
-FLAGS = -Wall -Wextra -Werror -std=c++98 -fsanitize=address
+FLAGS = -Wall -Wextra -Werror -std=c++98 #-fsanitize=address
 
 PATH_SRCS		=	srcs
 PATH_DEP		=	dep
