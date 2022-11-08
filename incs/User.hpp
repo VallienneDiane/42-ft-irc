@@ -28,6 +28,7 @@ class User
 		std::string					_hostname;
 		std::set<std::string> 		_channels;
 		std::set<int> 				_privMsg;
+		std::vector<std::string>	_bufferMsg;
 
 	public:
 		User(void);
@@ -57,6 +58,7 @@ class User
 		std::string					getHostname(void) const;
 		std::set<std::string>		&getChannels(void);
 		std::set<int>				&getPrivMsg(void);
+		std::vector<std::string>	&getBufferMsg(void);
 		
 		///////// [MEMBER FUNCTIONS]
         void            			appendCommand(const std::string &str);
@@ -67,6 +69,9 @@ class User
 		void						removeChannel(std::string channelName);
 		void						removePrivMsg(int userSocket);
 		bool						isInPrivMsg(int userSocket);
+		void						addMsgToBuffer(std::string &msg);
+		void						addMsgToBuffer(std::string const &msg) ;
+		bool						deliverBufferMsg(void);
 };
 
 std::ostream 						&operator<<(std::ostream &stream, const User &source);

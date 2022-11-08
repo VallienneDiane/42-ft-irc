@@ -162,10 +162,10 @@ std::string	Channel::userCount()
 
 /****************** Communications member functions ***********************/
 
-void	Channel::sendToUsers(const std::string &content, int socketException) const {
+void	Channel::sendToUsers(const std::string &content, int socketException, std::map<int, User> &userMap) const {
 	std::set<int>::const_iterator 	itEnd = _userSet.end();
 	for (std::set<int>::const_iterator 	it = _userSet.begin(); it != itEnd; ++it) {
 		if (*it != socketException)
-			sendMsg(*it, content);
+			userMap[*it].addMsgToBuffer(content);
 	}
 }

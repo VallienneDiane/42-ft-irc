@@ -95,13 +95,13 @@ int acceptConnection(int socketServer, std::map<int, User> &userMap)
 		userMap[socketClient].setHostname(host);
 	}
 	else
-		std::cout << "Error" << std::endl;
+		std::cerr << "Error" << std::endl;
     userMap[socketClient];
 	userMap[socketClient].setSocket(socketClient);
 	return (socketClient);
 }
 
-void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+void	handleConnection(int socketClient, fd_set *currentSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::string buffer;
     std::string sentence;
@@ -129,7 +129,7 @@ void	handleConnection(int socketClient, fd_set *currentSockets, fd_set *writeSoc
 		sentence = current.deliverCommand();
 		while (!sentence.empty())
         {
-            if (getClientMsg(socketClient, sentence, writeSockets, userMap, channelMap))
+            if (getClientMsg(socketClient, sentence, userMap, channelMap))
             {
                 FD_CLR(socketClient, currentSockets);
                 return ;
@@ -183,13 +183,12 @@ int main(int ac, char **av)
 					if (socketClient == -1)
 						return (1);
 					FD_SET(socketClient, &currentSockets); // add a new clientSocket to the set of sockets we are watching
-					FD_SET(socketClient, &writeSockets);
 				}
 				else //Already know user/socket : GET CLIENT CMDS
-				{
-					handleConnection(i, &currentSockets, &writeSockets, userMap, channelMap); // RECEIVE CLIENT CMDS
-				}
+					handleConnection(i, &currentSockets, userMap, channelMap); // RECEIVE CLIENT CMDS
 			}
+			if (FD_ISSET(i, &writeSockets) && userMap[i].getBufferMsg().size() != 0)
+				userMap[i].deliverBufferMsg();
 		}
 	}
 	close(socketServer);

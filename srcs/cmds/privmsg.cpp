@@ -12,24 +12,24 @@
 
 #include "../../incs/ircserv.hpp"
 
-void	msgToChannel(int socketClient, Channel &channel, fd_set *writeSockets, std::string msg, int type)
+void	msgToChannel(int socketClient, Channel &channel, std::string msg, std::map<int, User> &userMap, int type)
 {
 	///////// FOR EACH USER IN THE CHANNEL
 	for (std::set<int>::iterator channelUser = channel.getUserSet().begin(); channelUser != channel.getUserSet().end(); channelUser++)
 	{
 		////////// CHECK IF USER SOCKET IS READY FOR WRITING
-		if (FD_ISSET(*channelUser, writeSockets) && *channelUser != socketClient && !((*channelUser == socketClient) && (type == 1)))
-			sendMsg(*channelUser, msg);
+		if (*channelUser != socketClient && !((*channelUser == socketClient) && (type == 1)))
+			userMap[*channelUser].addMsgToBuffer(msg);
 	}
 }
 
-void	msgToUser(int socketClient, User &user, fd_set *writeSockets, std::string msg, bool firstMsg, int type)
+void	msgToUser(int socketClient, User &user, std::string msg, std::map<int, User> &userMap, bool firstMsg, int type)
 {
 	////////// CHECK IF USER SOCKET IS READY FOR WRITING
-	if (FD_ISSET(user.getSocket(), writeSockets) && user.getSocket() != socketClient)
-		sendMsg(user.getSocket(), msg);
+	if (user.getSocket() != socketClient)
+		user.addMsgToBuffer(msg);
 	if (firstMsg && type == 1)
-		sendMsg(socketClient, msg);
+		userMap[socketClient].addMsgToBuffer(msg);
 }
 
 void	linkUsers(int socketClient, int socketUser, std::map<int, User> &userMap)
@@ -55,7 +55,7 @@ std::string privMsgParseData(std::string &data, std::map<int, User> &userMap, in
 	return (msg);
 }
 
-bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
+bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type)
 {
 	std::map<std::string, Channel>::iterator channelEnd = channelMap.end();
 
@@ -77,7 +77,7 @@ bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &raw
 			if (chanIt->second.isInUserSet(socketClient).first) 
 			{
 				std::string	msg = privMsgParseData(rawData, userMap, socketClient, type);
-				msgToChannel(socketClient, chanIt->second, writeSockets, msg, type);
+				msgToChannel(socketClient, chanIt->second, msg, userMap, type);
 			}
 			else
 				numericReply(ERR_CANNOTSENDTOCHAN, socketClient, userMap, &dest);
@@ -98,10 +98,10 @@ bool	privmsg(int socketClient, std::vector<std::string> &split, std::string &raw
 				if (userMap[socketClient].isInPrivMsg(user->second.getSocket()) == false)
 				{
 					linkUsers(socketClient, user->second.getSocket(), userMap);
-					msgToUser(socketClient, user->second, writeSockets, msg, true, type);
+					msgToUser(socketClient, user->second, msg, userMap, true, type);
 				}
 				else
-					msgToUser(socketClient, user->second, writeSockets, msg, false, type);
+					msgToUser(socketClient, user->second, msg, userMap, false, type);
 				return (0);
 			}
 		}

@@ -26,8 +26,8 @@ void	names(int socketClient, std::string channelName, std::map<int, User> &userM
 			buffer = buffer + " " + (channelMap.find(channelName)->second.isInOperSet(userMap[*user].getSocket()).first == true ? "@" : "") + userMap[*user].getNickname();
 			++user;
 		}
-		sendMsg(socketClient, buffer);
+		userMap[socketClient].addMsgToBuffer(buffer);
 		std::string msg = ":127.0.0.1 366 = " + channelName + " :End of /NAMES list";
-		sendMsg(socketClient, msg);
+		userMap[socketClient].addMsgToBuffer(msg);
 	}
 }

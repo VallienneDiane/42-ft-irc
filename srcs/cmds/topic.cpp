@@ -50,7 +50,7 @@ void	topic(int socketClient, std::vector<std::string> commands,std::map<int, Use
 				{
 					channelMap.find(channel)->second.setTopic("");
 					std::string emptyTopic = userSource(current) + " TOPIC " + channel + " :" + buffer;
-					informAllUsers(channelMap.find(channel)->second.getUserSet(), emptyTopic);
+					informAllUsers(channelMap.find(channel)->second.getUserSet(), userMap, emptyTopic);
 				}
 				else //SET TOPIC AND INFORM ALL USERS
 				{
@@ -59,7 +59,7 @@ void	topic(int socketClient, std::vector<std::string> commands,std::map<int, Use
 					timestamp << sec;
 					std::string msg = userSource(current) + " TOPIC " + channel + " :" + buffer;
 					channelMap.find(channel)->second.setTopic(buffer);
-					informAllUsers(channelMap.find(channel)->second.getUserSet(), msg);
+					informAllUsers(channelMap.find(channel)->second.getUserSet(), userMap, msg);
 					std::string str = " " + userMap[socketClient].getNickname() + " " + channel + " ";
 					str += timestamp.str();
 					numericReply(RPL_TOPICWHOTIME, socketClient, userMap, &str);

@@ -12,15 +12,10 @@
 
 #include "../../incs/ircserv.hpp"
 
-bool	ping(int socketClient)
-{
-	return (sendMsg(socketClient, "PONG\r\n") == -1);
-}
-
-bool	pong(int socketClient, std::string &ping)
+void	pong(int socketClient, std::string &ping, std::map<int, User> &userMap)
 {
 	ping[1] = 'O';
 	ping.insert(5, "pouet_irc ");
 	ping.insert(0, SERVER_TALKING);
-	return (sendMsg(socketClient, ping) == -1);
+	userMap[socketClient].addMsgToBuffer(ping);
 }

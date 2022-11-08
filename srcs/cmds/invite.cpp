@@ -18,9 +18,9 @@ void	doTheInvite(User &user, User &invited, Channel &chan, std::map<int, User> &
 	chan.addUser(invited);
 	invited.addChannel(chan.getName());
 	numericReply(RPL_INVITING, user.getSocket(), userMap, &reply);
-	chan.sendToUsers(message, user.getSocket());
+	chan.sendToUsers(message, user.getSocket(), userMap);
 	message.assign(":" + invited.getNickname() + " JOIN " + chan.getName());
-	chan.sendToUsers(message, 0);
+	chan.sendToUsers(message, 0, userMap);
 	names(invited.getSocket(), chan.getName(), userMap, channelMap);
 }
 

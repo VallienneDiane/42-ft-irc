@@ -53,7 +53,7 @@ void	nickReplyError(int err, int socketClient, std::map<int, User> &userMap, std
 	}
 }
 
-void	changeNickname(User &user, std::string &nickname, std::map<std::string, Channel> &channelMap)
+void	changeNickname(User &user, std::string &nickname, std::map<std::string, Channel> &channelMap, std::map<int, User> &userMap)
 {
 	std::set<int>::iterator			itPrivateEnd = user.getPrivMsg().end();
 	std::string	nickAnswer;
@@ -61,15 +61,15 @@ void	changeNickname(User &user, std::string &nickname, std::map<std::string, Cha
 	user.setNickname(nickname);
 	nickAnswer += " NICK ";
 	nickAnswer += nickname;
-	sendMsg(user.getSocket(), nickAnswer);
+	user.addMsgToBuffer(nickAnswer);
 	std::set<std::string>::iterator	itChanEnd = user.getChannels().end();
 	for (std::set<std::string>::iterator it = user.getChannels().begin(); it != itChanEnd; it++) {
 		std::map<std::string, Channel>::iterator	found = channelMap.find(*it);
 		if (found != channelMap.end())
-			found->second.sendToUsers(nickAnswer, user.getSocket());
+			found->second.sendToUsers(nickAnswer, user.getSocket(), userMap);
 	}
 	for (std::set<int>::iterator it = user.getPrivMsg().begin(); it != itPrivateEnd; ++it) {
-		sendMsg(*it, nickAnswer);
+		userMap[*it].addMsgToBuffer(nickAnswer);
 	}
 }
 
@@ -92,15 +92,15 @@ bool    nickHandle(int socketClient, std::string &nickname, std::map<int, User> 
         else
         {
 			nickReplyError(checkNick, socketClient, userMap, &nickname);
-			userMap.erase(socketClient);
-			close(socketClient);
-            return (1);
+			//userMap.erase(socketClient);
+			//close(socketClient);
+            return (0);
         }
 	}
     else if (assignReadValue(checkNick, checkNickname(nickname)) || containedNickname(nickname, userMap))
 		nickReplyError(checkNick, socketClient, userMap, &nickname);
 	else
-		changeNickname(current, nickname, channelMap);
+		changeNickname(current, nickname, channelMap, userMap);
 	return (0);
 }
 
@@ -131,8 +131,8 @@ bool	userHandle(int socketClient, std::vector<std::string> &username, std::map<i
 	if (username.size() < 5)
 	{
 		numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &username[0]);
-		userMap.erase(socketClient);
-		return (1);
+		//userMap.erase(socketClient);
+		return (0);
 	}
 	if (!identServer(username[1]))
 		username[1].insert(username[1].begin(), '~');

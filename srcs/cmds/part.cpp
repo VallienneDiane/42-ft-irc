@@ -47,7 +47,7 @@ void	part(int socketClient, std::vector<std::string> commands, std::map<int, Use
 				else
 				{
 					std::string msg = userSource(current) + " PART " + *nameChannel + " " + buffer;
-					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), msg);
+					informAllUsers(channelMap.find(*nameChannel)->second.getUserSet(), userMap, msg);
 					channelMap.find(*nameChannel)->second.delUser(socketClient); //DO PART CMD (ERASE USER OF CHAN)
 					if(channelMap.find(*nameChannel)->second.isInOperSet(socketClient).first)
 						channelMap.find(*nameChannel)->second.delOper(socketClient);

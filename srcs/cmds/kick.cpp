@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: njaros <njaros@student.42lyon.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 16:58:17 by dvallien          #+#    #+#             */
-/*   Updated: 2022/11/07 13:25:30 by njaros           ###   ########lyon.fr   */
+/*   Updated: 2022/11/08 11:16:27 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ std::string	buildReason(const std::vector<std::string> &tab)
 	return reason;
 }
 
-void	notHereUser(int socketClient, std::map<int, User> userMap, const std::string &nickname, const std::string &channel)
+void	notHereUser(int socketClient, std::map<int, User> &userMap, const std::string &nickname, const std::string &channel)
 {
 	std::string	context = nickname;
 	context += ' ';
@@ -33,7 +33,7 @@ void	notHereUser(int socketClient, std::map<int, User> userMap, const std::strin
 	numericReply(ERR_USERNOTINCHANNEL, socketClient, userMap, &context);
 }
 
-void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, Channel &chan)
+void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, Channel &chan, std::map<int, User> &userMap)
 {
 	std::string	response = userSource(kicker);
 	std::set<int>::iterator	end = chan.getUserSet().end();
@@ -48,7 +48,7 @@ void	kickOneByOne(const User &kicker, User &toKick, const std::string &reason, C
 	}
 	std::cout << BRED << response << END << std::endl;
 	for (std::set<int>::iterator it = chan.getUserSet().begin(); it != end; ++it)
-		sendMsg(*it, response);
+		userMap[*it].addMsgToBuffer(response);
 	chan.delUser(toKick.getSocket());
 	if (chan.isInOperSet(toKick.getSocket()).first)
 		chan.delOper(toKick.getSocket());
@@ -85,7 +85,7 @@ void	kick(int socketClient, std::vector<std::string> &command, std::map<int, Use
 			notOnList += kickList[i];
 		}
 		else
-			kickOneByOne(userMap.find(socketClient)->second, toKick->second, reason, channel->second);
+			kickOneByOne(userMap.find(socketClient)->second, toKick->second, reason, channel->second, userMap);
 	}
 	if (channel->second.getUserSet().empty())
 		channelMap.erase(channel);

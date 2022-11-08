@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 13:27:15 by amarchal          #+#    #+#             */
-/*   Updated: 2022/11/07 14:40:28 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:45:44 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ bool	checkMode(std::string &mode)
 	return (true);
 }
 
-void	changeOperStatus(User &user, Channel &channel, char sign, User &oper)
+void	changeOperStatus(User &user, Channel &channel, char sign, std::map<int, User> &userMap, User &oper)
 {
 	std::string msg = userSource(oper) + " MODE " + channel.getName();
 	if (sign == '+')
 	{
 		if (channel.isInOperSet(user).first == false)
 			channel.addOper(user.getSocket());
-		informAllUsers(channel.getUserSet(), msg + " +o " + user.getNickname());
+		informAllUsers(channel.getUserSet(), userMap, msg + " +o " + user.getNickname());
 	}
 	if (sign == '-')
 	{
 		if (channel.isInOperSet(user).first == true)
 			channel.delOper(user.getSocket());
-		informAllUsers(channel.getUserSet(), msg + " -o " + user.getNickname());
+		informAllUsers(channel.getUserSet(), userMap, msg + " -o " + user.getNickname());
 	}
 }
 
@@ -67,7 +67,7 @@ void	mode(int socketClient, std::vector<std::string> commands, std::map<int, Use
 							//////// CHECK IF TARGET IS IN CHANNEL
 							if (channel->isInUserSet(user->second.getSocket()).first == true)
 							{
-								changeOperStatus(user->second, channelMap.find(channelName)->second, mode[0], userMap[socketClient]);
+								changeOperStatus(user->second, channelMap.find(channelName)->second, mode[0], userMap, userMap[socketClient]);
 								return ;	
 							}
 						}

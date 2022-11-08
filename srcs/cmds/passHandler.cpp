@@ -36,11 +36,11 @@ bool	passHandle(User &user, std::vector<std::string> &content, std::map<int, Use
 	}
 	if (content.size() < 2) {
 		numericReply(ERR_NEEDMOREPARAMS, user.getSocket(), userMap, &(content[0]));
-		return true;
+		return false;
 	}
 	if (getPass().compare(content[1])) {
 		numericReply(ERR_PASSWDMISMATCH, user.getSocket(), userMap, NULL);
-		return true;
+		return false;
 	}
 	user.setPassOk();
 	return false;

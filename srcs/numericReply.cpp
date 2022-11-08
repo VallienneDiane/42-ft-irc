@@ -27,30 +27,30 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += SERVER_NAME;
 			str += " Network, ";
 			str += user.getNickname();
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 322:
 			str += SERVER_TALKING;
 			str += "322 ";
 			str += *context;
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 323:
 			str += SERVER_TALKING;
 			str += "323 = :End of /LIST";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 341:
 			str += SERVER_TALKING;
 			str += "341 ";
 			str += *context;
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		// NICKNAME
 		case 431:
 			str += SERVER_TALKING;
 			str += " 431 :Nickname is empty.";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 432:
 			str += SERVER_TALKING;
@@ -62,14 +62,14 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 				str += " :Nickname has to begin with a letter.";
 			else
 				str += " :Nickname must only contain alphanum characters or underscores.";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 433:
 			str += SERVER_TALKING;
 			str += " 433 ";
 			str += *context;
 			str += " :this nickname is already in use, try another nickname.";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//PART
 		case 442:
@@ -77,7 +77,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 442 ";
 			str += *context;
 			str += " :You're not on that channel";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		// USERNAME
 		case 461:
@@ -85,19 +85,19 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 461 ";
 			str += *context;
 			str += " Not enough parameters";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 462:
 			str += SERVER_TALKING;
 			str += "462 :You may not reregister";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		// OPER
 		case 464:
 			str += SERVER_TALKING;
 			str += " 464 ";
 			str += " Password incorrect";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		// JOIN
 		case 403:
@@ -105,34 +105,34 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 403 ";
 			str += *context;
 			str += " :No such channel";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 404:
 			str += SERVER_TALKING;
 			str += " 404 ";
 			str += *context;
 			str += " :Cannot send to channel";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 475:
 			str += SERVER_TALKING;
 			str += " 475 ";
 			str += *context;
 			str += " :Cannot join the channel";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//TOPIC
 		case 332:
 			str += SERVER_TALKING;
 			str += "332 ";
 			str += *context;
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 333:
 			str = SERVER_TALKING;
 			str += "333 ";
 			str += *context;
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//KICK
 		case 441:
@@ -140,7 +140,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "441 ";
 			str += *context;
 			str += " :They aren't on that channel";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		case 476:
 			std::cout << "<channel> :Bad Channel Mask" << std::endl;
@@ -150,7 +150,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "482 ";
 			str += *context;
 			str += " :You're not channel operator";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//PRIVMSG
 		case 401:
@@ -158,7 +158,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += " 401 ";
 			str += *context;
 			str += " :No such nick";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//MDOE
 		case 501:
@@ -166,7 +166,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "501 ";
 			str += *context;
 			str += " :Unknown MODE flag";
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 		//OTHER ERRORS
 		case 451:
@@ -174,7 +174,7 @@ void	numericReply(int error, int socketClient, std::map<int, User> &userMap, std
 			str += "451 ";
 			str += ":";
 			str += *context;
-			sendMsg(socketClient, str);
+			userMap[socketClient].addMsgToBuffer(str);
 			break;
 	}
 }

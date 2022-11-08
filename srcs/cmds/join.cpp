@@ -22,13 +22,13 @@ std::vector<std::string> splitNames(std::string &names)
 	return (result);
 }
 
-void	informAllUsers(std::set<int> userSet, std::string msg)
+void	informAllUsers(std::set<int> userSet, std::map<int, User> &userMap, std::string msg)
 {
 	std::set<int>::iterator user = userSet.begin();
 	std::set<int>::iterator userEnd = userSet.end();
 	while (user != userEnd)
 	{
-		sendMsg(*user, msg);
+		userMap[*user].addMsgToBuffer(msg);
 		user++;
 	}
 }
@@ -67,7 +67,7 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 				channelMap.find(*name)->second.setKey(*pass);
 			userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 			std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
-			informAllUsers(channelMap.find(*name)->second.getUserSet(), msg);
+			informAllUsers(channelMap.find(*name)->second.getUserSet(), userMap, msg);
 			names(socketClient, *name, userMap, channelMap);
 		}
 		//////////// EXISTING CHANNEL
@@ -82,7 +82,7 @@ void	join(int socketClient, std::vector<std::string> &command, std::map<int, Use
 					currentChan->addUser(socketClient);				 //////////// ADD USER SOCKET IN CHANNEL'S USERSET
 					userMap[socketClient].addChannel(*name);										///////// ADD CHANNEL TO THE LIST OF CHANNELS THE USER IS ON
 					std::string msg = ":" + userMap[socketClient].getNickname() + " JOIN :" + *name;
-					informAllUsers(currentChan->getUserSet(), msg);
+					informAllUsers(currentChan->getUserSet(), userMap, msg);
 					names(socketClient, *name, userMap, channelMap);
 					std::string topic = *name + " " + *name + " " + currentChan->getTopic() ;
 					if (currentChan->getIsTopicSet() == true)

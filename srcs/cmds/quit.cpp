@@ -6,7 +6,7 @@
 /*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/19 11:33:29 by amarchal          #+#    #+#             */
-/*   Updated: 2022/11/04 16:52:15 by amarchal         ###   ########.fr       */
+/*   Updated: 2022/11/08 11:33:31 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool	quit(int socketClient, std::string &reason, std::map<int, User> &userMap, s
 	std::map<int, User>::iterator userEnd = userMap.end();
 	while (user != userEnd)
 	{
-		sendMsg(user->second.getSocket(), msg);
+		user->second.addMsgToBuffer(msg);
 		user++;
 	}
 	quitAllChannels(socketClient, channelMap);

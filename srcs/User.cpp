@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   User.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dvallien <dvallien@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amarchal <amarchal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/07 11:45:49 by dvallien          #+#    #+#             */
-/*   Updated: 2022/11/03 14:35:23 by dvallien         ###   ########.fr       */
+/*   Updated: 2022/11/08 14:03:58 by amarchal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ unsigned int 				User::getId(void) const {return (this->_id);}
 std::string 				User::getHostname(void) const {return (this->_hostname);}
 std::set<std::string>	 	&User::getChannels(void) {return (this->_channels);}
 std::set<int> 				&User::getPrivMsg(void) {return (this->_privMsg);}
+std::vector<std::string>	&User::getBufferMsg(void) {return (this->_bufferMsg);}
 
 /****************** MEMBER FUNCTIONS ******************/
 void    User::appendCommand(const std::string &str)
@@ -113,16 +114,31 @@ void	User::removePrivMsg(int userSocket)
 
 bool	User::isInPrivMsg(int userSocket)
 {
-	// std::set<int>::iterator it = this->_privMsg.begin();
-	// std::set<int>::iterator end = this->_privMsg.end();
-	// while (it != end)
-	// {
-	// 	if ((*it) == userSocket)
-	// 		return (true);
-	// 	it++;
-	// }
-	// return (false);
 	return (_privMsg.find(userSocket) != _privMsg.end());
+}
+
+void	User::addMsgToBuffer(std::string &msg)
+{
+	this->_bufferMsg.push_back(msg);
+}
+
+void	User::addMsgToBuffer(std::string const &msg) 
+{
+	this->_bufferMsg.push_back(msg);
+}
+
+bool	User::deliverBufferMsg(void)
+{
+	std::vector<std::string>::iterator msg = this->_bufferMsg.begin();
+	std::vector<std::string>::iterator msgEnd = this->_bufferMsg.end();
+	while (msg != msgEnd)
+	{
+		if (sendMsg(this->_socket, *msg) == -1)
+			return (1);
+		msg++;
+	}
+	this->_bufferMsg.clear();
+	return (0);
 }
 
 /****************** STREAM OVERLOAD ******************/

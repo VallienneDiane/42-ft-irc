@@ -28,7 +28,7 @@ std::vector<std::string> splitMsg(std::string content)
 	return (clientMsg);
 }
 
-bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
+bool	getClientMsg(int socketClient, std::string content, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap)
 {
 	std::vector<std::string> clientMsg;
 	clientMsg = splitMsg(content);
@@ -80,7 +80,8 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 		case 2:
 			return (userHandle(socketClient, clientMsg, userMap));
 		case 3:
-			return (pong(socketClient, content));
+			pong(socketClient, content, userMap);
+			break;
 		case 4:
 			return(quit(socketClient, content, userMap, channelMap));
 		case 5:
@@ -105,10 +106,10 @@ bool	getClientMsg(int socketClient, std::string content, fd_set *writeSockets, s
 			kick(socketClient, clientMsg, userMap, channelMap);
 			break;
 		case 12:
-			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 1);
+			privmsg(socketClient, clientMsg, content, userMap, channelMap, 1);
 			break;
 		case 13:
-			privmsg(socketClient, clientMsg, content, writeSockets, userMap, channelMap, 2);
+			privmsg(socketClient, clientMsg, content, userMap, channelMap, 2);
 			break;
 		case 14:
 			mode(socketClient, clientMsg, userMap, channelMap);
