@@ -12,8 +12,13 @@
 
 #include "../../incs/ircserv.hpp"
 
-void	pong(int socketClient, std::string &ping, std::map<int, User> &userMap)
-{
+void	pong(int socketClient, std::vector<std::string> commands, std::string &ping, std::map<int, User> &userMap)
+{	
+	if (commands.size() < 2) 
+	{
+        numericReply(ERR_NEEDMOREPARAMS, socketClient, userMap, &commands[0]);
+		return ;
+    }
 	ping[1] = 'O';
 	ping.insert(5, "pouet_irc ");
 	ping.insert(0, SERVER_TALKING);

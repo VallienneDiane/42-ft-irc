@@ -76,7 +76,7 @@ bool						userHandle(int socketClient, std::vector<std::string> &username, std::
 bool						passHandle(User &user, std::vector<std::string> &content, std::map<int, User> &userMap);
 void						numericReply(int error, int socketClient, std::map<int, User> &userMap, std::string *context);
 int 						checkNickname(const std::string &name);
-void						pong(int socketClient, std::string &ping, std::map<int, User> &userMap);
+void						pong(int socketClient, std::vector<std::string> commands, std::string &ping, std::map<int, User> &userMap);
 void						join(int socketClient, std::vector<std::string> &command, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap);
 bool						privmsg(int socketClient, std::vector<std::string> &split, std::string &rawData, std::map<int, User> &userMap, std::map<std::string, Channel> &channelMap, int type);
 void						part(int socketClient, std::vector<std::string> commands, std::map<int, User> & userMap,std::map<std::string, Channel> &channelMap);

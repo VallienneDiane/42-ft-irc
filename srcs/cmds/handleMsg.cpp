@@ -80,7 +80,7 @@ bool	getClientMsg(int socketClient, std::string content, std::map<int, User> &us
 		case 2:
 			return (userHandle(socketClient, clientMsg, userMap));
 		case 3:
-			pong(socketClient, content, userMap);
+			pong(socketClient, clientMsg, content, userMap);
 			break;
 		case 4:
 			return(quit(socketClient, content, userMap, channelMap));
